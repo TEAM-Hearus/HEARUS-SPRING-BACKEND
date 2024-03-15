@@ -1,5 +1,7 @@
 package com.hearus.hearusspring.data.dto;
 
+import com.hearus.hearusspring.data.entitiy.UserEntity;
+import com.hearus.hearusspring.data.enumType.OAuthType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -39,4 +41,23 @@ public class UserDTO {
 
     String userSchedule;
     String userUsePurpose;
+
+    public UserEntity toEntitiy(){
+        String stringLecture = String.join(",", userSavedLectures);
+
+        return UserEntity.builder()
+                .id(userId)
+                .name(userName)
+                .email(userEmail)
+                .password(userPassword)
+                .isOAuth(userIsOAuth)
+                .oauthType(userOAuthType)
+                .school(userSchool)
+                .major(userMajor)
+                .grade(userGrade)
+                .savedLectures(stringLecture)
+                .schedule(userSchedule)
+                .usePurpose(userUsePurpose)
+                .build();
+    }
 }

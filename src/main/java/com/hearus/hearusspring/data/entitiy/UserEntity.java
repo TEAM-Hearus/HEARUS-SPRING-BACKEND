@@ -1,8 +1,6 @@
 package com.hearus.hearusspring.data.entitiy;
 
 import com.hearus.hearusspring.data.dto.UserDTO;
-import com.hearus.hearusspring.data.entitiy.enumType.GradeType;
-import com.hearus.hearusspring.data.entitiy.enumType.OAuthType;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -32,13 +30,13 @@ public class UserEntity extends BaseEntitiy{
 
     // Oauth 종류
     // KAKAO, GOOGLE, NAVER
-    OAuthType oauthType;
+    String oauthType;
 
     String school;
     String major;
 
     // 재학생 (1, 2, 3, 4), 휴학생, 졸업생
-    GradeType grade;
+    String grade;
 
     // DB에는 일반적인 String으로 저장하고
     // ','를 기준으로 ArrayList로 변환
@@ -60,10 +58,10 @@ public class UserEntity extends BaseEntitiy{
                 .userEmail(email)
                 .userPassword(password)
                 .userIsOAuth(isOAuth)
-                .userOAuthType(oauthType.name())
+                .userOAuthType(oauthType)
                 .userSchool(school)
                 .userMajor(major)
-                .userGrade(grade.name())
+                .userGrade(grade)
                 .userSavedLectures(savedLecturesList)
                 .userSchedule(schedule)
                 .userUsePurpose(usePurpose)
