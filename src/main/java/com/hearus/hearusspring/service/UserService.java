@@ -1,4 +1,7 @@
 package com.hearus.hearusspring.service;
 
-public class UserService {
+import com.hearus.hearusspring.data.dto.UserDTO;
+
+public interface UserService {
+    boolean userSignup(UserDTO user);
 }
