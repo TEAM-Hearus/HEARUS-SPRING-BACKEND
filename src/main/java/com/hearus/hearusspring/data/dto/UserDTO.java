@@ -36,13 +36,15 @@ public class UserDTO {
     String userMajor;
     String userGrade;
 
-    ArrayList<String> userSavedLectures;
+    ArrayList<String> userSavedLectures = new ArrayList<String>();
 
     String userSchedule;
     String userUsePurpose;
 
     public UserEntity toEntitiy(){
-        String stringLecture = String.join(",", userSavedLectures);
+        String stringLecture = null;
+        if(!userSavedLectures.isEmpty())
+            stringLecture = String.join(",", userSavedLectures);
 
         return UserEntity.builder()
                 .id(userId)

@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 @Setter
 public class CommonResponse {
     private boolean isSuccess;
-    HttpStatus resCode;
+    HttpStatus status;
     private String msg;
 
     public CommonResponse(boolean isSuccess, String msg) {
@@ -16,9 +16,9 @@ public class CommonResponse {
         this.msg = msg;
     }
 
-    public CommonResponse(boolean isSuccess, HttpStatus resCode, String msg) {
+    public CommonResponse(boolean isSuccess, HttpStatus status, String msg) {
         this.isSuccess = isSuccess;
-        this.resCode = resCode;
+        this.status = status;
         this.msg = msg;
     }
 }

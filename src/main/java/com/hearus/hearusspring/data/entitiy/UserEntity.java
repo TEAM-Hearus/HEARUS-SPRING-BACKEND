@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @Table(name = "user")
 public class UserEntity extends BaseEntitiy{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.UUID)
     String id;
 
     String name;
