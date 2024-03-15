@@ -24,7 +24,10 @@ public class UserEntity extends BaseEntitiy{
     String id;
 
     String name;
+
+    @Column(unique=true)
     String email;
+
     String password;
 
     // OAuth인지의 여부 판단
