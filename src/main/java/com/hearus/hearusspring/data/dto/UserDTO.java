@@ -1,7 +1,6 @@
 package com.hearus.hearusspring.data.dto;
 
 import com.hearus.hearusspring.data.entitiy.UserEntity;
-import com.hearus.hearusspring.data.enumType.OAuthType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;

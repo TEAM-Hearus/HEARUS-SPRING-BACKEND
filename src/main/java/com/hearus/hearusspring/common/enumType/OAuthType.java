@@ -1,4 +1,4 @@
-package com.hearus.hearusspring.data.enumType;
+package com.hearus.hearusspring.common.enumType;
 
 public enum OAuthType {
     KAKAO("KAKAO"),
