@@ -5,6 +5,8 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 
@@ -41,7 +43,7 @@ public class UserDTO {
     String userSchedule;
     String userUsePurpose;
 
-    public UserEntity toEntitiy(){
+    public UserEntity toEntitiy(PasswordEncoder passwordEncoder){
         String stringLecture = null;
         if(!userSavedLectures.isEmpty())
             stringLecture = String.join(",", userSavedLectures);
@@ -50,7 +52,7 @@ public class UserDTO {
                 .id(userId)
                 .name(userName)
                 .email(userEmail)
-                .password(userPassword)
+                .password(passwordEncoder.encode(userPassword))
                 .isOAuth(userIsOAuth)
                 .oauthType(userOAuthType)
                 .school(userSchool)
