@@ -1,5 +1,6 @@
 package com.hearus.hearusspring.data.dto;
 
+import com.hearus.hearusspring.common.enumType.RoleType;
 import com.hearus.hearusspring.data.entitiy.UserEntity;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.Email;
@@ -24,7 +25,6 @@ public class UserDTO {
     @Id
     String userId = "";
 
-    @NotNull
     String userName;
 
     @Email
@@ -33,9 +33,8 @@ public class UserDTO {
     @NotNull
     String userPassword;
 
-    String userRole = "free";
+    String userRole = RoleType.USER_FREE.getKey();
 
-    @NotNull
     boolean userIsOAuth;
     String userOAuthType;
 

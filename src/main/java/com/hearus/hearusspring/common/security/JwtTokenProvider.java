@@ -72,7 +72,7 @@ public class JwtTokenProvider {
     }
 
     // JWT 토큰을 복호화하여 정보를 꺼내는 메소드
-    public String getAuthentication(String accessToken) {
+    public String getTokenInfo(String accessToken) {
         // 토큰 복호화
         Claims claims = parseAccessClaims(accessToken);
 

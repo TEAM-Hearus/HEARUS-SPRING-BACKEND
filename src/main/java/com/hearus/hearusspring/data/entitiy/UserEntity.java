@@ -52,10 +52,12 @@ public class UserEntity extends BaseEntitiy{
 
     public UserDTO toDTO(){
         // ','를 기준으로 split
-        ArrayList<String> savedLecturesList = Arrays.stream(
-                savedLectures.split(","))
-                .map(String::trim)
-                .collect(Collectors.toCollection(ArrayList::new));
+        ArrayList<String> savedLecturesList = new ArrayList<>();
+        if(savedLectures != null)
+            savedLecturesList = Arrays.stream(
+                    savedLectures.split(","))
+                    .map(String::trim)
+                    .collect(Collectors.toCollection(ArrayList::new));
 
         return UserDTO.builder()
                 .userId(id)

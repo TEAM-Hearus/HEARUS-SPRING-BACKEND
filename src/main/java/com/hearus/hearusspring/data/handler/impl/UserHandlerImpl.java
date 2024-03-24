@@ -25,6 +25,16 @@ public class UserHandlerImpl implements UserHandler {
     public UserHandlerImpl(UserDAO userDAO) {
         this.userDAO = userDAO;
     }
+
+    @Override
+    public UserDTO loginUserEntity(UserDTO user) {
+        LOGGER.info("[UserHandler]-[signupUserEntitiy] UserDAO로 로그인 요청 : {}", user.getUserEmail());
+        UserEntity userEntity = user.toEntitiy(passwordEncoder);
+        if(!passwordEncoder.matches(user.getUserPassword(), userEntity.getPassword()))
+            return null;
+        return userDAO.userLogin(userEntity).toDTO();
+    }
+
     @Override
     public CommonResponse signupUserEntitiy(UserDTO user) {
         LOGGER.info("[UserHandler]-[signupUserEntitiy] UserDAO로 UserEntitiy 회원가입 요청 : {}", user.getUserEmail());

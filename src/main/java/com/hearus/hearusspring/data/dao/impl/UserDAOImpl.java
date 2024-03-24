@@ -21,10 +21,16 @@ public class UserDAOImpl implements UserDAO {
         this.userRepository = userRepository;
     }
 
-    // TODO : Create Login Function
+    @Override
+    public UserEntity getUserById(String userId){
+        LOGGER.info("[UserDAO]-[userLogin] UserID로 User 정보 찾기");
+        return userRepository.findFirstById(userId);
+    }
+
     @Override
     public UserEntity userLogin(UserEntity user) {
-        return null;
+        LOGGER.info("[UserDAO]-[userLogin] UserEmail로 정보 가져오기 : {}", user.getEmail());
+        return userRepository.findFirstByEmail(user.getEmail());
     }
 
     @Override
