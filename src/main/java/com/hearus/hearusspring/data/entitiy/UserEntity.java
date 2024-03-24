@@ -28,6 +28,8 @@ public class UserEntity extends BaseEntitiy{
 
     String password;
 
+    String role;
+
     // OAuth인지의 여부 판단
     boolean isOAuth;
 
@@ -60,6 +62,7 @@ public class UserEntity extends BaseEntitiy{
                 .userName(name)
                 .userEmail(email)
                 .userPassword(password)
+                .userRole(role)
                 .userIsOAuth(isOAuth)
                 .userOAuthType(oauthType)
                 .userSchool(school)
