@@ -1,14 +1,20 @@
 package com.hearus.hearusspring.data.dto;
 
+import com.hearus.hearusspring.common.enumType.RoleType;
 import com.hearus.hearusspring.data.entitiy.UserEntity;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
@@ -17,20 +23,18 @@ import java.util.ArrayList;
 @Builder
 public class UserDTO {
     @Id
-    @NotNull
-    String userId;
+    String userId = "";
 
-    @NotNull
     String userName;
 
-    @NotNull
     @Email
+    @NotNull
     String userEmail;
-
     @NotNull
     String userPassword;
 
-    @NotNull
+    String userRole = RoleType.USER_FREE.getKey();
+
     boolean userIsOAuth;
     String userOAuthType;
 
@@ -53,6 +57,7 @@ public class UserDTO {
                 .name(userName)
                 .email(userEmail)
                 .password(passwordEncoder.encode(userPassword))
+                .role(userRole)
                 .isOAuth(userIsOAuth)
                 .oauthType(userOAuthType)
                 .school(userSchool)

@@ -28,6 +28,22 @@ public class UserAuthController {
         this.userService = userService;
     }
 
+    @PostMapping(value="/login")
+    public ResponseEntity<CommonResponse> loginUser(@Valid @RequestBody UserDTO userDTO){
+        LOGGER.info("[UserAuthController]-[loginUser] API Call");
+
+        // 요구되는 데이터 존재 여부 검증
+        if(userDTO.getUserEmail().isEmpty() || userDTO.getUserPassword().isEmpty()){
+            LOGGER.info("[UserAuthController]-[loginUser] Failed : Empty Variables");
+            response = new CommonResponse(false,HttpStatus.BAD_REQUEST,"Empty Variables");
+            return ResponseEntity.status(response.getStatus()).body(response);
+        }
+
+        // UserService로 요청받은 UserDTO 로그인 요청
+        response = userService.userLogin(userDTO);
+        return ResponseEntity.status(response.getStatus()).body(response);
+    }
+
     @PostMapping(value="/signup")
     public ResponseEntity<CommonResponse> signupUser(@Valid @RequestBody UserDTO userDTO){
         LOGGER.info("[UserAuthController]-[signupUser] API Call");
