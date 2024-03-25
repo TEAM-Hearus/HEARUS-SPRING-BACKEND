@@ -12,5 +12,5 @@ public class JwtTokenProvider {
     private final Key accessSecret;
     private final Key refreshSecret;
 
-    public JwtTokenProvider(@Value("{$}"))
+
 }
