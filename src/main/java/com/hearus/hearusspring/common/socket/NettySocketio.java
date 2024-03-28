@@ -26,21 +26,21 @@ public class NettySocketio {
 
     private DataListener<SocketMsgDTO> onReceived() {
         return (client, data, ackSender) -> {
-            log.debug("[NettySocketio]-[onReceived]-[{}] Received message '{}'", client.getSessionId().toString(), data);
-            namespace.getBroadcastOperations().sendEvent("chat", data);
+            log.info("[NettySocketio]-[onReceived]-[{}] Received message '{}'", client.getSessionId().toString(), data);
+            namespace.getBroadcastOperations().sendEvent("stt", data);
         };
     }
 
     private ConnectListener onConnected() {
         return client -> {
             HandshakeData handshakeData = client.getHandshakeData();
-            log.info("[NettySocketio]-[onReceived]-[{}] Connected to Socket Module through '{}'", client.getSessionId().toString(), handshakeData.getUrl());
+            log.info("[NettySocketio]-[onConnected]-[{}] Connected to Socket Module through '{}'", client.getSessionId().toString(), handshakeData.getUrl());
         };
     }
 
     private DisconnectListener onDisconnected() {
         return client -> {
-            log.info("[NettySocketio]-[onReceived]-[{}] Disconnected from Socket Module.", client.getSessionId().toString());
+            log.info("[NettySocketio]-[onDisconnected]-[{}] Disconnected from Socket Module.", client.getSessionId().toString());
         };
     }
 }
