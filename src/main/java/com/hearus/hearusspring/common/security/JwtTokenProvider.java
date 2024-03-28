@@ -29,7 +29,6 @@ import java.util.stream.Collectors;
 @Slf4j
 @Component
 public class JwtTokenProvider {
-
     private final Key accessKey;
     private final Key refreshKey;
 
