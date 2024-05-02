@@ -13,7 +13,7 @@ public class SocketIOCommandLineRunner implements CommandLineRunner {
 
     @Autowired
     public SocketIOCommandLineRunner(SocketIOServer server) {
-        log.info("[SocketIOCommandLineRunner] SocketIOServer Initiated");
+        log.info("[SocketIOCommandLineRunner] SocketIOServer Initialized");
         this.server = server;
     }
 
