@@ -17,9 +17,11 @@ public class SocketIOConfig {
         com.corundumstudio.socketio.Configuration config = new com.corundumstudio.socketio.Configuration();
         config.setHostname(configUtil.getProperty("SOCKET_IO_SERVER"));
         config.setPort(Integer.parseInt(configUtil.getProperty("SOCKET_IO_PORT")));
+
         // Set CORS
         for(String origin : corsAllowedOrigins)
             config.setOrigin(origin);
+
         return new SocketIOServer(config);
     }
 }
