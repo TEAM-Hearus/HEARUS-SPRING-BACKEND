@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class SocketMsgDTO {
     String message;
+    byte[] audioData;
 
     @Override
     public String toString(){
