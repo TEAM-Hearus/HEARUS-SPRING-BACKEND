@@ -51,9 +51,6 @@ dependencies {
 	// Socket
 	implementation 'com.corundumstudio.socketio:netty-socketio:2.0.3'
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
-
-	// JSON
-	implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.4'
 }
 
 tasks.named('test') {

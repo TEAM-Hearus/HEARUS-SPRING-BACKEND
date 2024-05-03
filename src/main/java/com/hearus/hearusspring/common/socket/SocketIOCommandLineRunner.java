@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class SocketIOCommandLineRunner implements CommandLineRunner {
+
     private final SocketIOServer server;
 
     @Autowired

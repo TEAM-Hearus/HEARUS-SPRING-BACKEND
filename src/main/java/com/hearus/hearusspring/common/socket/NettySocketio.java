@@ -9,38 +9,63 @@ import com.corundumstudio.socketio.listener.DisconnectListener;
 import com.hearus.hearusspring.data.dto.SocketMsgDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+
+import java.sql.Blob;
+import java.util.ArrayList;
+import java.util.Queue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 @Slf4j
 @Component
 public class NettySocketio {
     private final SocketIONamespace namespace;
 
+    @Value("FAST_API_ENDPOINT")
+    private String fastAPIEndPoint;
+
+    private final BlockingQueue<byte[]> dataQueue;
+
     @Autowired
     public NettySocketio(SocketIOServer server){
         this.namespace = server.addNamespace("/socketio");
         this.namespace.addConnectListener(onConnected());
         this.namespace.addDisconnectListener(onDisconnected());
-        this.namespace.addEventListener("transcription", SocketMsgDTO.class, transcribe());
+        this.namespace.addEventListener("transcription", byte[].class, transcribe());
+        this.dataQueue = new LinkedBlockingQueue<>();
     }
 
-    private DataListener<SocketMsgDTO> transcribe() {
+    // TODO : byte[].class 형태로 Vue에서의 요청 처리
+    private DataListener<byte[]> transcribe() {
         return (client, data, ackSender) -> {
-            log.info("[NettySocketio]-[onReceived]-[{}] Received Audio Data", client.getSessionId().toString());
+            try {
+                log.info("[NettySocketio]-[onReceived]-[{}] Received Audio Data", client.getSessionId().toString());
 
-            byte[] audioData = data.getAudioData();
-
-            new Thread(() -> {
-                String textResult = sendAudioDataToFastAPI(audioData);
-
-                // 3. FastAPI로부터 응답된 텍스트를 새로운 SocketMsgDTO 객체에 담아 전송
-                SocketMsgDTO responseDTO = new SocketMsgDTO();
-                responseDTO.setMessage(textResult);
-                namespace.getBroadcastOperations().sendEvent("stt", responseDTO);
-            }).start();
-            namespace.getBroadcastOperations().sendEvent("stt", data);
+                if (data != null) {
+                    log.info(String.valueOf(data.length));
+//                    byte[] audioData = data;
+//                    dataQueue.offer(audioData); // Add audio data to the queue for STT processing
+//
+//                    // Optional: Broadcast received data to frontend clients (if needed)
+//                    // namespace.getBroadcastOperations().sendEvent("stt", data);
+//
+//                    // Start a separate thread for STT processing
+//                    new Thread(() -> {
+//                        String textResult = sendAudioDataToFastAPI(audioData); // Perform STT using Whisper model
+//                        if (textResult != null) {
+//                            namespace.getBroadcastOperations().sendEvent("sttResult", textResult);
+//                        }
+//                    }).start();
+                } else {
+                    log.info("[NettySocketio] Unexpected data type received");
+                }
+            } catch (Exception e) {
+                log.error("[NettySocketio]-[transcribe()]", e);
+            }
         };
     }
 
@@ -57,21 +82,13 @@ public class NettySocketio {
 
         // 4. POST 요청 전송 및 응답 객체 받기
         ResponseEntity<String> responseEntity = restTemplate.exchange(
-                "<FASTAPI_ENDPOINT_URL>",
+                fastAPIEndPoint + "/",
                 HttpMethod.POST,
                 new HttpEntity<>(requestBody, headers),
                 String.class
         );
-
-        // 5. 응답 결과 파싱 및 텍스트 추출
-        try {
-            JSONObjectNode responseJSON = new JSONObject(responseEntity.getBody());
-            String text = responseJSON.getString("text");
-            return text;
-        } catch (JSONException e) {
-            e.printStackTrace();
-            return "";
-        }
+        log.info(responseEntity.getBody());
+        return responseEntity.getBody();
     }
 
 
