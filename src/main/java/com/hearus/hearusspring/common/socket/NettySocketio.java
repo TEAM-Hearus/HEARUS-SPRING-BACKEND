@@ -64,6 +64,7 @@ public class NettySocketio {
         );
 
         // 5. 응답 결과 파싱 및 텍스트 추출
+        // TODO : FIX Jackson JSON Parsing
         try {
             JSONObjectNode responseJSON = new JSONObject(responseEntity.getBody());
             String text = responseJSON.getString("text");
