@@ -1,4 +1,4 @@
-package com.hearus.hearusspring.common.socket;
+package com.hearus.hearusspring.common.nettySocketio;
 
 import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.Transport;
@@ -18,7 +18,7 @@ public class SocketIOConfig {
         com.corundumstudio.socketio.Configuration config = new com.corundumstudio.socketio.Configuration();
         config.setHostname(configUtil.getProperty("socketio.host"));
         config.setPort(Integer.parseInt(configUtil.getProperty("socketio.port")));
-        config.setTransports(Transport.WEBSOCKET);
+        config.setTransports(Transport.WEBSOCKET, Transport.POLLING);
 
         return new SocketIOServer(config);
     }
