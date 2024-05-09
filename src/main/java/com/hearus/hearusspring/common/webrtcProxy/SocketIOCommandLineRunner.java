@@ -1,4 +1,4 @@
-package com.hearus.hearusspring.common.nettySocketio;
+package com.hearus.hearusspring.common.webrtcProxy;
 
 import com.corundumstudio.socketio.SocketIOServer;
 import lombok.extern.slf4j.Slf4j;
