@@ -8,18 +8,13 @@ import com.corundumstudio.socketio.listener.DataListener;
 import com.corundumstudio.socketio.listener.DisconnectListener;
 import com.hearus.hearusspring.common.environment.ConfigUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.java_websocket.drafts.Draft_6455;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.socket.CloseStatus;
-import org.springframework.web.socket.TextMessage;
-import org.springframework.web.socket.WebSocketHandler;
-import org.springframework.web.socket.WebSocketSession;
-import org.springframework.web.socket.client.standard.StandardWebSocketClient;
-import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.net.URI;
 import java.nio.ByteBuffer;
-import java.util.Base64;
+import java.util.*;
 
 @Slf4j
 @Component
@@ -28,7 +23,7 @@ public class WebRTCProxy {
     private final String FastAPIEndpoint;
     private final SocketIOServer server;
     private final SocketIONamespace namespace;
-    private WebSocketSession fastAPIWebSocketSession;
+    private WebSocketUtil fastAPIWebSocket;
 
     @Autowired
     public WebRTCProxy(SocketIOServer server, ConfigUtil configUtil) {
@@ -41,8 +36,27 @@ public class WebRTCProxy {
         connectFastAPI();
     }
 
-    // TODO : Connect WebSocket to FastAPI
+    // WebSocket
     private void connectFastAPI(){
+        new Timer().scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                try {
+                    if(fastAPIWebSocket == null || fastAPIWebSocket.isClosed()) {
+                        fastAPIWebSocket = new WebSocketUtil(
+                                new URI(FastAPIEndpoint + "/ws"),
+                                new Draft_6455(),
+                                namespace
+                        );
+                        fastAPIWebSocket.connectBlocking();
+                        fastAPIWebSocket.send("Spring Server");
+                    }
+                } catch (Exception e) {
+                    // Handle connection exceptions
+                    e.printStackTrace();
+                }
+            }
+        }, 0, 60);
     }
 
     // Socketio Listeners
@@ -67,7 +81,7 @@ public class WebRTCProxy {
                     return;
                 }
 
-                if (fastAPIWebSocketSession != null && fastAPIWebSocketSession.isOpen()) {
+                if (fastAPIWebSocket != null && fastAPIWebSocket.isOpen()) {
                     // Decode Base64 string to byte array
                     byte[] decodedBytes = Base64.getDecoder().decode(audioData);
 
@@ -75,8 +89,9 @@ public class WebRTCProxy {
                     ByteBuffer byteBuffer = ByteBuffer.wrap(decodedBytes);
 
                     log.info("[WebRTCProxy]-[Socketio] Forwarding audio data to FastAPI server [{}]", decodedBytes.length);
-                    // Send binary data using fastAPIWebSocketSession
-                    //fastAPIWebSocketSession.sendMessage(new ByteBufferMessageConverter().toMessage(byteBuffer, null));
+
+                    // Send binary data using fastAPISession
+                    fastAPIWebSocket.send(byteBuffer);
                 } else {
                     log.error("[WebRTCProxy]-[Socketio] FastAPI WebSocket is not connected");
                 }
