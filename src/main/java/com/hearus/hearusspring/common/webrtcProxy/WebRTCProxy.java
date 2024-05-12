@@ -7,11 +7,11 @@ import com.corundumstudio.socketio.listener.ConnectListener;
 import com.corundumstudio.socketio.listener.DataListener;
 import com.corundumstudio.socketio.listener.DisconnectListener;
 import com.hearus.hearusspring.common.environment.ConfigUtil;
+import com.hearus.hearusspring.common.ffmpeg.AudioConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.java_websocket.drafts.Draft_6455;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import java.net.URI;
 import java.nio.ByteBuffer;
 import java.util.*;
@@ -24,6 +24,7 @@ public class WebRTCProxy {
     private final SocketIOServer server;
     private final SocketIONamespace namespace;
     private WebSocketUtil fastAPIWebSocket;
+    private final AudioConverter audioConverter;
 
     @Autowired
     public WebRTCProxy(SocketIOServer server, ConfigUtil configUtil) {
@@ -33,6 +34,7 @@ public class WebRTCProxy {
         this.namespace.addConnectListener(onConnected());
         this.namespace.addDisconnectListener(onDisconnected());
         this.namespace.addEventListener("transcription", String.class, audioListener());
+        this.audioConverter = new AudioConverter();
         connectFastAPI();
     }
 
@@ -81,14 +83,16 @@ public class WebRTCProxy {
                     return;
                 }
 
+                // Decode Base64 string to byte array
+                byte[] decodedBytes = Base64.getDecoder().decode(audioData);
+                // Convert to codec : pcm_s16le, format : s16le
+                byte[] convertedBytes = audioConverter.convertAudio(decodedBytes);
+
                 if (fastAPIWebSocket != null && fastAPIWebSocket.isOpen()) {
-                    // Decode Base64 string to byte array
-                    byte[] decodedBytes = Base64.getDecoder().decode(audioData);
+                    // Wrap converted bytes in ByteBuffer
+                    ByteBuffer byteBuffer = ByteBuffer.wrap(convertedBytes);
 
-                    // Wrap decoded bytes in ByteBuffer
-                    ByteBuffer byteBuffer = ByteBuffer.wrap(decodedBytes);
-
-                    log.info("[WebRTCProxy]-[Socketio] Forwarding audio data to FastAPI server [{}]", decodedBytes.length);
+                    log.info("[WebRTCProxy]-[Socketio] Forwarding audio data to FastAPI server [{}]", convertedBytes.length);
 
                     // Send binary data using fastAPISession
                     fastAPIWebSocket.send(byteBuffer);

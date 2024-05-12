@@ -1,0 +1,214 @@
+[33mcommit f1134aa083322d76ceee4b3573bd03320afaf833[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m
+Author: judemin <judemin2087@naver.com>
+Date:   Sun May 12 20:01:07 2024 +0900
+
+    ADD : ADD FFmpeg, AudioConverter class, Successfully Converted Audio Blob and received Trasition Result
+
+[33mcommit b8a79349d3da90a702f018d1ad43936a06d8f243[m
+Author: judemin <judemin2087@naver.com>
+Date:   Sun May 12 19:59:51 2024 +0900
+
+    ADD : ADD FFmpeg, AudioConverter class, Successfully Converted Audio Blob and received Trasition Result
+
+[33mcommit 446713854b6c8a2acdaff73d1fb2b040209765e0[m
+Author: judemin <judemin2087@naver.com>
+Date:   Sun May 12 19:57:23 2024 +0900
+
+    ADD : ADD FFmpeg, AudioConverter class, Successfully Converted Audio Blob and received Trasition Result
+
+[33mcommit 9a068ea672aad299492d41128df4d933a2f7eaf5[m
+Author: judemin <judemin2087@naver.com>
+Date:   Sun May 12 19:55:05 2024 +0900
+
+    ADD : ADD FFmpeg, AudioConverter class, Successfully Converted Audio Blob and received Trasition Result
+
+[33mcommit 6cfb2b10133153f55d921d7c2709fdf2ae676ae1[m[33m ([m[1;31morigin/main[m[33m)[m
+Author: unknown <judemin2087@naver.com>
+Date:   Fri May 10 14:14:34 2024 +0900
+
+    ADD : ADD WebSocketUtil Establish WebSocket Connection to FastAPI
+
+[33mcommit 938a16b693090d11482bf01ca7c92173731fd4df[m
+Author: unknown <judemin2087@naver.com>
+Date:   Thu May 9 18:23:14 2024 +0900
+
+    TODO : Need to Connect WebSocket to FastAPI
+
+[33mcommit a5a822b78835ee2b54189a1b230a27e1194069f4[m
+Author: unknown <judemin2087@naver.com>
+Date:   Thu May 9 14:03:34 2024 +0900
+
+    UPDATE : UPDATED WebRTC Proxy, connected Vue n FastAPI
+
+[33mcommit cda1455758c82b2c27dc0748ccfb757afc29805d[m
+Author: judemin <judemin2087@naver.com>
+Date:   Wed May 8 23:34:28 2024 +0900
+
+    ADD : ADD WebRTC Proxy to ãrelay Vue to FastAPI
+
+[33mcommit 5990357f6328476e01f7a37820037d00ebda8a8e[m
+Merge: 4e9aec8 e97fd19
+Author: judemin <judemin2087@naver.com>
+Date:   Wed May 8 20:50:58 2024 +0900
+
+    FIX : FIX Collison
+
+[33mcommit 4e9aec888d2b187fb04e795554742244a590cd22[m
+Author: judemin <judemin2087@naver.com>
+Date:   Wed May 8 17:05:01 2024 +0900
+
+    FIX : FIX Collison
+
+[33mcommit e97fd191ab8106ed8859d08402624914302dc77b[m
+Author: unknown <judemin2087@naver.com>
+Date:   Fri May 3 14:16:27 2024 +0900
+
+    UPDATED : Updated DataListener Data Type from Vue.js mediaRecorder
+
+[33mcommit 84cf5780d33515d923901e43615440a446a6c168[m
+Author: judemin <judemin2087@naver.com>
+Date:   Thu May 2 22:49:44 2024 +0900
+
+    UPDATE : Updated transcribe() socketio method
+
+[33mcommit c8d5794c0bc71b3348c69e4beb14dd54a625caaa[m
+Author: judemin <judemin2087@naver.com>
+Date:   Thu May 2 21:58:09 2024 +0900
+
+    FIX : Fixed NettySocketIO CORS, Connection Problems
+
+[33mcommit c365375f511b022172ac7d735f4b78c760be48cc[m
+Merge: 1066878 07cd416
+Author: judemin <judemin2087@naver.com>
+Date:   Thu May 2 15:37:26 2024 +0900
+
+    Merge branch 'main' of https://github.com/TEAM-Hearus/HEARUS-SPRING-BACKEND
+
+[33mcommit 07cd416542a36f047fac8512f426190dc8152011[m
+Author: unknown <judemin2087@naver.com>
+Date:   Thu May 2 13:27:51 2024 +0900
+
+    UPDATE : UPDATED SocketIOConfig
+
+[33mcommit 10668789d9b36f872d88c5a991917f11a413233e[m
+Merge: 9bd049b 993d6b5
+Author: judemin <judemin2087@naver.com>
+Date:   Thu Mar 28 23:02:14 2024 +0900
+
+    Merge branch 'main' of https://github.com/TEAM-Hearus/HEARUS-SPRING-BACKEND
+
+[33mcommit 9bd049b7d76a7eecaa1cb51d3780c1ec25a166a4[m
+Author: judemin <judemin2087@naver.com>
+Date:   Thu Mar 28 23:02:08 2024 +0900
+
+    FIX : Fix git pull collison
+
+[33mcommit 993d6b5b97ee27cd071d1cbeeb032ac0ec7bf004[m
+Author: unknown <judemin2087@naver.com>
+Date:   Thu Mar 28 16:31:35 2024 +0900
+
+    ADD : add SocketIO CML Runner, SocketIO CORS
+
+[33mcommit f72116281c148c7e963708b0302bed898a3eac95[m
+Author: unknown <judemin2087@naver.com>
+Date:   Thu Mar 28 14:18:31 2024 +0900
+
+    ADD : add SocketIOConfig, NettySocketio class
+
+[33mcommit aeef68628aaf78339e5caf2c34caa78e99e0e3ca[m
+Author: unknown <judemin2087@naver.com>
+Date:   Thu Mar 28 13:30:00 2024 +0900
+
+    UPDATE : Updated dependencies
+
+[33mcommit 2afc976c2a032175fff0e9ae8c7f3f7ebcd6a40f[m
+Merge: 7530d8a f621cc8
+Author: unknown <judemin2087@naver.com>
+Date:   Mon Mar 25 13:43:17 2024 +0900
+
+    FIX : fix collison
+
+[33mcommit 7530d8af2d3048d681d6b9b4e98e0b0f4262ab9c[m
+Author: unknown <judemin2087@naver.com>
+Date:   Mon Mar 25 13:42:38 2024 +0900
+
+    FIX : FIX Collison
+
+[33mcommit f621cc864704fabea5e21fd52810eeb8324df233[m
+Author: judemin <judemin2087@naver.com>
+Date:   Sun Mar 24 23:12:51 2024 +0900
+
+    ADD : Add Login API, Fixed auth related issues
+
+[33mcommit 49d40db10bf7261a29472c0f8c75c35046f0c8ed[m
+Author: judemin <judemin2087@naver.com>
+Date:   Sun Mar 24 21:23:21 2024 +0900
+
+    ADD : add ConfigUtil, JwtTokenProvider for Login API
+
+[33mcommit 134ec6a150f36ea5d296fcaa98db4de1bfdbd875[m
+Author: unknown <judemin2087@naver.com>
+Date:   Thu Mar 21 17:25:53 2024 +0900
+
+    ADD : add UserPassword Encryption
+
+[33mcommit aa6a95463ef9ce55bf4564bc123bd63c053e9a03[m
+Author: judemin <judemin2087@naver.com>
+Date:   Fri Mar 15 23:03:50 2024 +0900
+
+    UPDATE : add UserController Signup Call, updated objects to create signup logic
+
+[33mcommit 4a57b5b7bce58854e80632b6562c669eea6d52d1[m
+Author: judemin <judemin2087@naver.com>
+Date:   Fri Mar 15 19:54:53 2024 +0900
+
+    ADD : add CommonResponse Class to pass status of DAO to Controller
+
+[33mcommit 2589eee4be8722465247e8df404822f57311e497[m
+Merge: 9c83fec a4ed213
+Author: judemin <judemin2087@naver.com>
+Date:   Fri Mar 15 19:17:37 2024 +0900
+
+    Merge branch 'main' of https://github.com/TEAM-Hearus/HEARUS-SPRING-BACKEND
+
+[33mcommit 9c83fec7f9364b5ccfce52be20dc90e8d205032e[m
+Author: judemin <judemin2087@naver.com>
+Date:   Fri Mar 15 19:17:30 2024 +0900
+
+    FIX : fix collison
+
+[33mcommit a4ed21303adaa26ade88ee621959323cc092ea19[m
+Author: unknown <judemin2087@naver.com>
+Date:   Fri Mar 15 14:34:49 2024 +0900
+
+    ADD : add UserHandler
+
+[33mcommit e3999a68f87332e9632ef6dbac185ebddff40f68[m
+Author: unknown <judemin2087@naver.com>
+Date:   Fri Mar 15 13:29:23 2024 +0900
+
+    ADD : add UserDAO Impl, UserRepository
+
+[33mcommit c635372e251aede654df527aa4055d34055fcaaa[m
+Author: unknown <judemin2087@naver.com>
+Date:   Fri Mar 15 12:49:12 2024 +0900
+
+    UPDATE : updated EnumType for UserDTO, UserEntitiy
+
+[33mcommit 5906f2769cf0bb6d00d6723c2a6ee149c32eba7d[m
+Author: judemin <judemin2087@naver.com>
+Date:   Thu Mar 14 14:37:14 2024 +0900
+
+    ADD : add UserEntitiy, UserDTO, EnumTypes / toEntitiy function needed
+
+[33mcommit 8bd38bf7c363be25782fd258495a939265dee6c0[m
+Author: judemin <judemin2087@naver.com>
+Date:   Wed Mar 13 21:24:52 2024 +0900
+
+    ADD : add MariaDB dependency with Private Properties
+
+[33mcommit 46935bcd09ff58dd8287987cfe3387e6e326c834[m
+Author: judemin <judemin2087@naver.com>
+Date:   Tue Mar 12 15:07:51 2024 +0900
+
+    INIT : Init Spring Boot Project

@@ -56,6 +56,9 @@ dependencies {
 
 	// JSON
 	implementation group: 'org.json', name: 'json', version: '20231013'
+
+	// ffmpeg
+	implementation group: 'net.bramp.ffmpeg', name: 'ffmpeg', version: '0.7.0'
 }
 
 tasks.named('test') {
