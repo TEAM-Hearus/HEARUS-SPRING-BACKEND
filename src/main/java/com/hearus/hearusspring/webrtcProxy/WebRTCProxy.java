@@ -1,6 +1,7 @@
-package com.hearus.hearusspring.common.webrtcProxy;
+package com.hearus.hearusspring.webrtcProxy;
 
 import com.corundumstudio.socketio.HandshakeData;
+import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIONamespace;
 import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.listener.ConnectListener;
@@ -25,6 +26,7 @@ public class WebRTCProxy {
     private final SocketIONamespace namespace;
     private WebSocketUtil fastAPIWebSocket;
     private final AudioConverter audioConverter;
+    private Timer timer;
 
     @Autowired
     public WebRTCProxy(SocketIOServer server, ConfigUtil configUtil) {
@@ -35,12 +37,11 @@ public class WebRTCProxy {
         this.namespace.addDisconnectListener(onDisconnected());
         this.namespace.addEventListener("transcription", String.class, audioListener());
         this.audioConverter = new AudioConverter();
-        connectFastAPI();
     }
 
     // WebSocket
-    private void connectFastAPI(){
-        new Timer().scheduleAtFixedRate(new TimerTask() {
+    private void connectFastAPI(Timer timer, SocketIOClient client){
+        timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 try {
@@ -48,14 +49,14 @@ public class WebRTCProxy {
                         fastAPIWebSocket = new WebSocketUtil(
                                 new URI(FastAPIEndpoint + "/ws"),
                                 new Draft_6455(),
-                                namespace
+                                client
                         );
                         fastAPIWebSocket.connectBlocking();
                         fastAPIWebSocket.send("Spring Server");
                     }
                 } catch (Exception e) {
                     // Handle connection exceptions
-                    e.printStackTrace();
+                    log.info("[WebRTCProxy]-[connectFastAPI] WebSocket Connection Failed");
                 }
             }
         }, 0, 60);
@@ -66,12 +67,21 @@ public class WebRTCProxy {
         return client -> {
             HandshakeData handshakeData = client.getHandshakeData();
             log.info("[WebRTCProxy]-[Socketio]-[{}] Connected to WebRTCProxy Socketio through '{}'", client.getSessionId().toString(), handshakeData.getUrl());
+            timer = new Timer();
+            connectFastAPI(timer, client);
         };
     }
 
     private DisconnectListener onDisconnected() {
         return client -> {
             log.info("[WebRTCProxy]-[Socketio]-[{}] Disconnected from WebRTCProxy Socketio Module.", client.getSessionId().toString());
+            if(timer != null) {
+                timer.cancel();
+                timer.purge();
+            }
+
+            if(fastAPIWebSocket != null)
+                fastAPIWebSocket.close();
         };
     }
 
@@ -92,7 +102,7 @@ public class WebRTCProxy {
                     // Wrap converted bytes in ByteBuffer
                     ByteBuffer byteBuffer = ByteBuffer.wrap(convertedBytes);
 
-                    log.info("[WebRTCProxy]-[Socketio] Forwarding audio data to FastAPI server [{}]", convertedBytes.length);
+                    //log.info("[WebRTCProxy]-[Socketio] Forwarding audio data to FastAPI server [{}]", convertedBytes.length);
 
                     // Send binary data using fastAPISession
                     fastAPIWebSocket.send(byteBuffer);

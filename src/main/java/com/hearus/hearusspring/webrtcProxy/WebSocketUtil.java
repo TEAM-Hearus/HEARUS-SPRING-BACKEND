@@ -1,5 +1,6 @@
-package com.hearus.hearusspring.common.webrtcProxy;
+package com.hearus.hearusspring.webrtcProxy;
 
+import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIONamespace;
 import lombok.extern.slf4j.Slf4j;
 import org.java_websocket.client.WebSocketClient;
@@ -10,15 +11,16 @@ import java.net.URI;
 
 @Slf4j
 public class WebSocketUtil extends WebSocketClient {
-    private final SocketIONamespace namespace;
-    public WebSocketUtil(URI serverUri, Draft protocolDraft, SocketIONamespace namespace) {
+    private final SocketIOClient socketIOClient;
+    public WebSocketUtil(URI serverUri, Draft protocolDraft, SocketIOClient socketIOClient) {
         super(serverUri, protocolDraft);
-        this.namespace = namespace;
+        this.socketIOClient = socketIOClient;
     }
 
     @Override
     public void onMessage(String message) {
         log.info("[WebSocketUtil] Received Messegae {}", message);
+        socketIOClient.sendEvent("transitionResult", message);
     }
 
     @Override

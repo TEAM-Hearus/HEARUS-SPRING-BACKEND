@@ -44,6 +44,7 @@ public class AudioConverter {
                 .setAudioChannels(1)
                 .setAudioSampleRate(16000)
                 .setFormat("s16le")
+                .addExtraArgs("-loglevel", "quiet")
                 .done();
 
         // Execute the FFmpeg command

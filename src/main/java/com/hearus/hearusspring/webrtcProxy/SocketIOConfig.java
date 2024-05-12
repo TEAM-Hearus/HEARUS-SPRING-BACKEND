@@ -1,4 +1,4 @@
-package com.hearus.hearusspring.common.webrtcProxy;
+package com.hearus.hearusspring.webrtcProxy;
 
 import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.Transport;
