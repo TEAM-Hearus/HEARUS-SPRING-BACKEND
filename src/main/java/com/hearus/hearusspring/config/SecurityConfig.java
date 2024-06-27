@@ -1,28 +1,38 @@
 package com.hearus.hearusspring.config;
 
 import com.hearus.hearusspring.common.enumType.RoleType;
+import com.hearus.hearusspring.config.securityfilter.JwtFilter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.web.cors.CorsUtils;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class SecurityConfig {
+public class SecurityConfig{
 
-    // TODO : Spring Security 설정, CSRF 등
+    @Autowired
+    private CorsConfig corsConfig;
+
+    @Autowired
+    private JwtFilter jwtFilter;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                // TODO : main API 구현시 Spring Security 설정
+                .addFilter(corsConfig.corsFilter())
+                .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .securityMatcher("/api/v1/main")
+                .securityMatcher("/api/v1/schedule")
                 .authorizeHttpRequests(authorize -> authorize
-                        .anyRequest().hasRole(RoleType.USER_FREE.getKey())
+                        .requestMatchers("/api/v1/main", "/api/v1/schedule").hasRole(RoleType.USER.getKey())
+                        .anyRequest().permitAll()
                 )
                 .httpBasic(Customizer.withDefaults());
         return http.build();

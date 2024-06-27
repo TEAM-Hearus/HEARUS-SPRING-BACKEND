@@ -33,7 +33,7 @@ public class UserDTO {
     @NotNull
     String userPassword;
 
-    String userRole = RoleType.USER_FREE.getKey();
+    String userRole = RoleType.USER.getKey();
 
     boolean userIsOAuth;
     String userOAuthType;
