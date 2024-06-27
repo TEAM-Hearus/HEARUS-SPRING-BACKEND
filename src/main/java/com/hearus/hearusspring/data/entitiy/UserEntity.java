@@ -59,6 +59,13 @@ public class UserEntity extends BaseEntitiy{
                     .map(String::trim)
                     .collect(Collectors.toCollection(ArrayList::new));
 
+        ArrayList<String> savedScheduleList = new ArrayList<>();
+        if(schedule != null)
+            savedScheduleList = Arrays.stream(
+                            schedule.split(","))
+                    .map(String::trim)
+                    .collect(Collectors.toCollection(ArrayList::new));
+
         return UserDTO.builder()
                 .userId(id)
                 .userName(name)
@@ -71,7 +78,7 @@ public class UserEntity extends BaseEntitiy{
                 .userMajor(major)
                 .userGrade(grade)
                 .userSavedLectures(savedLecturesList)
-                .userSchedule(schedule)
+                .userSchedule(savedScheduleList)
                 .userUsePurpose(usePurpose)
                 .build();
     }

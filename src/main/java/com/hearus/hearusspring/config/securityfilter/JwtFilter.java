@@ -9,9 +9,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.Collections;
 
 @Slf4j
 @Component
@@ -33,11 +36,16 @@ public class JwtFilter implements Filter {
         }
 
         // 인증이 필요한 Route의 경우 필터 로직 수행
-        // Bearer xxx 형태로 Token이 들어온 경우만을 가정하고 Authorization Header를 Split
+        // Bearer Token이 들어온 경우만을 가정하고 Authorization Header를 Split
         String token = httpRequest.getHeader("Authorization");
         if (token != null && token.startsWith("Bearer ")) {
             token = token.split(" ")[1];
             if (jwtTokenProvider.validateAccessToken(token)) {
+                // 인증 정보를 SecurityContext에 저장
+                UsernamePasswordAuthenticationToken authentication =
+                        new UsernamePasswordAuthenticationToken(jwtTokenProvider.getTokenInfo(token), null, Collections.emptyList());
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+
                 chain.doFilter(request, response);
                 return;
             }
