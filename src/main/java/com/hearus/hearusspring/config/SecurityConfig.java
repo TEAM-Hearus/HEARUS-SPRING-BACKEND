@@ -31,8 +31,8 @@ public class SecurityConfig{
                 .securityMatcher("/api/v1/main")
                 .securityMatcher("/api/v1/schedule")
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/v1/main", "/api/v1/schedule").hasRole(RoleType.USER.getKey())
-                        .anyRequest().permitAll()
+                        .requestMatchers("/api/v1/auth/**").permitAll()
+                        .anyRequest().hasRole(RoleType.USER.getKey())
                 )
                 .httpBasic(Customizer.withDefaults());
         return http.build();
