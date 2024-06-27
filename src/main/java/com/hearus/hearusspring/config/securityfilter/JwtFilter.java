@@ -45,7 +45,6 @@ public class JwtFilter implements Filter {
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(jwtTokenProvider.getTokenInfo(token), null, Collections.emptyList());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-
                 chain.doFilter(request, response);
                 return;
             }

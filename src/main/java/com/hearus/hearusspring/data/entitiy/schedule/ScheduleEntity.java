@@ -25,7 +25,7 @@ public class ScheduleEntity extends BaseEntitiy {
     private Long id;
 
     @OneToMany(mappedBy = "schedule", cascade = CascadeType.ALL, orphanRemoval = true)
-    private ArrayList<ScheduleElementEntity> scheduleElements = new ArrayList<>();
+    private List<ScheduleElementEntity> scheduleElements = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -44,7 +44,7 @@ public class ScheduleEntity extends BaseEntitiy {
     }
 
     public ScheduleDTO toDTO() {
-        ArrayList<ScheduleElementDTO> scheduleElementDTO = new ArrayList<>();
+        List<ScheduleElementDTO> scheduleElementDTO = new ArrayList<>();
         if(scheduleElements != null) {
             for (ScheduleElementEntity scheduleElement : scheduleElements) {
                 scheduleElementDTO.add(scheduleElement.toDTO());

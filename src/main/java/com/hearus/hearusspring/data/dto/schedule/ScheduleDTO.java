@@ -16,12 +16,12 @@ import java.util.stream.Collectors;
 @Builder
 public class ScheduleDTO {
     private Long id;
-    private ArrayList<ScheduleElementDTO> scheduleElements;
+    private List<ScheduleElementDTO> scheduleElements;
     private String name;
     private String userId;
 
     public ScheduleEntity toEntity(UserEntity user) {
-        ArrayList<ScheduleElementEntity> scheduleElementEntities = new ArrayList<>();
+        List<ScheduleElementEntity> scheduleElementEntities = new ArrayList<>();
         if(scheduleElements != null) {
             for (ScheduleElementDTO scheduleElementDTO : scheduleElements) {
                 scheduleElementEntities.add(scheduleElementDTO.toEntity());

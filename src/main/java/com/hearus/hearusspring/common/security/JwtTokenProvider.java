@@ -48,7 +48,9 @@ public class JwtTokenProvider {
         // Access Token 생성
         // subject는 User의 ID
         // Access Token의 유효기간은 1시간
-        Date accessTokenExpiresIn = new Date(now + 3600000);
+//        Date accessTokenExpiresIn = new Date(now + 3600000);
+        // TODO : 임의로 테스트를 위해 Access Token의 exp를 1일로 설정 (추후 실 사용시 1시간으로 변경)
+        Date accessTokenExpiresIn = new Date(now + 864000000);
         String accessToken = Jwts.builder()
                 .setSubject(userDTO.getUserId())
                 .claim("role", userDTO.getUserRole())
