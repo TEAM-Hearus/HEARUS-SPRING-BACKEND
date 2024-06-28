@@ -32,7 +32,7 @@ public class ScheduleController {
         log.info("[ScheduleController]-[addSchedule] API Call");
 
         if(scheduleDTO.getName() == null || scheduleDTO.getName().isEmpty()){
-            log.info("[ScheduleController]-[addSchedule] Failed : Empty Name");
+            log.warn("[ScheduleController]-[addSchedule] Failed : Empty Name");
             response = new CommonResponse(false, HttpStatus.BAD_REQUEST,"Empty Name");
             return ResponseEntity.status(response.getStatus()).body(response);
         }
@@ -51,7 +51,7 @@ public class ScheduleController {
         log.info("[ScheduleController]-[deleteSchedule] API Call");
 
         if(scheduleDTO.getName() == null || scheduleDTO.getName().isEmpty()){
-            log.info("[ScheduleController]-[deleteSchedule] Failed : Empty Name");
+            log.warn("[ScheduleController]-[deleteSchedule] Failed : Empty Name");
             response = new CommonResponse(false, HttpStatus.BAD_REQUEST,"Empty Name");
             return ResponseEntity.status(response.getStatus()).body(response);
         }
@@ -74,7 +74,7 @@ public class ScheduleController {
         log.info("[ScheduleController]-[addElement] API Call");
 
         if(scheduleDTO.getName() == null || scheduleDTO.getName().isEmpty()){
-            log.info("[ScheduleController]-[addElement] Failed : Empty Schedule Name");
+            log.warn("[ScheduleController]-[addElement] Failed : Empty Schedule Name");
             response = new CommonResponse(false, HttpStatus.BAD_REQUEST,"Empty Schedule Name");
             return ResponseEntity.status(response.getStatus()).body(response);
         }
@@ -96,7 +96,7 @@ public class ScheduleController {
         log.info("[ScheduleController]-[deleteElement] API Call");
 
         if(scheduleDTO.getName() == null || scheduleDTO.getName().isEmpty()){
-            log.info("[ScheduleController]-[deleteElement] Failed : Empty Schedule Name");
+            log.warn("[ScheduleController]-[deleteElement] Failed : Empty Schedule Name");
             response = new CommonResponse(false, HttpStatus.BAD_REQUEST,"Empty Schedule Name");
             return ResponseEntity.status(response.getStatus()).body(response);
         }
@@ -106,6 +106,35 @@ public class ScheduleController {
 
         response = scheduleService.deleteElement(scheduleDTO, scheduleElementDTO);
         return ResponseEntity.status(response.getStatus()).body(response);
+    }
+
+    @GetMapping("/getSchedule")
+    public ResponseEntity<CommonResponse> getSchedule(@RequestParam("name") String name) {
+        log.info("[ScheduleController]-[getSchedule] API Call");
+
+        if (name == null || name.trim().isEmpty()) {
+            log.warn("[ScheduleController]-[getSchedule] Schedule name is null or empty");
+            return ResponseEntity.badRequest().body(new CommonResponse(false, HttpStatus.BAD_REQUEST, "Schedule name is required"));
+        }
+
+        try {
+            ScheduleDTO scheduleDTO = new ScheduleDTO();
+            String userId = getUserIdFromContext();
+            scheduleDTO.setName(name);
+            scheduleDTO.setUserId(userId);
+
+            ScheduleDTO resultScheduleDTO = scheduleService.getSchedule(scheduleDTO);
+
+            if (resultScheduleDTO == null) {
+                log.info("[ScheduleController]-[getSchedule] Schedule not found with name: {}", name);
+                return ResponseEntity.notFound().build();
+            }
+
+            return ResponseEntity.ok(new CommonResponse(true, HttpStatus.OK, "Schedule retrieved successfully", resultScheduleDTO));
+        } catch (Exception e) {
+            log.error("[ScheduleController]-[getSchedule] An error occurred while retrieving schedule", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new CommonResponse(false, HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred while retrieving schedule"));
+        }
     }
 
     private String getUserIdFromContext(){

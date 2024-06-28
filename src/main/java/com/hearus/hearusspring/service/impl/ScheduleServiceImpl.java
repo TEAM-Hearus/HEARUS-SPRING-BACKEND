@@ -50,4 +50,11 @@ public class ScheduleServiceImpl implements ScheduleService {
 
         return scheduleDAO.deleteElement(scheduleDTO.toEntity(user), scheduleElementDTO.toEntity());
     }
+
+    @Override
+    public ScheduleDTO getSchedule(ScheduleDTO scheduleDTO) {
+        UserEntity user = userRepository.findFirstById(scheduleDTO.getUserId());
+
+        return scheduleDAO.getSchedule(scheduleDTO.toEntity(user)).toDTO();
+    }
 }

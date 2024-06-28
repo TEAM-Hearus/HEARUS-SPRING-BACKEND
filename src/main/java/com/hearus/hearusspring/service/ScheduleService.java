@@ -9,4 +9,5 @@ public interface ScheduleService {
     CommonResponse deleteSchedule(ScheduleDTO scheduleDTO);
     CommonResponse addElement(ScheduleDTO scheduleDTO, ScheduleElementDTO scheduleElementDTO);
     CommonResponse deleteElement(ScheduleDTO scheduleDTO, ScheduleElementDTO scheduleElementDTO);
+    ScheduleDTO getSchedule(ScheduleDTO scheduleDTO);
 }

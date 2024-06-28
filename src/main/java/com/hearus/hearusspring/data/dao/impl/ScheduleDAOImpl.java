@@ -164,4 +164,11 @@ public class ScheduleDAOImpl implements ScheduleDAO {
         scheduleRepository.save(scheduleEntity);
         return new CommonResponse(true, HttpStatus.OK,"ScheduleElement Deleted");
     }
+
+    @Override
+    public ScheduleEntity getSchedule(ScheduleEntity scheduleEntity) {
+        userId = scheduleEntity.getUser().getId();
+        scheduleName = scheduleEntity.getName();
+        return scheduleRepository.findByUserIdAndName(userId, scheduleName);
+    }
 }

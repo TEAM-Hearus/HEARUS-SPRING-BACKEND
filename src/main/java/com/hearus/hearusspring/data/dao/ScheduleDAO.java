@@ -10,4 +10,5 @@ public interface ScheduleDAO {
     CommonResponse deleteSchedule(ScheduleEntity scheduleEntity);
     CommonResponse addElement(ScheduleEntity scheduleEntity, ScheduleElementEntity scheduleElementEntity);
     CommonResponse deleteElement(ScheduleEntity scheduleEntity, ScheduleElementEntity scheduleElementEntity);
+    ScheduleEntity getSchedule(ScheduleEntity scheduleEntity);
 }

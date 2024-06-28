@@ -53,6 +53,7 @@ public class ScheduleEntity extends BaseEntitiy {
 
         return ScheduleDTO.builder()
                 .id(id)
+                .name(name)
                 .scheduleElements(scheduleElementDTO)
                 .userId(user.getId())
                 .build();
