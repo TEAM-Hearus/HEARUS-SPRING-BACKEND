@@ -125,6 +125,9 @@ public class ScheduleController {
 
             ScheduleDTO resultScheduleDTO = scheduleService.getSchedule(scheduleDTO);
 
+            // UserID를 노출시키지 않아 보안 강화
+            resultScheduleDTO.setUserId(null);
+
             if (resultScheduleDTO == null) {
                 log.info("[ScheduleController]-[getSchedule] Schedule not found with name: {}", name);
                 return ResponseEntity.notFound().build();
