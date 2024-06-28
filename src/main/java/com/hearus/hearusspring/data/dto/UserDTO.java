@@ -43,14 +43,18 @@ public class UserDTO {
     String userGrade;
 
     ArrayList<String> userSavedLectures = new ArrayList<String>();
+    ArrayList<String> userSchedule = new ArrayList<String>();
 
-    String userSchedule;
     String userUsePurpose;
 
     public UserEntity toEntitiy(PasswordEncoder passwordEncoder){
         String stringLecture = null;
         if(!userSavedLectures.isEmpty())
             stringLecture = String.join(",", userSavedLectures);
+
+        String stringSchedule = null;
+        if(!userSchedule.isEmpty())
+            stringSchedule = String.join(",", userSchedule);
 
         return UserEntity.builder()
                 .id(userId)
@@ -64,7 +68,7 @@ public class UserDTO {
                 .major(userMajor)
                 .grade(userGrade)
                 .savedLectures(stringLecture)
-                .schedule(userSchedule)
+                .schedule(stringSchedule)
                 .usePurpose(userUsePurpose)
                 .build();
     }
