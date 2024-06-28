@@ -3,6 +3,7 @@ package com.hearus.hearusspring.data.dao.impl;
 import com.hearus.hearusspring.common.CommonResponse;
 import com.hearus.hearusspring.data.dao.ScheduleDAO;
 import com.hearus.hearusspring.data.entitiy.UserEntity;
+import com.hearus.hearusspring.data.entitiy.schedule.ScheduleElementEntity;
 import com.hearus.hearusspring.data.entitiy.schedule.ScheduleEntity;
 import com.hearus.hearusspring.data.repository.UserRepository;
 import com.hearus.hearusspring.data.repository.schedule.ScheduleElementRepository;
@@ -110,5 +111,57 @@ public class ScheduleDAOImpl implements ScheduleDAO {
         }
 
         return new CommonResponse(true, HttpStatus.OK,"Schedule Deleted");
+    }
+
+    @Override
+    @Transactional
+    public CommonResponse addElement(ScheduleEntity scheduleEntity, ScheduleElementEntity scheduleElementEntity) {
+        userId = scheduleEntity.getUser().getId();
+        scheduleName = scheduleEntity.getName();
+
+        // ScheduleEntity가 존재하지 않을 경우
+        if(!scheduleRepository.existsByUserIdAndName(userId, scheduleName)){
+            log.info("[ScheduleDAO]-[addSchedule] ({}) User's ScheduleEntity ({}) doesnt exists", userId, scheduleName);
+            return new CommonResponse(false, HttpStatus.INTERNAL_SERVER_ERROR,"ScheduleName Doesn't Exists");
+        }
+
+        log.info("[ScheduleDAO]-[addElement] Save ElementEntity ({})-({})", userId, scheduleElementEntity.getName());
+
+        scheduleEntity = scheduleRepository.findByUserIdAndName(userId, scheduleName);
+
+        scheduleElementEntity.setSchedule(scheduleEntity);
+        ScheduleElementEntity savedElement = scheduleElementRepository.save(scheduleElementEntity);
+
+        scheduleEntity.addScheduleElement(savedElement);
+        scheduleRepository.save(scheduleEntity);
+
+        System.out.println(scheduleEntity.getScheduleElements().size());
+
+        return new CommonResponse(true, HttpStatus.OK,"ScheduleElement Added", savedElement.toDTO());
+    }
+
+    @Override
+    @Transactional
+    public CommonResponse deleteElement(ScheduleEntity scheduleEntity, ScheduleElementEntity scheduleElementEntity) {
+        userId = scheduleEntity.getUser().getId();
+        scheduleName = scheduleEntity.getName();
+
+        // ScheduleEntity가 존재하지 않을 경우
+        if(!scheduleRepository.existsByUserIdAndName(userId, scheduleName)){
+            log.info("[ScheduleDAO]-[addSchedule] ({}) User's ScheduleEntity ({}) doesnt exists", userId, scheduleName);
+            return new CommonResponse(false, HttpStatus.INTERNAL_SERVER_ERROR,"ScheduleName Doesn't Exists");
+        }
+
+        log.info("[ScheduleDAO]-[deleteElement] Delete ElementEntity ({})-({})", userId, scheduleElementEntity.getName());
+
+        scheduleEntity = scheduleRepository.findByUserIdAndName(userId, scheduleName);
+
+        // Entitiy는 동일 사용자 내 동일 스케줄에서도 이름 등이 중복 가능
+        ScheduleElementEntity deleteEntity = scheduleElementRepository.findFirstById(scheduleElementEntity.getId());
+        scheduleElementRepository.delete(deleteEntity);
+
+        scheduleEntity.removeScheduleElement(deleteEntity);
+        scheduleRepository.save(scheduleEntity);
+        return new CommonResponse(true, HttpStatus.OK,"ScheduleElement Deleted");
     }
 }

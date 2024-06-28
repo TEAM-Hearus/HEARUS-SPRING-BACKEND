@@ -4,6 +4,7 @@ import com.hearus.hearusspring.common.CommonResponse;
 import com.hearus.hearusspring.data.dao.ScheduleDAO;
 import com.hearus.hearusspring.data.dao.UserDAO;
 import com.hearus.hearusspring.data.dto.schedule.ScheduleDTO;
+import com.hearus.hearusspring.data.dto.schedule.ScheduleElementDTO;
 import com.hearus.hearusspring.data.entitiy.UserEntity;
 import com.hearus.hearusspring.data.repository.UserRepository;
 import com.hearus.hearusspring.data.repository.schedule.ScheduleRepository;
@@ -34,5 +35,19 @@ public class ScheduleServiceImpl implements ScheduleService {
         UserEntity user = userRepository.findFirstById(scheduleDTO.getUserId());
 
         return scheduleDAO.deleteSchedule(scheduleDTO.toEntity(user));
+    }
+
+    @Override
+    public CommonResponse addElement(ScheduleDTO scheduleDTO, ScheduleElementDTO scheduleElementDTO) {
+        UserEntity user = userRepository.findFirstById(scheduleDTO.getUserId());
+
+        return scheduleDAO.addElement(scheduleDTO.toEntity(user), scheduleElementDTO.toEntity());
+    }
+
+    @Override
+    public CommonResponse deleteElement(ScheduleDTO scheduleDTO, ScheduleElementDTO scheduleElementDTO) {
+        UserEntity user = userRepository.findFirstById(scheduleDTO.getUserId());
+
+        return scheduleDAO.deleteElement(scheduleDTO.toEntity(user), scheduleElementDTO.toEntity());
     }
 }
