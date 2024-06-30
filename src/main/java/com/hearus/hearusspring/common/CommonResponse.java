@@ -1,11 +1,13 @@
 package com.hearus.hearusspring.common;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.http.HttpStatus;
 
 @Getter
 @Setter
+@Builder
 public class CommonResponse {
     private boolean isSuccess;
     HttpStatus status;
