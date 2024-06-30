@@ -59,6 +59,9 @@ dependencies {
 
 	// ffmpeg
 	implementation group: 'net.bramp.ffmpeg', name: 'ffmpeg', version: '0.7.0'
+
+	// mongodb
+	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 }
 
 tasks.named('test') {
