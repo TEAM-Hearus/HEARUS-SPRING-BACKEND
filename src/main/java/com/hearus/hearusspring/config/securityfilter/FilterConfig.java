@@ -13,6 +13,7 @@ public class FilterConfig {
         // Filter를 적용할 Route 설정
         bean.addUrlPatterns("/api/v1/main");
         bean.addUrlPatterns("/api/v1/schedule");
+        bean.addUrlPatterns("/api/v1/lecture");
         bean.setOrder(0);
         return bean;
     }

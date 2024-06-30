@@ -1,11 +1,14 @@
 package com.hearus.hearusspring.data.model;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.PrePersist;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -22,13 +25,13 @@ public class LectureModel {
     @Column(unique = true)
     private String name;
 
-    private String processedScript;
+    private List<String> processedScript;
 
     private String scheduleElementId;
 
-    private LocalDateTime lectureDate;
+    private Date lectureDate;
 
-    private LocalDateTime createdAt;
+    private Date createdAt;
 
     // problems 필드는 ProblemClass 리스트로 설정되어 있음
     private List<Problem> problems;

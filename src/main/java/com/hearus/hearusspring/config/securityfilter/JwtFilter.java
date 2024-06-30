@@ -30,7 +30,7 @@ public class JwtFilter implements Filter {
         String requestURI = httpRequest.getRequestURI();
 
         // 필터 로직을 수행하지 않고 다음 필터로 이동
-        if (!requestURI.startsWith("/api/v1/main") && !requestURI.startsWith("/api/v1/schedule")) {
+        if (!requestURI.startsWith("/api/v1/main") && !requestURI.startsWith("/api/v1/schedule") && !requestURI.startsWith("/api/v1/lecture")) {
             chain.doFilter(request, response);
             return;
         }

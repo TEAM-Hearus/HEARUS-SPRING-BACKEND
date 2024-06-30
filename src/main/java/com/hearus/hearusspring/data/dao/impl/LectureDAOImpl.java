@@ -10,13 +10,16 @@ import com.hearus.hearusspring.data.repository.LectureRepository;
 import com.hearus.hearusspring.data.repository.UserRepository;
 import com.hearus.hearusspring.data.repository.schedule.ScheduleElementRepository;
 import com.hearus.hearusspring.data.repository.schedule.ScheduleRepository;
+import com.mongodb.DuplicateKeyException;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -36,10 +39,12 @@ public class LectureDAOImpl implements LectureDAO {
 
     @Override
     @Transactional
-    public CommonResponse addLecture(String userId, ScheduleElementEntity scheduleElementEntity, LectureModel lecture) {
+    public CommonResponse addLecture(String userId, LectureModel lecture) {
         try {
-            // Lecture 저장
-            lecture.setScheduleElementId(String.valueOf(scheduleElementEntity.getId()));
+            if(lectureRepository.existsByName(lecture.getName()))
+                return new CommonResponse(false, HttpStatus.INTERNAL_SERVER_ERROR, "Lecture name already exists");
+
+            lecture.setCreatedAt(new Date());
             LectureModel savedLecture = lectureRepository.save(lecture);
 
             // User의 savedLectures에 저장된 강의 ID 추가

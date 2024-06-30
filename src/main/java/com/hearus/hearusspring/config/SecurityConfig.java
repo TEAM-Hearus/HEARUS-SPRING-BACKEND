@@ -30,6 +30,7 @@ public class SecurityConfig{
                 .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .securityMatcher("/api/v1/main")
                 .securityMatcher("/api/v1/schedule")
+                .securityMatcher("/api/v1/lecture")
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/v1/auth/**").permitAll()
                         .anyRequest().hasRole(RoleType.USER.getKey())
