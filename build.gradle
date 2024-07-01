@@ -65,6 +65,9 @@ dependencies {
 
 	//H2 DataBase (Test only)
 	implementation 'com.h2database:h2' // h2 : implementation
+
+	//template engine
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 }
 
 tasks.named('test') {

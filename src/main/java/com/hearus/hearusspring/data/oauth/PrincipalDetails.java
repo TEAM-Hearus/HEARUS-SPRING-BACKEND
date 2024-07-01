@@ -2,10 +2,12 @@ package com.hearus.hearusspring.data.oauth;
 
 import com.hearus.hearusspring.data.dto.UserDTO;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -13,18 +15,17 @@ public class PrincipalDetails implements OAuth2User, UserDetails {
 
     private UserDTO userDTO;
     private Map<String, Object> attributes;
-    private String attributeKey;
 
-    public PrincipalDetails(UserDTO userDTO, Map<String, Object> attributes, String attributeKey) {
+    public PrincipalDetails(UserDTO userDTO, Map<String, Object> attributes) {
         this.userDTO = userDTO;
         this.attributes = attributes;
-        this.attributeKey = attributeKey;
+
     }
 
     //user 이름 가져오기
     @Override
     public String getName() {
-        return attributes.get(attributeKey).toString();
+        return userDTO.getUserName();
     }
 
     //third-party 에서 가져온 유저 정보 Map 가져오기
@@ -35,21 +36,25 @@ public class PrincipalDetails implements OAuth2User, UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return Collections.singletonList(
+                new SimpleGrantedAuthority(userDTO.getUserRole()));
     }
 
     @Override
     public String getPassword() {
-        return "";
+        return userDTO.getUserPassword();
     }
 
     @Override
     public String getUsername() {
 
-        return attributes.get(attributeKey).toString();
+        return userDTO.getUserName();
 
     }
 
+    public UserDTO getUserDTO() {
+        return userDTO;
+    }
 
     @Override
     public boolean isAccountNonExpired() {
