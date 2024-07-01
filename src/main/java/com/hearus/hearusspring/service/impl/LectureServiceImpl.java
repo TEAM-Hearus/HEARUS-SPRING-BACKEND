@@ -23,6 +23,16 @@ public class LectureServiceImpl implements LectureService {
     }
 
     @Override
+    public CommonResponse updateLecture(LectureModel lecture) {
+        return lectureDAO.updateLecture(lecture);
+    }
+
+    @Override
+    public CommonResponse deleteLecture(String userId, String lectureId) {
+        return lectureDAO.deleteLecture(userId, lectureId);
+    }
+
+    @Override
     public CommonResponse getLecture(String lectureId) {
         return lectureDAO.getLecture(lectureId);
     }

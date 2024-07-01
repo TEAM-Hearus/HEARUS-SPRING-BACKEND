@@ -58,7 +58,9 @@ public class LectureDAOImpl implements LectureDAO {
             }
             newSavedLectures.add(savedLecture.getId());
             user.setSavedLectures(newSavedLectures);
-            userRepository.save(user);
+            UserEntity updatedUser = userRepository.save(user);
+
+            log.info("[LectureDAOImpl]-[addLecture] User {} SavedLecturesSize {}", userId, updatedUser.getSavedLectures().size());
 
             return CommonResponse.builder()
                     .status(HttpStatus.OK)
@@ -85,9 +87,44 @@ public class LectureDAOImpl implements LectureDAO {
             lecture.getProcessedScript().add(script);
             LectureModel savedLecture = lectureRepository.save(lecture);
 
-            return new CommonResponse(true, HttpStatus.OK, "LectureModel", savedLecture);
+            return new CommonResponse(true, HttpStatus.OK, "Lecture ProcessedScript Added", savedLecture);
         }catch (Exception e){
             return new CommonResponse(false, HttpStatus.INTERNAL_SERVER_ERROR, "Failed to put Script");
+        }
+    }
+
+    @Override
+    public CommonResponse updateLecture(LectureModel lecture) {
+        try{
+            if(lecture == null)
+                return new CommonResponse(false, HttpStatus.NOT_FOUND, "Lecture doesn't exists");
+            LectureModel updatedLecture = lectureRepository.save(lecture);
+
+            return new CommonResponse(true, HttpStatus.OK, "Lecture Updated", updatedLecture);
+        }catch (Exception e){
+            return new CommonResponse(false, HttpStatus.INTERNAL_SERVER_ERROR, "Failed to put Script");
+        }
+    }
+
+    @Transactional
+    @Override
+    public CommonResponse deleteLecture(String userId, String lectureId) {
+        try {
+            lectureRepository.deleteById(lectureId);
+
+            UserEntity user = userRepository.findById(userId)
+                    .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
+
+            List<String> newSavedLectures = user.getSavedLectures();
+            newSavedLectures.remove(lectureId);
+            user.setSavedLectures(newSavedLectures);
+            UserEntity updatedUser = userRepository.save(user);
+
+            log.info("[LectureDAOImpl]-[deleteLecture] User {} SavedLecturesSize {}", userId, updatedUser.getSavedLectures().size());
+            return new CommonResponse(true, HttpStatus.OK, "Lecture Deleted successfully");
+        } catch (Exception e) {
+            log.error("Failed to delete lecture", e);
+            return new CommonResponse(false, HttpStatus.INTERNAL_SERVER_ERROR, "Failed to delete lecture");
         }
     }
 

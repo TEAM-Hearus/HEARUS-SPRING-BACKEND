@@ -44,13 +44,13 @@ public class LectureController {
     }
 
     @PutMapping(value="/putScript")
-    public ResponseEntity<CommonResponse> addSchedule(@Valid @RequestBody Map<String, Object> requestBody){
+    public ResponseEntity<CommonResponse> putScript(@Valid @RequestBody Map<String, Object> requestBody){
         ObjectMapper objectMapper = new ObjectMapper();
 
         String lectureId = objectMapper.convertValue(requestBody.get("lectureId"), String.class);
         String script = objectMapper.convertValue(requestBody.get("script"), String.class);
 
-        log.info("[LectureController]-[addLecture] API Call - LectureId : {}", lectureId);
+        log.info("[LectureController]-[putScript] API Call - LectureId : {}", lectureId);
 
         if(lectureId.isEmpty() || script.isEmpty()){
             response = new CommonResponse(false, HttpStatus.BAD_REQUEST,"Empty Variables");
@@ -61,8 +61,37 @@ public class LectureController {
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 
+    @PutMapping(value="/updateLecture")
+    public ResponseEntity<CommonResponse> updateLecture(@Valid @RequestBody LectureModel lectureModel){
+        log.info("[LectureController]-[updateLecture] API Call");
+
+        if(lectureModel.getId().isEmpty()){
+            log.warn("[LectureController]-[updateLecture] Failed : Empty Variables");
+            response = new CommonResponse(false, HttpStatus.BAD_REQUEST,"Empty Id");
+            return ResponseEntity.status(response.getStatus()).body(response);
+        }
+        response = lectureService.updateLecture(lectureModel);
+        return ResponseEntity.status(response.getStatus()).body(response);
+    }
+
+    @DeleteMapping(value="/deleteLecture")
+    public ResponseEntity<CommonResponse> deleteLecture(@Valid @RequestBody Map<String, String> requestBody){
+        log.info("[LectureController]-[deleteLecture] API Call");
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String lectureId = objectMapper.convertValue(requestBody.get("lectureId"), String.class);
+
+        if(lectureId.isEmpty()){
+            log.warn("[LectureController]-[deleteLecture] Failed : Empty LectureId");
+            response = new CommonResponse(false, HttpStatus.BAD_REQUEST,"Empty LectureId");
+            return ResponseEntity.status(response.getStatus()).body(response);
+        }
+        response = lectureService.deleteLecture(getUserIdFromContext(), lectureId);
+        return ResponseEntity.status(response.getStatus()).body(response);
+    }
+
     @GetMapping("/getLecture")
-    public ResponseEntity<CommonResponse> getSchedule(@RequestParam("lectureId") String lectureId) {
+    public ResponseEntity<CommonResponse> getLecture(@RequestParam("lectureId") String lectureId) {
         log.info("[LectureController]-[getLecture] API Call");
         if(lectureId.isEmpty()){
             response = new CommonResponse(false, HttpStatus.BAD_REQUEST,"Empty LectureId");
