@@ -7,4 +7,6 @@ import com.hearus.hearusspring.data.model.LectureModel;
 
 public interface LectureDAO {
     CommonResponse addLecture(String userId, LectureModel lecture);
+    CommonResponse putScript(String lectureId, String script);
+    CommonResponse getLecture(String lectureId);
 }

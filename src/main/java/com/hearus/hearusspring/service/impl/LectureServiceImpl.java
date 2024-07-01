@@ -16,4 +16,14 @@ public class LectureServiceImpl implements LectureService {
     public CommonResponse addLecture(String userId, LectureModel lecture) {
         return lectureDAO.addLecture(userId, lecture);
     }
+
+    @Override
+    public CommonResponse putScript(String lectureId, String script) {
+        return lectureDAO.putScript(lectureId, script);
+    }
+
+    @Override
+    public CommonResponse getLecture(String lectureId) {
+        return lectureDAO.getLecture(lectureId);
+    }
 }

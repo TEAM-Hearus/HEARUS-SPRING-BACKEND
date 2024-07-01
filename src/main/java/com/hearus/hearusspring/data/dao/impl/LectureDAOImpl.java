@@ -75,4 +75,31 @@ public class LectureDAOImpl implements LectureDAO {
                     .build();
         }
     }
+
+    @Override
+    public CommonResponse putScript(String lectureId, String script) {
+        try{
+            LectureModel lecture = lectureRepository.findFirstById(lectureId);
+            if(lecture == null)
+                return new CommonResponse(false, HttpStatus.NOT_FOUND, "Lecture doesn't exists");
+            lecture.getProcessedScript().add(script);
+            LectureModel savedLecture = lectureRepository.save(lecture);
+
+            return new CommonResponse(true, HttpStatus.OK, "LectureModel", savedLecture);
+        }catch (Exception e){
+            return new CommonResponse(false, HttpStatus.INTERNAL_SERVER_ERROR, "Failed to put Script");
+        }
+    }
+
+    @Override
+    public CommonResponse getLecture(String lectureId) {
+        try{
+            LectureModel lecture = lectureRepository.findFirstById(lectureId);
+            if(lecture == null)
+                return new CommonResponse(false, HttpStatus.NOT_FOUND, "Lecture doesn't exists");
+            return new CommonResponse(true, HttpStatus.OK, "LectureModel", lecture);
+        }catch (Exception e){
+            return new CommonResponse(false, HttpStatus.INTERNAL_SERVER_ERROR, "Failed to get Lecture");
+        }
+    }
 }

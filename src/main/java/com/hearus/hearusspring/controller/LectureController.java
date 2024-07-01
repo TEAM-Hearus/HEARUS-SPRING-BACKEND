@@ -14,10 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -43,6 +40,35 @@ public class LectureController {
         String userId = getUserIdFromContext();
 
         response = lectureService.addLecture(userId, lectureModel);
+        return ResponseEntity.status(response.getStatus()).body(response);
+    }
+
+    @PutMapping(value="/putScript")
+    public ResponseEntity<CommonResponse> addSchedule(@Valid @RequestBody Map<String, Object> requestBody){
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        String lectureId = objectMapper.convertValue(requestBody.get("lectureId"), String.class);
+        String script = objectMapper.convertValue(requestBody.get("script"), String.class);
+
+        log.info("[LectureController]-[addLecture] API Call - LectureId : {}", lectureId);
+
+        if(lectureId.isEmpty() || script.isEmpty()){
+            response = new CommonResponse(false, HttpStatus.BAD_REQUEST,"Empty Variables");
+            return ResponseEntity.status(response.getStatus()).body(response);
+        }
+
+        response = lectureService.putScript(lectureId, script);
+        return ResponseEntity.status(response.getStatus()).body(response);
+    }
+
+    @GetMapping("/getLecture")
+    public ResponseEntity<CommonResponse> getSchedule(@RequestParam("lectureId") String lectureId) {
+        log.info("[LectureController]-[getLecture] API Call");
+        if(lectureId.isEmpty()){
+            response = new CommonResponse(false, HttpStatus.BAD_REQUEST,"Empty LectureId");
+            return ResponseEntity.status(response.getStatus()).body(response);
+        }
+        response = lectureService.getLecture(lectureId);
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 
