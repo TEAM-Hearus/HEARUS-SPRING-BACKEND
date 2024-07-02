@@ -3,21 +3,17 @@ package com.hearus.hearusspring.data.dao.impl;
 import com.hearus.hearusspring.common.CommonResponse;
 import com.hearus.hearusspring.data.dao.LectureDAO;
 import com.hearus.hearusspring.data.entitiy.UserEntity;
-import com.hearus.hearusspring.data.entitiy.schedule.ScheduleElementEntity;
-import com.hearus.hearusspring.data.entitiy.schedule.ScheduleEntity;
 import com.hearus.hearusspring.data.model.LectureModel;
+import com.hearus.hearusspring.data.model.Problem;
 import com.hearus.hearusspring.data.repository.LectureRepository;
 import com.hearus.hearusspring.data.repository.UserRepository;
 import com.hearus.hearusspring.data.repository.schedule.ScheduleElementRepository;
-import com.hearus.hearusspring.data.repository.schedule.ScheduleRepository;
-import com.mongodb.DuplicateKeyException;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -125,6 +121,54 @@ public class LectureDAOImpl implements LectureDAO {
         } catch (Exception e) {
             log.error("Failed to delete lecture", e);
             return new CommonResponse(false, HttpStatus.INTERNAL_SERVER_ERROR, "Failed to delete lecture");
+        }
+    }
+
+    @Override
+    public CommonResponse addProblem(String lectureId, Problem problem) {
+        try{
+            LectureModel lecture = lectureRepository.findFirstById(lectureId);
+            if(lecture == null)
+                return new CommonResponse(false, HttpStatus.NOT_FOUND, "Lecture doesn't exists");
+
+            lecture.addProblem(problem);
+            LectureModel updatedLecture = lectureRepository.save(lecture);
+
+            return new CommonResponse(true, HttpStatus.OK, "Problem Added", updatedLecture.getProblems());
+        }catch (Exception e){
+            return new CommonResponse(false, HttpStatus.INTERNAL_SERVER_ERROR, "Failed to add Problem");
+        }
+    }
+
+    @Override
+    public CommonResponse updateProblem(String lectureId, String problemId, Problem newProblem) {
+        try{
+            LectureModel lecture = lectureRepository.findFirstById(lectureId);
+            if(lecture == null)
+                return new CommonResponse(false, HttpStatus.NOT_FOUND, "Lecture doesn't exists");
+
+            lecture.updateProblem(problemId, newProblem);
+            LectureModel updatedLecture = lectureRepository.save(lecture);
+
+            return new CommonResponse(true, HttpStatus.OK, "Lecture Updated", updatedLecture.getProblems());
+        }catch (Exception e){
+            return new CommonResponse(false, HttpStatus.INTERNAL_SERVER_ERROR, "Failed to update Problem");
+        }
+    }
+
+    @Override
+    public CommonResponse deleteProblem(String lectureId, String problemId) {
+        try{
+            LectureModel lecture = lectureRepository.findFirstById(lectureId);
+            if(lecture == null)
+                return new CommonResponse(false, HttpStatus.NOT_FOUND, "Lecture doesn't exists");
+
+            lecture.deleteProblem(problemId);
+            LectureModel updatedLecture = lectureRepository.save(lecture);
+
+            return new CommonResponse(true, HttpStatus.OK, "Lecture Updated", updatedLecture.getProblems());
+        }catch (Exception e){
+            return new CommonResponse(false, HttpStatus.INTERNAL_SERVER_ERROR, "Failed to delete Problem");
         }
     }
 
