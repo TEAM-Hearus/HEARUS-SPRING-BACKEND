@@ -1,18 +1,12 @@
 package com.hearus.hearusspring.service.oauth;
 
 
-import com.hearus.hearusspring.common.CommonResponse;
 import com.hearus.hearusspring.common.enumType.RoleType;
-import com.hearus.hearusspring.data.dao.UserDAO;
 import com.hearus.hearusspring.data.dto.UserDTO;
-import com.hearus.hearusspring.data.entitiy.UserEntity;
-import com.hearus.hearusspring.data.handler.UserHandler;
-import com.hearus.hearusspring.data.oauth.OAuth2UserInfo;
+import com.hearus.hearusspring.data.oauth.OAuth2UserInfoMaker;
 import com.hearus.hearusspring.data.oauth.PrincipalDetails;
-import jakarta.security.auth.message.AuthException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -31,6 +25,11 @@ import java.util.Map;
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
 
+    /**
+     *
+     * @description: Security 에서 받은 유저 정보를 파싱하여 PrincipalDetails 클래스로 반환하는 매소드
+     */
+
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 
@@ -46,15 +45,30 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         // 3.OAuth 유저 정보 생성
         // third-party 마다 다르므로 OAuth2UserInfo class에서 처리
-        OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfo.of(registrationId, oAuth2UserAttributes);
-        log.info("[CustomOAuth2UserService]-[loadUser] userName: {}, userEmail: {}", oAuth2UserInfo.getName(), oAuth2UserInfo.getEmail());
+        OAuth2UserInfoMaker oAuth2UserInfoMaker = OAuth2UserInfoMaker.of(registrationId, oAuth2UserAttributes);
+        log.info("[CustomOAuth2UserService]-[loadUser] userName: {}, userEmail: {}", oAuth2UserInfoMaker.getName(), oAuth2UserInfoMaker.getEmail());
 
-        // 4. OAUth 유저 정보를 이용하여 UserDTO 생성
+        // 4. OAuth 유저 정보를 이용하여 UserDTO 생성
+        UserDTO OAuthLoginUserDTO = getUserDTO(oAuth2UserInfoMaker, registrationId);
+        log.info("[CustomOAuth2UserService]-[loadUser] UserDTO 생성");
+
+        // 5. PrincipalDetails (extends OAuth2User)로 반환
+        return new PrincipalDetails(OAuthLoginUserDTO, oAuth2UserAttributes);
+
+    }
+
+
+    /**
+     *
+     * @description: 파싱한 유저 정보를 통해 UserDTO를 생성한다.
+     */
+    private static UserDTO getUserDTO(OAuth2UserInfoMaker oAuth2UserInfoMaker, String registrationId) {
+
         UserDTO OAuthLoginUserDTO = UserDTO.builder()
                 .userId(null)
-                .userName(oAuth2UserInfo.getName())
-                .userEmail(oAuth2UserInfo.getEmail())
-                .userPassword(oAuth2UserInfo.getId()) //유저 식별자 사용
+                .userName(oAuth2UserInfoMaker.getName())
+                .userEmail(oAuth2UserInfoMaker.getEmail())
+                .userPassword(oAuth2UserInfoMaker.getEmail()) //password 유저 이메일 사용
                 .userRole(RoleType.USER.getKey())
                 .userIsOAuth(true)
                 .userOAuthType(registrationId)
@@ -65,9 +79,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 .userSchedule(new ArrayList<>())
                 .build();
 
-        // 5. PrincipalDetails (extends OAuth2User)로 반환
-        return new PrincipalDetails(OAuthLoginUserDTO, oAuth2UserAttributes);
-
+        return OAuthLoginUserDTO;
     }
 
 }
