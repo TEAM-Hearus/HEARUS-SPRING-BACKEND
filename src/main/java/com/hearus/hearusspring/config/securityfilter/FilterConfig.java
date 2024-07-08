@@ -14,7 +14,7 @@ public class FilterConfig {
     private static List<String> filteringUris = new ArrayList<>(){{
         add("/api/v1/main");
         add("/api/v1/schedule");
-        add("/api/v1/oauth");
+        add("/api/v1/user");
     }
     };
 

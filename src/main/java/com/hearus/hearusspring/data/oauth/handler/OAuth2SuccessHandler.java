@@ -46,7 +46,8 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         if(signUpResultResponse.isSuccess()){
 
             log.info("[OAuth2SuccessHandler]-[onAuthenticationSuccess] Need Signup. Try Signup");
-            log.info("[OAuth2SuccessHandler]-[onAuthenticationSuccess] Signup Result. Http status={}",signUpResultResponse.getStatus());
+            signUpResultResponse.setObject(userDTO.getUserEmail());
+            log.info("[OAuth2SuccessHandler]-[onAuthenticationSuccess] Signup Result. Http status={}, Email={}",signUpResultResponse.getStatus(), userDTO.getUserEmail());
 
             //HttpResponse Header Mapping
             response.setStatus(signUpResultResponse.getStatus().value());

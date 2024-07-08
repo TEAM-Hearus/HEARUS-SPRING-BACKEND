@@ -25,19 +25,15 @@ import java.util.regex.Matcher;
 @RequiredArgsConstructor
 public class SecurityConfig{
 
-    @Autowired
-    private CorsConfig corsConfig;
 
-    @Autowired
-    private JwtFilter jwtFilter;
-
-
+    private final CorsConfig corsConfig;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
     private final OAuth2UserService oAuth2UserService;
 
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
         http
                 .csrf(AbstractHttpConfigurer::disable) // 403 에러 범인 csrf 비활성화 -> cookie를 사용하지 않으면 꺼도 된다. (cookie를 사용할 경우 httpOnly(XSS 방어), sameSite(CSRF 방어)로 방어해야 한다.)
                 .formLogin(AbstractHttpConfigurer::disable) // 기본 폼 로그인 사용 X
@@ -54,7 +50,7 @@ public class SecurityConfig{
                 //OAUth 2.0
                 .oauth2Login(oauth -> 
                         // OAuth2 로그인 성공 이후 사용자 정보를 가져올 때의 설정을 담당
-                            oauth
+                        oauth
                                 .userInfoEndpoint(c -> c.userService(oAuth2UserService))
                                 // 로그인 or 회원가입 핸들러
                                 .successHandler(oAuth2SuccessHandler)
