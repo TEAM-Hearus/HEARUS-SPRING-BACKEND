@@ -30,7 +30,7 @@ public class JwtFilter implements Filter {
         String requestURI = httpRequest.getRequestURI();
 
         // 필터 로직을 수행하지 않고 다음 필터로 이동
-        if (!requestURI.startsWith("/api/v1/main") && !requestURI.startsWith("/api/v1/schedule")) {
+        if (!FilterConfig.isFilteringUri(requestURI)) {
             chain.doFilter(request, response);
             return;
         }
@@ -44,12 +44,12 @@ public class JwtFilter implements Filter {
                 // 인증 정보를 SecurityContext에 저장
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(jwtTokenProvider.getTokenInfo(token), null, Collections.emptyList());
+
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 chain.doFilter(request, response);
                 return;
             }
         }
-
         // 토큰이 유효하지 않은 경우 CommonResponse로 응답
         ObjectMapper objectMapper = new ObjectMapper();
         CommonResponse commonResponse = new CommonResponse(false, HttpStatus.UNAUTHORIZED, "Invalid Access Token", null);
