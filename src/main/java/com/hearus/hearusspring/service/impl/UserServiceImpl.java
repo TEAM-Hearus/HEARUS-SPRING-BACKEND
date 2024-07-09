@@ -5,6 +5,7 @@ import com.hearus.hearusspring.common.security.JwtTokenProvider;
 import com.hearus.hearusspring.data.dto.TokenDTO;
 import com.hearus.hearusspring.data.dto.UserDTO;
 import com.hearus.hearusspring.data.handler.UserHandler;
+import com.hearus.hearusspring.data.oauth.dto.OAuthAdditionalInfoDTO;
 import com.hearus.hearusspring.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,4 +49,17 @@ public class UserServiceImpl  implements UserService {
         LOGGER.info("[UserService]-[userSignup] UserHandler로 회원가입 요청 : {}", user.getUserEmail());
         return userHandler.signupUserEntitiy(user);
     }
+
+    @Override
+    public CommonResponse getUserById(String targetUserId) {
+        LOGGER.info("[UserService]-[getUserById] UserHadler로 유저 정보 찾기 요청");
+        return userHandler.getUserById(targetUserId);
+    }
+
+    @Override
+    public CommonResponse addUserInfo(OAuthAdditionalInfoDTO oAuthAdditionalInfoDTO) {
+        LOGGER.info("[UserService]-[addInfoUser] UserHadler로 유저 정보 추가 요청");
+        return userHandler.addUserInfo(oAuthAdditionalInfoDTO);
+    }
+
 }

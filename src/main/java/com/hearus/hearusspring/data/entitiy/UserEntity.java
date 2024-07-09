@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Builder
 @ToString
-@Table(name = "user")
+@Table(name = "users")
 public class UserEntity extends BaseEntitiy{
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
