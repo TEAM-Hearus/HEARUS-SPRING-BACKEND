@@ -2,12 +2,9 @@ package com.hearus.hearusspring.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hearus.hearusspring.common.CommonResponse;
-import com.hearus.hearusspring.data.dto.schedule.ScheduleDTO;
-import com.hearus.hearusspring.data.dto.schedule.ScheduleElementDTO;
 import com.hearus.hearusspring.data.model.LectureModel;
 import com.hearus.hearusspring.data.model.Problem;
 import com.hearus.hearusspring.service.LectureService;
-import com.hearus.hearusspring.service.ScheduleService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
