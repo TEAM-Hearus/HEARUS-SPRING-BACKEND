@@ -31,10 +31,13 @@ public class UserHandlerImpl implements UserHandler {
     @Override
     public UserDTO loginUserEntity(UserDTO user) {
         LOGGER.info("[UserHandler]-[signupUserEntitiy] UserDAO로 로그인 요청 : {}", user.getUserEmail());
-        UserEntity userEntity = user.toEntitiy(passwordEncoder);
-        if(!passwordEncoder.matches(user.getUserPassword(), userEntity.getPassword()))
+
+        UserEntity findUserEntity = userDAO.userLogin(user.toEntitiy(passwordEncoder));
+
+        if(!passwordEncoder.matches(user.getUserPassword(), findUserEntity.getPassword()))
             return null;
-        return userDAO.userLogin(userEntity).toDTO();
+
+        return findUserEntity.toDTO();
     }
 
     @Override
