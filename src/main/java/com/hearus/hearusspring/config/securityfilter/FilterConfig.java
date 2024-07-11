@@ -15,6 +15,7 @@ public class FilterConfig {
         add("/api/v1/main");
         add("/api/v1/schedule");
         add("/api/v1/user");
+        add("/api/v1/lecture");
     }
     };
 
