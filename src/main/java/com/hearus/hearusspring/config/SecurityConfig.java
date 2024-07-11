@@ -40,13 +40,6 @@ public class SecurityConfig{
 
                 //.addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class) jwt 필터 두번 적용으로 삭제.
                 .addFilter(corsConfig.corsFilter())
-<<<<<<< HEAD
-                .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-                .securityMatcher("/api/v1/main")
-                .securityMatcher("/api/v1/schedule")
-                .securityMatcher("/api/v1/lecture")
-=======
->>>>>>> 68f2e9db34ff1805601540d0e7b3f71dc4cb6149
                 .authorizeHttpRequests(authorize -> authorize
                         //        .requestMatchers("/**").permitAll()
                         .requestMatchers("/**").permitAll() //security 에서는 별도의 필터를 적용하지 않는다. JWT Filter 에서 필터링 적용.

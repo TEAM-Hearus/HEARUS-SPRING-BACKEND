@@ -36,7 +36,7 @@ public class WebRTCProxy {
     @Autowired
     public WebRTCProxy(SocketIOServer server, ConfigUtil configUtil) {
         this.server = server;
-        this.FastAPIEndpoint = configUtil.getProperty("FAST_API_ENDPOINT");
+        this.FastAPIEndpoint = configUtil.getProperty("FAST_API_WS_ENDPOINT");
         this.namespace = server.addNamespace("/webrtc");
         this.namespace.addConnectListener(onConnected());
         this.namespace.addDisconnectListener(onDisconnected());
