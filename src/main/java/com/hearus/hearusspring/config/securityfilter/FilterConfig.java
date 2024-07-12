@@ -15,6 +15,7 @@ public class FilterConfig {
         add("/api/v1/main");
         add("/api/v1/schedule");
         add("/api/v1/user");
+        add("/api/v1/lecture");
     }
     };
 
@@ -30,9 +31,7 @@ public class FilterConfig {
     @Bean
     public FilterRegistrationBean<JwtFilter> JwtFilterRegistration() {
         FilterRegistrationBean<JwtFilter> bean = new FilterRegistrationBean<>(new JwtFilter());
-        // Filter를 적용할 Route 설정
         filteringUris.stream().forEach(uri -> bean.addUrlPatterns(uri));
-
         bean.setOrder(0);
         return bean;
     }

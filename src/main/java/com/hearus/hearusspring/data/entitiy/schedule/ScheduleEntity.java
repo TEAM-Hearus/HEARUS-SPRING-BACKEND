@@ -28,7 +28,7 @@ public class ScheduleEntity extends BaseEntitiy {
     private List<ScheduleElementEntity> scheduleElements = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "users_id")
     private UserEntity user;
 
     private String name;

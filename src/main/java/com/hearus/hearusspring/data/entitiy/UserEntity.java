@@ -6,6 +6,7 @@ import lombok.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Entity
@@ -43,22 +44,14 @@ public class UserEntity extends BaseEntitiy{
     // 재학생 (1, 2, 3, 4), 휴학생, 졸업생
     String grade;
 
-    // DB에는 일반적인 String으로 저장하고
-    // ','를 기준으로 ArrayList로 변환
-    String savedLectures;
+    @ElementCollection
+    private List<String> savedLectures;
 
     String schedule;
     String usePurpose;
 
     public UserDTO toDTO(){
         // ','를 기준으로 split
-        ArrayList<String> savedLecturesList = new ArrayList<>();
-        if(savedLectures != null)
-            savedLecturesList = Arrays.stream(
-                    savedLectures.split(","))
-                    .map(String::trim)
-                    .collect(Collectors.toCollection(ArrayList::new));
-
         ArrayList<String> savedScheduleList = new ArrayList<>();
         if(schedule != null)
             savedScheduleList = Arrays.stream(
@@ -77,7 +70,7 @@ public class UserEntity extends BaseEntitiy{
                 .userSchool(school)
                 .userMajor(major)
                 .userGrade(grade)
-                .userSavedLectures(savedLecturesList)
+                .userSavedLectures(savedLectures)
                 .userSchedule(savedScheduleList)
                 .userUsePurpose(usePurpose)
                 .build();
