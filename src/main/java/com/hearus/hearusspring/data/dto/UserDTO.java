@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
@@ -42,15 +43,12 @@ public class UserDTO {
     String userMajor;
     String userGrade;
 
-    ArrayList<String> userSavedLectures = new ArrayList<String>();
+    List<String> userSavedLectures = new ArrayList<>();
     ArrayList<String> userSchedule = new ArrayList<String>();
 
     String userUsePurpose;
 
     public UserEntity toEntitiy(PasswordEncoder passwordEncoder){
-        String stringLecture = null;
-        if(!userSavedLectures.isEmpty())
-            stringLecture = String.join(",", userSavedLectures);
 
         String stringSchedule = null;
         if(!userSchedule.isEmpty())
@@ -67,7 +65,7 @@ public class UserDTO {
                 .school(userSchool)
                 .major(userMajor)
                 .grade(userGrade)
-                .savedLectures(stringLecture)
+                .savedLectures(userSavedLectures)
                 .schedule(stringSchedule)
                 .usePurpose(userUsePurpose)
                 .build();
