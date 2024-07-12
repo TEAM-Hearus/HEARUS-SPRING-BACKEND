@@ -2,64 +2,115 @@ package com.hearus.hearusspring.service.impl;
 
 import com.hearus.hearusspring.common.CommonResponse;
 import com.hearus.hearusspring.common.security.JwtTokenProvider;
+import com.hearus.hearusspring.data.dao.UserDAO;
 import com.hearus.hearusspring.data.dto.TokenDTO;
 import com.hearus.hearusspring.data.dto.UserDTO;
-import com.hearus.hearusspring.data.handler.UserHandler;
 import com.hearus.hearusspring.data.oauth.dto.OAuthAdditionalInfoDTO;
 import com.hearus.hearusspring.service.UserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-@Service
-public class UserServiceImpl  implements UserService {
-    UserHandler userHandler;
-    private final JwtTokenProvider jwtTokenProvider;
-    private final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
+import java.util.Optional;
 
-    @Autowired
-    public UserServiceImpl(UserHandler userHandler, JwtTokenProvider jwtTokenProvider) {
-        this.userHandler = userHandler;
-        this.jwtTokenProvider = jwtTokenProvider;
-    }
+@Service
+@RequiredArgsConstructor
+@Slf4j
+public class UserServiceImpl  implements UserService {
+
+    private final UserDAO userDAO;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
-    public CommonResponse userLogin(UserDTO user) {
-        LOGGER.info("[UserService]-[userLogin] UserHandler로 로그인 요청 : {}", user.getUserEmail());
+    public CommonResponse login(UserDTO user) {
+
+        log.info("[UserService]-[login] 로그인 요청 : {}", user.getUserEmail());
+
         try {
-            UserDTO loginResult = userHandler.loginUserEntity(user);
+            //Search User
+            Optional<UserDTO> userByEmail = userDAO.getUserByEmail(user.getUserEmail());
+            UserDTO findUserDTO;
 
-            // 로그인 실패 여부 검증
-            if(loginResult == null)
-                return new CommonResponse(false, HttpStatus.UNAUTHORIZED,"Invalid User Info");
+            //Search User Validation
+            if(userByEmail.isPresent())
+                //Success Search User
+                findUserDTO = userByEmail.get();
+            else{
+                //Fail Search User
+                log.info("[UserService]-[login] User not found : {}", user.getUserEmail());
+                return new CommonResponse(false, HttpStatus.NOT_FOUND,"User not found");
+            }
 
-            TokenDTO loginToken = jwtTokenProvider.generateToken(loginResult);
-            LOGGER.info("[UserService]-[userLogin] 로그인 성공 : {}", jwtTokenProvider.getTokenInfo(loginToken.getAccessToken()));
+            //Password Validation
+            if(!passwordEncoder.matches(user.getUserPassword(), findUserDTO.getUserPassword())) {
+                //Fail Password Match
+                log.info("[UserService]-[login] Invalid User Info");
+                return new CommonResponse(false, HttpStatus.UNAUTHORIZED, "Invalid User Info");
+            }
+
+            //Generate Token
+            TokenDTO loginToken = jwtTokenProvider.generateToken(findUserDTO);
+            log.info("[UserService]-[login] 로그인 성공 : {}", jwtTokenProvider.getTokenInfo(loginToken.getAccessToken()));
             return new CommonResponse(true, HttpStatus.OK,"Login Success", loginToken);
+
         }catch (Exception e){
-            LOGGER.info("[UserService]-[userLogin] 로그인 도중 Exception 발생 \n {}", e.toString());
+            log.info("[UserService]-[login] 로그인 도중 Exception 발생 \n {}", e.toString());
             return new CommonResponse(false, HttpStatus.INTERNAL_SERVER_ERROR,"Internal Server Error");
         }
     }
 
     @Override
-    public CommonResponse userSignup(UserDTO user) {
-        LOGGER.info("[UserService]-[userSignup] UserHandler로 회원가입 요청 : {}", user.getUserEmail());
-        return userHandler.signupUserEntitiy(user);
+    public CommonResponse signup(UserDTO user) {
+
+        log.info("[UserService]-[signup] UserDAO에 회원 정보 저장 요청 : {}", user.getUserEmail());
+
+        if(userDAO.saveUser(user)){
+
+            return new CommonResponse(true,HttpStatus.CREATED,"Signup Success");
+
+        }
+        else{
+            return new CommonResponse(false, HttpStatus.CONFLICT,"User Already Exists");
+        }
+
     }
 
     @Override
     public CommonResponse getUserById(String targetUserId) {
-        LOGGER.info("[UserService]-[getUserById] UserHadler로 유저 정보 찾기 요청");
-        return userHandler.getUserById(targetUserId);
+
+        log.info("[UserService]-[getUserById] UserDAO로 유저 정보 찾기 요청");
+
+        Optional<UserDTO> userById = userDAO.getUserById(targetUserId);
+
+        if(userById.isPresent()){
+
+            return new CommonResponse(true, HttpStatus.OK, "Success Search User", userById.get());
+
+        }
+        else{
+
+            return new CommonResponse(false, HttpStatus.NOT_FOUND, "User not found");
+        }
+
+
     }
 
     @Override
-    public CommonResponse addUserInfo(OAuthAdditionalInfoDTO oAuthAdditionalInfoDTO) {
-        LOGGER.info("[UserService]-[addInfoUser] UserHadler로 유저 정보 추가 요청");
-        return userHandler.addUserInfo(oAuthAdditionalInfoDTO);
+    public CommonResponse addInformation(OAuthAdditionalInfoDTO oAuthAdditionalInfoDTO) {
+
+        log.info("[UserService]-[addInformation] UserDAO로 유저 정보 추가 요청");
+
+        if(userDAO.addUserData(oAuthAdditionalInfoDTO)){
+            log.info("[UserService]-[addInformation] 유저 정보 추가 성공.");
+            return new CommonResponse(true, HttpStatus.OK, "Success Add User Info", oAuthAdditionalInfoDTO.getUserEmail());
+        }
+        else{
+            log.info("[UserService]-[addInformation] 일치하는 유저 정보가 없음.");
+            return new CommonResponse(false, HttpStatus.BAD_REQUEST, "Fail Add User Info : fail search user");
+        }
     }
 
 }

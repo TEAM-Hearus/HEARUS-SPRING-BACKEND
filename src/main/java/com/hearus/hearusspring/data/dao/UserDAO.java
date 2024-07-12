@@ -1,12 +1,13 @@
 package com.hearus.hearusspring.data.dao;
 
-import com.hearus.hearusspring.common.CommonResponse;
-import com.hearus.hearusspring.data.entitiy.UserEntity;
+import com.hearus.hearusspring.data.dto.UserDTO;
 import com.hearus.hearusspring.data.oauth.dto.OAuthAdditionalInfoDTO;
 
+import java.util.Optional;
+
 public interface UserDAO {
-    CommonResponse getUserById(String userId);
-    UserEntity userLogin(UserEntity user);
-    CommonResponse userSignup(UserEntity user);
-    CommonResponse addUserInfo(OAuthAdditionalInfoDTO oAuthAdditionalInfoDTO);
+    Optional<UserDTO> getUserByEmail(String email);
+    boolean saveUser(UserDTO userDTO);
+    Optional<UserDTO> getUserById(String userId);
+    boolean addUserData(OAuthAdditionalInfoDTO oAuthAdditionalInfoDTO);
 }

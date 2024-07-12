@@ -20,8 +20,6 @@ public class UserAuthController {
     private final Logger LOGGER = LoggerFactory.getLogger(UserAuthController.class);
 
     private final UserService userService;
-    private CommonResponse response;
-
 
     @Autowired
     public UserAuthController(UserService userService) {
@@ -35,12 +33,12 @@ public class UserAuthController {
         // 요구되는 데이터 존재 여부 검증
         if(userDTO.getUserEmail().isEmpty() || userDTO.getUserPassword().isEmpty()){
             LOGGER.info("[UserAuthController]-[loginUser] Failed : Empty Variables");
-            response = new CommonResponse(false,HttpStatus.BAD_REQUEST,"Empty Variables");
+            CommonResponse response = new CommonResponse(false,HttpStatus.BAD_REQUEST,"Empty Variables");
             return ResponseEntity.status(response.getStatus()).body(response);
         }
 
         // UserService로 요청받은 UserDTO 로그인 요청
-        response = userService.userLogin(userDTO);
+        CommonResponse response = userService.login(userDTO);
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 
@@ -51,12 +49,12 @@ public class UserAuthController {
         // 요구되는 데이터 존재 여부 검증
         if(userDTO.getUserName().isEmpty() || userDTO.getUserEmail().isEmpty() || userDTO.getUserPassword().isEmpty()){
             LOGGER.info("[UserAuthController]-[signupUser] Failed : Empty Variables");
-            response = new CommonResponse(false,HttpStatus.BAD_REQUEST,"Empty Variables");
+            CommonResponse response = new CommonResponse(false,HttpStatus.BAD_REQUEST,"Empty Variables");
             return ResponseEntity.status(response.getStatus()).body(response);
         }
 
         // UserService로 요청받은 UserDTO 회원가입 요청
-        response = userService.userSignup(userDTO);
+        CommonResponse response = userService.signup(userDTO);
 
         LOGGER.info("[UserAuthController]-[signupUser] Success");
         return ResponseEntity.status(response.getStatus()).body(response);
