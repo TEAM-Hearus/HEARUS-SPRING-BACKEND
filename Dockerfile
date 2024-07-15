@@ -9,7 +9,7 @@ COPY gradlew .
 COPY gradlew.bat .
 COPY gradle gradle
 COPY src ./src
-RUN ./gradlew build --no-daemon
+RUN ./gradlew bootJar
 
 COPY build/libs/*.jar app.jar
 EXPOSE 8080 9094
