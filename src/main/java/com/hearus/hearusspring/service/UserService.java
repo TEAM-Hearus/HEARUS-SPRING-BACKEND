@@ -5,8 +5,8 @@ import com.hearus.hearusspring.data.dto.UserDTO;
 import com.hearus.hearusspring.data.oauth.dto.OAuthAdditionalInfoDTO;
 
 public interface UserService {
-    CommonResponse userLogin(UserDTO user);
-    CommonResponse userSignup(UserDTO user);
+    CommonResponse login(UserDTO user);
+    CommonResponse signup(UserDTO user);
     CommonResponse getUserById(String targetUserId);
-    CommonResponse addUserInfo(OAuthAdditionalInfoDTO oAuthAdditionalInfoDTO);
+    CommonResponse addInformation(OAuthAdditionalInfoDTO oAuthAdditionalInfoDTO);
 }

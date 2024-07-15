@@ -40,7 +40,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         log.info("[OAuth2SuccessHandler]-[onAuthenticationSuccess] success User load. name={}, email={}", userDTO.getUserName(), userDTO.getUserEmail());
 
         //이미 signUp이 되어 있는지 확인
-        CommonResponse signUpResultResponse =  userService.userSignup(userDTO);
+        CommonResponse signUpResultResponse =  userService.signup(userDTO);
 
         //signUp이 되어있지 않다면 그대로 결과 반환 이후 추가 정보 Post 요청 필요 (school, major, grade)
         if(signUpResultResponse.isSuccess()){
@@ -60,7 +60,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         else{
 
             log.info("[OAuth2SuccessHandler]-[onAuthenticationSuccess] Already Sign upped User. Try Login");
-            CommonResponse loginResultResponse = userService.userLogin(userDTO);
+            CommonResponse loginResultResponse = userService.login(userDTO);
             log.info("[OAuth2SuccessHandler]-[onAuthenticationSuccess] Login Result. Http status={}, JWT Token={}",loginResultResponse.getStatus(), ((TokenDTO)loginResultResponse.getObject()).getAccessToken());
 
 
