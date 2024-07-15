@@ -9,6 +9,7 @@ import com.corundumstudio.socketio.listener.DataListener;
 import com.corundumstudio.socketio.listener.DisconnectListener;
 import com.hearus.hearusspring.common.environment.ConfigUtil;
 import com.hearus.hearusspring.common.ffmpeg.AudioConverter;
+import com.hearus.hearusspring.common.ffmpeg.FFmpegConfig;
 import com.hearus.hearusspring.data.dao.LectureDAO;
 import lombok.extern.slf4j.Slf4j;
 import org.java_websocket.drafts.Draft_6455;
@@ -23,7 +24,10 @@ import java.util.*;
 public class WebRTCProxy {
 
     @Autowired
-    LectureDAO lectureDAO;
+    private LectureDAO lectureDAO;
+
+    @Autowired
+    private FFmpegConfig fFmpegConfig;
 
     private final String FastAPIEndpoint;
     private final SocketIOServer server;
@@ -42,7 +46,7 @@ public class WebRTCProxy {
         this.namespace.addDisconnectListener(onDisconnected());
         this.namespace.addEventListener("transcription", String.class, audioListener());
         this.namespace.addEventListener("lectureId", String.class, lectureIdListener());
-        this.audioConverter = new AudioConverter();
+        this.audioConverter = new AudioConverter(fFmpegConfig);
     }
 
     // WebSocket

@@ -5,6 +5,7 @@ import net.bramp.ffmpeg.FFmpeg;
 import net.bramp.ffmpeg.FFmpegExecutor;
 import net.bramp.ffmpeg.builder.FFmpegBuilder;
 import net.bramp.ffmpeg.job.FFmpegJob;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
@@ -12,6 +13,13 @@ import java.io.*;
 @Slf4j
 @Component
 public class AudioConverter {
+
+    private final FFmpegConfig ffmpegConfig;
+
+    @Autowired
+    public AudioConverter(FFmpegConfig ffmpegConfig) {
+        this.ffmpegConfig = ffmpegConfig;
+    }
 
     public byte[] convertAudio(byte[] decodedBytes) throws Exception {
         // Create an input stream from the decoded bytes
@@ -35,7 +43,7 @@ public class AudioConverter {
         tempOutputFile.deleteOnExit();
 
         // Use FFmpeg to convert the audio data
-        FFmpeg ffmpeg = new FFmpeg("src/main/resources/ffmpeg/bin/ffmpeg");
+        FFmpeg ffmpeg = new FFmpeg(ffmpegConfig.getFFmpegPath());
         FFmpegBuilder builder = new FFmpegBuilder()
                 .setInput(tempInputFile.getAbsolutePath())
                 .overrideOutputFiles(true)
