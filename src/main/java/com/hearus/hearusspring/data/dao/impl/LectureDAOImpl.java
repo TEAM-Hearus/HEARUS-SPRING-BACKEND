@@ -14,9 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -181,6 +179,56 @@ public class LectureDAOImpl implements LectureDAO {
             return new CommonResponse(true, HttpStatus.OK, "LectureModel", lecture);
         }catch (Exception e){
             return new CommonResponse(false, HttpStatus.INTERNAL_SERVER_ERROR, "Failed to get Lecture");
+        }
+    }
+
+    @Transactional
+    @Override
+    public CommonResponse getAllLecture(String userId) {
+        try{
+            // User의 savedLectures에 저장된 강의 ID 추가
+            UserEntity user = userRepository.findById(userId)
+                    .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
+
+            // UserRepository에 새로운 SavedLectures 추가
+            List<String> userLectures = user.getSavedLectures();
+            if (userLectures == null)
+                return new CommonResponse(true, HttpStatus.OK, "User has no Lecture");
+
+            List<LectureModel> lectureList = new ArrayList<>();
+            for (String lectureId : userLectures) {
+                LectureModel lecture = lectureRepository.findFirstById(lectureId);
+                if(lecture == null) {
+                    log.info("[LectureDAO]-[getAllLecture] Lecture {} removed from User {}", lectureId, userId);
+                    userLectures.remove(lectureId);
+                    continue;
+                }
+
+                List<String> processedScript = lecture.getProcessedScript();
+                if (processedScript != null && !processedScript.isEmpty()) {
+                    StringBuilder sb = new StringBuilder();
+                    for (String script : processedScript) {
+                        if (sb.length() + script.length() <= 100) {
+                            sb.append(script);
+                        } else {
+                            if (100 - sb.length() > 0)
+                                sb.append(script, 0, 100 - sb.length());
+                            break;
+                        }
+                    }
+                    lecture.setProcessedScript(Collections.singletonList(sb.toString()));
+                }
+
+                lecture.setProblems(null);
+                lectureList.add(lecture);
+            }
+
+            user.setSavedLectures(userLectures);
+            userRepository.save(user);
+
+            return new CommonResponse(true, HttpStatus.OK, "LectureLists", lectureList);
+        }catch (Exception e){
+            return new CommonResponse(false, HttpStatus.INTERNAL_SERVER_ERROR, "Failed to get AllLecture");
         }
     }
 }

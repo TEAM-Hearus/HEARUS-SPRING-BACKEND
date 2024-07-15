@@ -189,6 +189,13 @@ public class LectureController {
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 
+    @GetMapping("/getAllLecture")
+    public ResponseEntity<CommonResponse> getAllLecture() {
+        log.info("[LectureController]-[getAllLecture] API Call");
+        response = lectureService.getAllLecture(getUserIdFromContext());
+        return ResponseEntity.status(response.getStatus()).body(response);
+    }
+
     @PostMapping(value="/generateProblems")
     public DeferredResult<ResponseEntity<CommonResponse>> generateProblems(@Valid @RequestBody ProblemReqDTO requestBody){
         log.info("[LectureController]-[generateProblem] API Call");

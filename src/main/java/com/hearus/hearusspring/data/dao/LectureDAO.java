@@ -15,4 +15,5 @@ public interface LectureDAO {
     CommonResponse updateProblem(String lectureId, String problemId, Problem newProblem);
     CommonResponse deleteProblem(String lectureId, String problemId);
     CommonResponse getLecture(String lectureId);
+    CommonResponse getAllLecture(String userId);
 }

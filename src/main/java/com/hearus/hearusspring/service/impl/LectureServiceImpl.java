@@ -52,4 +52,9 @@ public class LectureServiceImpl implements LectureService {
     public CommonResponse getLecture(String lectureId) {
         return lectureDAO.getLecture(lectureId);
     }
+
+    @Override
+    public CommonResponse getAllLecture(String userId) {
+        return lectureDAO.getAllLecture(userId);
+    }
 }
