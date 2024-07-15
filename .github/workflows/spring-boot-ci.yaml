@@ -38,6 +38,7 @@ jobs:
       - name: Build with Gradle
         run: |
           pwd
+          ls
           sudo ./gradlew bootJar
         shell: bash
 
