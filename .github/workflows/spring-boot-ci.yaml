@@ -62,3 +62,12 @@ jobs:
           # GitHub Action Cache
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      # Dockerhub로 PUSH된 이후 Jenkins의 Job Trigger
+      - name: Trigger Jenkins Job
+        uses: appleboy/jenkins-action@master
+        with:
+          url: ${{ secrets.ORG_JENKINS_WEBHOOK_ENDPOINT }}
+          user: "admin"
+          token: ${{ secrets.ORG_JENKINS_API_TOKEN }}
+          job: "SPRING-BE-SSH-CD"
