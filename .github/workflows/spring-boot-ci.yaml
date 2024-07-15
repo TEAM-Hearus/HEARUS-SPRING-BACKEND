@@ -36,7 +36,10 @@ jobs:
 
       ## gradle build
       - name: Build with Gradle
-        run: sudo ./gradlew bootJar
+        run: |
+          pwd
+          sudo ./gradlew bootJar
+        shell: bash
 
 
       ## 웹 이미지 빌드 및 Dockerhub PUSH
