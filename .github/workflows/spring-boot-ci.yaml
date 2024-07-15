@@ -51,10 +51,12 @@ jobs:
           username: ${{ secrets.ORG_JUDEMIN_DOCKERHUB_USERNAME }}
           password: ${{ secrets.ORG_JUDEMIN_DOCKERHUB_PASSWORD }}
 
-      - name: Build and push
+      - name: Install FFmpeg and push
         id: docker_build
         uses: docker/build-push-action@v2
         with:
+          # Dockerfile이 위치한 디렉토리를 지정
+          context: .
           push: true
           tags: judemin/hearus-spring:lastest
           # GitHub Action Cache
