@@ -41,10 +41,21 @@ jobs:
           ./gradlew bootJar
         shell: bash
 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
 
-      ## 웹 이미지 빌드 및 Dockerhub PUSH
-      - name: web docker build and push
-        run: |
-          docker login -u ${{ secrets.ORG_JUDEMIN_DOCKERHUB_USERNAME }} -p ${{ secrets.ORG_JUDEMIN_DOCKERHUB_PASSWORD }}
-          docker build -t judemin/hearus-spring:lastest .
-          docker push judemin/hearus-spring:lastest
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.ORG_JUDEMIN_DOCKERHUB_USERNAME }}
+          password: ${{ secrets.ORG_JUDEMIN_DOCKERHUB_PASSWORD }}
+
+      - name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: judemin/hearus-spring:lastest
+          # GitHub Action Cache
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
