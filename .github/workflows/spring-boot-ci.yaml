@@ -35,11 +35,11 @@ jobs:
         shell: bash
 
       ## gradle build
-      - name: Build with Gradle
-        run: |
-          chmod +x ./gradlew
-          ./gradlew bootJar
-        shell: bash
+#      - name: Build with Gradle
+#        run: |
+#          chmod +x ./gradlew
+#          ./gradlew bootJar
+#        shell: bash
 
 
       - name: Set up Docker Buildx
