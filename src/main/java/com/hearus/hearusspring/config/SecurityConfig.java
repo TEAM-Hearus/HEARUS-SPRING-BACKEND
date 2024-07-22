@@ -25,11 +25,9 @@ import java.util.regex.Matcher;
 @RequiredArgsConstructor
 public class SecurityConfig{
 
-
     private final CorsConfig corsConfig;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
     private final OAuth2UserService oAuth2UserService;
-
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
