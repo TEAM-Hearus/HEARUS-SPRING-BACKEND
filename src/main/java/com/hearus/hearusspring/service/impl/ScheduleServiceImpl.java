@@ -6,6 +6,7 @@ import com.hearus.hearusspring.data.dao.UserDAO;
 import com.hearus.hearusspring.data.dto.schedule.ScheduleDTO;
 import com.hearus.hearusspring.data.dto.schedule.ScheduleElementDTO;
 import com.hearus.hearusspring.data.entitiy.UserEntity;
+import com.hearus.hearusspring.data.entitiy.schedule.ScheduleEntity;
 import com.hearus.hearusspring.data.repository.UserRepository;
 import com.hearus.hearusspring.data.repository.schedule.ScheduleRepository;
 import com.hearus.hearusspring.service.ScheduleService;
@@ -54,7 +55,10 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     public ScheduleDTO getSchedule(ScheduleDTO scheduleDTO) {
         UserEntity user = userRepository.findFirstById(scheduleDTO.getUserId());
+        ScheduleEntity scheduleEntity = scheduleDAO.getSchedule(scheduleDTO.toEntity(user));
 
-        return scheduleDAO.getSchedule(scheduleDTO.toEntity(user)).toDTO();
+        if(scheduleEntity == null)
+            return null;
+        return scheduleEntity.toDTO();
     }
 }

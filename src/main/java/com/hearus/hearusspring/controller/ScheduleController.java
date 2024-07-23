@@ -125,13 +125,13 @@ public class ScheduleController {
 
             ScheduleDTO resultScheduleDTO = scheduleService.getSchedule(scheduleDTO);
 
-            // UserID를 노출시키지 않아 보안 강화
-            resultScheduleDTO.setUserId(null);
-
             if (resultScheduleDTO == null) {
                 log.info("[ScheduleController]-[getSchedule] Schedule not found with name: {}", name);
-                return ResponseEntity.notFound().build();
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new CommonResponse(false, HttpStatus.NOT_FOUND, "Schedule not found with name"));
             }
+
+            // UserID를 노출시키지 않아 보안 강화
+            resultScheduleDTO.setUserId(null);
 
             return ResponseEntity.ok(new CommonResponse(true, HttpStatus.OK, "Schedule retrieved successfully", resultScheduleDTO));
         } catch (Exception e) {
