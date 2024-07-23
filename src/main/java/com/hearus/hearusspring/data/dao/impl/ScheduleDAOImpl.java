@@ -5,6 +5,7 @@ import com.hearus.hearusspring.data.dao.ScheduleDAO;
 import com.hearus.hearusspring.data.entitiy.UserEntity;
 import com.hearus.hearusspring.data.entitiy.schedule.ScheduleElementEntity;
 import com.hearus.hearusspring.data.entitiy.schedule.ScheduleEntity;
+import com.hearus.hearusspring.data.model.LectureModel;
 import com.hearus.hearusspring.data.repository.UserRepository;
 import com.hearus.hearusspring.data.repository.schedule.ScheduleElementRepository;
 import com.hearus.hearusspring.data.repository.schedule.ScheduleRepository;
@@ -167,10 +168,13 @@ public class ScheduleDAOImpl implements ScheduleDAO {
 
     @Override
     public ScheduleEntity getSchedule(ScheduleEntity scheduleEntity) {
-        // TODO : Schedule이 존재하지 않을 경우 예외처리
-        // TODO : Schedule Element 색상 속성 추가
-        userId = scheduleEntity.getUser().getId();
-        scheduleName = scheduleEntity.getName();
-        return scheduleRepository.findByUserIdAndName(userId, scheduleName);
+        try{
+            userId = scheduleEntity.getUser().getId();
+            scheduleName = scheduleEntity.getName();
+            return scheduleRepository.findByUserIdAndName(userId, scheduleName);
+        }catch (Exception e){
+            return null;
+        }
+
     }
 }

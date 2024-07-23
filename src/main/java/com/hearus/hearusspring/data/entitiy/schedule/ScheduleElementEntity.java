@@ -30,6 +30,7 @@ public class ScheduleElementEntity extends BaseEntitiy {
     private String location;
 
     private String dayOfWeek;
+    private String color;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date startTime;
@@ -44,6 +45,7 @@ public class ScheduleElementEntity extends BaseEntitiy {
                 .name(name)
                 .location(location)
                 .dayOfWeek(dayOfWeek)
+                .color(color)
                 .startTime(startTime)
                 .endTime(endTime)
                 .build();

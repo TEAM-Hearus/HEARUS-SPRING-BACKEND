@@ -16,6 +16,7 @@ public class ScheduleElementDTO {
     private String name;
     private String location;
     private String dayOfWeek;
+    private String color;
     private Date startTime;
     private Date endTime;
 
@@ -25,6 +26,7 @@ public class ScheduleElementDTO {
                 .name(name)
                 .location(location)
                 .dayOfWeek(dayOfWeek)
+                .color(color)
                 .startTime(startTime)
                 .endTime(endTime)
                 .build();
