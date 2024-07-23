@@ -167,6 +167,8 @@ public class ScheduleDAOImpl implements ScheduleDAO {
 
     @Override
     public ScheduleEntity getSchedule(ScheduleEntity scheduleEntity) {
+        // TODO : Schedule이 존재하지 않을 경우 예외처리
+        // TODO : Schedule Element 색상 속성 추가
         userId = scheduleEntity.getUser().getId();
         scheduleName = scheduleEntity.getName();
         return scheduleRepository.findByUserIdAndName(userId, scheduleName);
