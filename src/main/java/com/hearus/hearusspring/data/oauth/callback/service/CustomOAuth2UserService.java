@@ -1,4 +1,4 @@
-package com.hearus.hearusspring.service.oauth;
+package com.hearus.hearusspring.data.oauth.callback.service;
 
 
 import com.hearus.hearusspring.common.enumType.RoleType;

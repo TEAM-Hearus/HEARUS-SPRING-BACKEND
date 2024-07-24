@@ -1,4 +1,4 @@
-package com.hearus.hearusspring.data.oauth.handler;
+package com.hearus.hearusspring.data.oauth.callback.handler;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
