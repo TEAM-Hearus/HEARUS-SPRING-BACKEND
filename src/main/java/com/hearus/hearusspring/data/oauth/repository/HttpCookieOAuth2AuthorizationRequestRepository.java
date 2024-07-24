@@ -1,16 +1,17 @@
-package com.hearus.hearusspring.data.oauth.callback.repository;
+package com.hearus.hearusspring.data.oauth.repository;
 
-import com.hearus.hearusspring.data.oauth.CookieUtils;
 import com.nimbusds.oauth2.sdk.util.StringUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class HttpCookieOAuth2AuthorizationRequestRepository implements AuthorizationRequestRepository<OAuth2AuthorizationRequest> {
 
     public final CookieUtils cookieUtils;
@@ -24,6 +25,8 @@ public class HttpCookieOAuth2AuthorizationRequestRepository implements Authoriza
         OAuth2AuthorizationRequest oAuth2AuthorizationRequest =  cookieUtils.getCookie(request, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME)
                 .map(cookie -> cookieUtils.deserialize(cookie, OAuth2AuthorizationRequest.class))
                 .orElse(null);
+
+        log.info("tlqwkf{}", oAuth2AuthorizationRequest);
 
         return oAuth2AuthorizationRequest;
     }

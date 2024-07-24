@@ -3,8 +3,7 @@ package com.hearus.hearusspring.data.oauth.callback.service;
 
 import com.hearus.hearusspring.common.enumType.RoleType;
 import com.hearus.hearusspring.data.dto.UserDTO;
-import com.hearus.hearusspring.data.oauth.OAuth2UserInfoMaker;
-import com.hearus.hearusspring.data.oauth.PrincipalDetails;
+import com.hearus.hearusspring.data.oauth.callback.PrincipalDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;

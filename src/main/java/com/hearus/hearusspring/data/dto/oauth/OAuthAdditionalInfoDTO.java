@@ -1,4 +1,4 @@
-package com.hearus.hearusspring.data.oauth.dto;
+package com.hearus.hearusspring.data.dto.oauth;
 
 
 import jakarta.validation.constraints.NotNull;

@@ -1,4 +1,4 @@
-package com.hearus.hearusspring.data.oauth;
+package com.hearus.hearusspring.data.oauth.repository;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;

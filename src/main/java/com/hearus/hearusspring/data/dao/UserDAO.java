@@ -1,7 +1,7 @@
 package com.hearus.hearusspring.data.dao;
 
 import com.hearus.hearusspring.data.dto.UserDTO;
-import com.hearus.hearusspring.data.oauth.dto.OAuthAdditionalInfoDTO;
+import com.hearus.hearusspring.data.dto.oauth.OAuthAdditionalInfoDTO;
 
 import java.util.Optional;
 

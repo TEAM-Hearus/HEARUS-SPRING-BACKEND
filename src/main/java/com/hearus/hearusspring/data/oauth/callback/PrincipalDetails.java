@@ -1,4 +1,4 @@
-package com.hearus.hearusspring.data.oauth;
+package com.hearus.hearusspring.data.oauth.callback;
 
 import com.hearus.hearusspring.data.dto.UserDTO;
 import org.springframework.security.core.GrantedAuthority;

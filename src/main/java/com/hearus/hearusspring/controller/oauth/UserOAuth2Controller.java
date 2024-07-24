@@ -2,7 +2,7 @@ package com.hearus.hearusspring.controller.oauth;
 
 
 import com.hearus.hearusspring.common.CommonResponse;
-import com.hearus.hearusspring.data.oauth.dto.OAuthAdditionalInfoDTO;
+import com.hearus.hearusspring.data.dto.oauth.OAuthAdditionalInfoDTO;
 import com.hearus.hearusspring.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

@@ -5,7 +5,7 @@ import com.hearus.hearusspring.common.security.JwtTokenProvider;
 import com.hearus.hearusspring.data.dao.UserDAO;
 import com.hearus.hearusspring.data.dto.TokenDTO;
 import com.hearus.hearusspring.data.dto.UserDTO;
-import com.hearus.hearusspring.data.oauth.dto.OAuthAdditionalInfoDTO;
+import com.hearus.hearusspring.data.dto.oauth.OAuthAdditionalInfoDTO;
 import com.hearus.hearusspring.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,6 +1,7 @@
 package com.hearus.hearusspring.config;
 
 import com.hearus.hearusspring.data.oauth.callback.handler.OAuth2SuccessHandler;
+import com.hearus.hearusspring.data.oauth.repository.HttpCookieOAuth2AuthorizationRequestRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +20,7 @@ public class SecurityConfig{
     private final CorsConfig corsConfig;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
     private final OAuth2UserService oAuth2UserService;
+    private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -43,6 +45,11 @@ public class SecurityConfig{
                                 .userInfoEndpoint(c -> c.userService(oAuth2UserService))
                                 // 로그인 or 회원가입 핸들러
                                 .successHandler(oAuth2SuccessHandler)
+
+                                //커스텀 state 저장 클래스
+                                .authorizationEndpoint(custom ->
+                                        custom.authorizationRequestRepository(httpCookieOAuth2AuthorizationRequestRepository)
+                                )
                 );
 
         return http.build();

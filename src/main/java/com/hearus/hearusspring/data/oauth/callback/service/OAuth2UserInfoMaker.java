@@ -1,4 +1,4 @@
-package com.hearus.hearusspring.data.oauth;
+package com.hearus.hearusspring.data.oauth.callback.service;
 
 
 import jakarta.security.auth.message.AuthException;
