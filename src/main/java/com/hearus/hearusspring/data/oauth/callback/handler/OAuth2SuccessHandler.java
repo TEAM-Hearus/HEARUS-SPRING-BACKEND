@@ -42,36 +42,35 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         //이미 signUp이 되어 있는지 확인
         CommonResponse signUpResultResponse =  userService.signup(userDTO);
 
-        //signUp이 되어있지 않다면 그대로 결과 반환 이후 추가 정보 Post 요청 필요 (school, major, grade)
+        //signUp이 되어있지 않다면 signUp 관련 로그 작성. 이후 추가 정보 Post 요청 필요 (school, major, grade)
         if(signUpResultResponse.isSuccess()){
 
             log.info("[OAuth2SuccessHandler]-[onAuthenticationSuccess] Need Signup. Try Signup");
-            signUpResultResponse.setObject(userDTO.getUserEmail());
             log.info("[OAuth2SuccessHandler]-[onAuthenticationSuccess] Signup Result. Http status={}, Email={}",signUpResultResponse.getStatus(), userDTO.getUserEmail());
+            //signUpResultResponse.setObject(userDTO.getUserEmail());
 
             //HttpResponse Header Mapping
-            response.setStatus(signUpResultResponse.getStatus().value());
-            response.setContentType("application/json");
+            //response.setStatus(signUpResultResponse.getStatus().value());
+            //response.setContentType("application/json");
 
             //Write HttpResponse Body
-            response.getWriter().write(convertCommonResponseToJson(signUpResultResponse));
+            //response.getWriter().write(convertCommonResponseToJson(signUpResultResponse));
         }
-        //signUp이 되어 있다면 로그인 시도 후 결과 반환
-        else{
+        
+        //이후 login 시도 및 결과 반환
+        log.info("[OAuth2SuccessHandler]-[onAuthenticationSuccess] Already Sign upped User. Try Login");
+        CommonResponse loginResultResponse = userService.login(userDTO);
+        log.info("[OAuth2SuccessHandler]-[onAuthenticationSuccess] Login Result. Http status={}, JWT Token={}",loginResultResponse.getStatus(), ((TokenDTO)loginResultResponse.getObject()).getAccessToken());
 
-            log.info("[OAuth2SuccessHandler]-[onAuthenticationSuccess] Already Sign upped User. Try Login");
-            CommonResponse loginResultResponse = userService.login(userDTO);
-            log.info("[OAuth2SuccessHandler]-[onAuthenticationSuccess] Login Result. Http status={}, JWT Token={}",loginResultResponse.getStatus(), ((TokenDTO)loginResultResponse.getObject()).getAccessToken());
+
+        //HttpResponse Header Mapping
+        response.setStatus(loginResultResponse.getStatus().value());
+        response.setContentType("application/json");
+
+        //Write HttpResponse Body
+        response.getWriter().write(convertCommonResponseToJson(loginResultResponse));
 
 
-            //HttpResponse Header Mapping
-            response.setStatus(loginResultResponse.getStatus().value());
-            response.setContentType("application/json");
-
-            //Write HttpResponse Body
-            response.getWriter().write(convertCommonResponseToJson(loginResultResponse));
-
-        }
 
     }
 
