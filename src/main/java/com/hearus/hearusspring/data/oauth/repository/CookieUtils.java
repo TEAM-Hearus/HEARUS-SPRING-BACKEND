@@ -3,6 +3,7 @@ package com.hearus.hearusspring.data.oauth.repository;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
 import org.springframework.util.SerializationUtils;
 
@@ -27,8 +28,10 @@ public class CookieUtils {
     public void addCookie(HttpServletResponse response, String name, String value, int maxAge) {
         Cookie cookie = new Cookie(name, value);
         cookie.setPath("/");
-        cookie.setHttpOnly(true);
+        //cookie.setHttpOnly(true);
         cookie.setMaxAge(maxAge);
+        cookie.setDomain("localhost");
+        response.setHeader("Set-Cookie", "cookieName=cookieValue; Path=/; Secure; HttpOnly; SameSite=None");
         response.addCookie(cookie);
     }
 
