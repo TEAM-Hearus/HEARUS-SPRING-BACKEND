@@ -56,31 +56,4 @@ public class UserAuthController {
         LOGGER.info("[UserAuthController]-[signupUser] {} : {}", response.getStatus(), response.getMsg());
         return ResponseEntity.status(response.getStatus()).body(response);
     }
-
-    @PutMapping(value="/updateUser")
-    public ResponseEntity<CommonResponse> updateUser(@Valid @RequestBody UserDTO userDTO){
-        LOGGER.info("[UserAuthController]-[updateUser] API Call");
-
-        // 요구되는 데이터 존재 여부 검증
-        if(userDTO.getUserEmail().isEmpty() || userDTO.getUserPassword().isEmpty()){
-            LOGGER.info("[UserAuthController]-[signupUser] Failed : Empty Variables");
-            CommonResponse response = new CommonResponse(false,HttpStatus.BAD_REQUEST,"Empty Variables");
-            return ResponseEntity.status(response.getStatus()).body(response);
-        }
-
-        // UserService로 요청받은 UserDTO 수정 요청
-        CommonResponse response = userService.updateUser(userDTO);
-
-        LOGGER.info("[UserAuthController]-[signupUser] {} : {}", response.getStatus(), response.getMsg());
-        return ResponseEntity.status(response.getStatus()).body(response);
-    }
-
-    @GetMapping(value="/getUser")
-    public ResponseEntity<CommonResponse> getUser(@RequestParam("token") String accessToken){
-        LOGGER.info("[UserAuthController]-[getUser] API Call");
-
-        CommonResponse response = userService.getUserByToken(accessToken);
-
-        return ResponseEntity.status(response.getStatus()).body(response);
-    }
 }

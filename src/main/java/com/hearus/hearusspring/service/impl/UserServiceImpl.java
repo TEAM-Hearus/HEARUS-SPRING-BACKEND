@@ -86,7 +86,9 @@ public class UserServiceImpl  implements UserService {
         Optional<UserDTO> userById = userDAO.getUserById(targetUserId);
 
         if(userById.isPresent()){
-            return new CommonResponse(true, HttpStatus.OK, "Success Search User", userById.get());
+            UserDTO userDTO = userById.get();
+            userDTO.setUserPassword("");
+            return new CommonResponse(true, HttpStatus.OK, "Success Search User", userDTO);
         }
         else{
             return new CommonResponse(false, HttpStatus.NOT_FOUND, "User not found");
@@ -108,27 +110,10 @@ public class UserServiceImpl  implements UserService {
         }
     }
 
-    public CommonResponse updateUser(UserDTO userDTO) {
+    @Override
+    public CommonResponse updateUser(String userId, UserDTO userDTO) {
         try{
-            Optional<UserDTO> userByEmail = userDAO.getUserByEmail(userDTO.getUserEmail());
-            UserDTO findUserDTO;
-
-            //Search User Validation
-            if(userByEmail.isPresent())
-                //Success Search User
-                findUserDTO = userByEmail.get();
-            else{
-                //Fail Search User
-                log.info("[UserService]-[login] User not found : {}", userDTO.getUserEmail());
-                return new CommonResponse(false, HttpStatus.NOT_FOUND,"User not found");
-            }
-
-            //Password Validation
-            if(!passwordEncoder.matches(userDTO.getUserPassword(), findUserDTO.getUserPassword())) {
-                //Fail Password Match
-                log.info("[UserService]-[login] Invalid User Info");
-                return new CommonResponse(false, HttpStatus.UNAUTHORIZED, "Invalid User Info");
-            }
+            UserDTO findUserDTO = userDAO.getUserById(userId).get();
 
             // Set Updated Data
             if(userDTO.getUserName() != null)
@@ -147,25 +132,6 @@ public class UserServiceImpl  implements UserService {
         }catch (Exception e){
             log.error("Failed to Update User", e);
             return new CommonResponse(false, HttpStatus.INTERNAL_SERVER_ERROR, "Failed to Update User");
-        }
-    }
-
-    @Override
-    public CommonResponse getUserByToken(String accessToken) {
-        log.info("[UserService]-[getUserByToken] AccessToken으로 User 정보 찾기 요청");
-        try {
-            if (jwtTokenProvider.validateAccessToken(accessToken)) {
-                String userId = jwtTokenProvider.getTokenInfo(accessToken);
-                UserDTO userDTO = (UserDTO) getUserById(userId).getObject();
-                userDTO.setUserId("");
-                userDTO.setUserPassword("");
-
-                return new CommonResponse(false, HttpStatus.OK, "User Information fetched", userDTO);
-            }else{
-                return new CommonResponse(false, HttpStatus.UNAUTHORIZED, "Invalid Access Token");
-            }
-        }catch (Exception e){
-            return new CommonResponse(false, HttpStatus.INTERNAL_SERVER_ERROR, "Failed to get User by Access Token");
         }
     }
 }
