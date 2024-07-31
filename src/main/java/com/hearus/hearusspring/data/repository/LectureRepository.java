@@ -16,4 +16,6 @@ public interface LectureRepository extends MongoRepository<LectureModel, String>
 
     // DELETE
     void deleteById(String id);
+
+    List<LectureModel> findByScheduleElementId(String scheduleElementId);
 }

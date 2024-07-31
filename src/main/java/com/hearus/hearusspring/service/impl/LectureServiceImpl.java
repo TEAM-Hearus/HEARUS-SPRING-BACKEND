@@ -54,6 +54,9 @@ public class LectureServiceImpl implements LectureService {
     }
 
     @Override
+    public CommonResponse getLectureByScheduleElementId(String scheduleElementId) { return lectureDAO.getLectureByScheduleElementId(scheduleElementId); }
+
+    @Override
     public CommonResponse getAllLecture(String userId) {
         return lectureDAO.getAllLecture(userId);
     }

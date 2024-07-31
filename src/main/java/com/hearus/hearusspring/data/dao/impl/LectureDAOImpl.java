@@ -182,6 +182,29 @@ public class LectureDAOImpl implements LectureDAO {
         }
     }
 
+    @Override
+    public CommonResponse getLectureByScheduleElementId(String scheduleElementId) {
+        try {
+            List<LectureModel> lectures = lectureRepository.findByScheduleElementId(scheduleElementId);
+
+            if (lectures.isEmpty())
+                return new CommonResponse(false, HttpStatus.NOT_FOUND, "No lectures found for the given scheduleElementId");
+
+            // processedScript와 problems를 null로 설정
+            List<LectureModel> simplifiedLectures = lectures.stream()
+                    .peek(lecture -> {
+                        lecture.setProcessedScript(null);
+                        lecture.setProblems(null);
+                    })
+                    .toList();
+
+            return new CommonResponse(true, HttpStatus.OK, "Lectures retrieved successfully", simplifiedLectures);
+        } catch (Exception e) {
+            log.error("Failed to get Lectures for scheduleElementId: " + scheduleElementId, e);
+            return new CommonResponse(false, HttpStatus.INTERNAL_SERVER_ERROR, "Failed to get Lectures");
+        }
+    }
+
     @Transactional
     @Override
     public CommonResponse getAllLecture(String userId) {

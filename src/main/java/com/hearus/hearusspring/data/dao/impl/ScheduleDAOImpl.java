@@ -175,6 +175,5 @@ public class ScheduleDAOImpl implements ScheduleDAO {
         }catch (Exception e){
             return null;
         }
-
     }
 }

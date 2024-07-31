@@ -174,6 +174,17 @@ public class LectureController {
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 
+    @GetMapping("/getLectureByScheduleElement")
+    public ResponseEntity<CommonResponse> getLectureByScheduleElement(@RequestParam("scheduleElementId") String scheduleElementId) {
+        log.info("[LectureController]-[getLectureByScheduleElement] API Call");
+        if(scheduleElementId.isEmpty()){
+            response = new CommonResponse(false, HttpStatus.BAD_REQUEST,"Empty scheduleElementId");
+            return ResponseEntity.status(response.getStatus()).body(response);
+        }
+        response = lectureService.getLectureByScheduleElementId(scheduleElementId);
+        return ResponseEntity.status(response.getStatus()).body(response);
+    }
+
     @GetMapping("/getProblem")
     public ResponseEntity<CommonResponse> getProblem(@RequestParam("lectureId") String lectureId) {
         log.info("[LectureController]-[getLecture] API Call");
