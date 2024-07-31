@@ -9,4 +9,6 @@ public interface UserService {
     CommonResponse signup(UserDTO user);
     CommonResponse getUserById(String targetUserId);
     CommonResponse addInformation(OAuthAdditionalInfoDTO oAuthAdditionalInfoDTO);
+    CommonResponse updateUser(UserDTO user);
+    CommonResponse getUserByToken(String accessToken);
 }

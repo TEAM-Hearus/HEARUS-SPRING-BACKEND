@@ -43,7 +43,6 @@ public class UserController {
 
         CommonResponse result = userService.getUserById(userIdFromContext);
         return ResponseEntity.status(result.getStatus()).body(result);
-
     }
 
 

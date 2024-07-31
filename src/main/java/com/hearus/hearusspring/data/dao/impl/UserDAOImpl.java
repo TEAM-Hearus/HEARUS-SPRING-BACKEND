@@ -1,5 +1,6 @@
 package com.hearus.hearusspring.data.dao.impl;
 
+import com.hearus.hearusspring.common.CommonResponse;
 import com.hearus.hearusspring.data.dao.UserDAO;
 import com.hearus.hearusspring.data.dto.UserDTO;
 import com.hearus.hearusspring.data.entitiy.UserEntity;
@@ -7,6 +8,7 @@ import com.hearus.hearusspring.data.dto.oauth.OAuthAdditionalInfoDTO;
 import com.hearus.hearusspring.data.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,6 +59,18 @@ public class UserDAOImpl implements UserDAO {
 
         userRepository.save(user);
         log.info("[UserDAO]-[userSignup] UserEntitiy 저장 성공 : {}", user.getEmail());
+
+        return true;
+    }
+
+    @Override
+    public boolean updateUser(UserDTO userDTO) {
+        // 비밀번호 인코딩 없이 그대로 저장하기 위해
+        // passwordEncoder 없이 Entitiy로 변환
+        UserEntity user = userDTO.toEntitiy();
+
+        userRepository.save(user);
+        log.info("[UserDAO]-[userSignup] UserEntitiy 수정 성공 : {}", user.getEmail());
 
         return true;
     }

@@ -48,6 +48,30 @@ public class UserDTO {
 
     String userUsePurpose;
 
+    // 비밀번호 인코딩 없이 비밀번호를 업데이트하기 위해서 오버로딩한 메소드
+    public UserEntity toEntitiy(){
+
+        String stringSchedule = null;
+        if(!userSchedule.isEmpty())
+            stringSchedule = String.join(",", userSchedule);
+
+        return UserEntity.builder()
+                .id(userId)
+                .name(userName)
+                .email(userEmail)
+                .password(userPassword)
+                .role(userRole)
+                .isOAuth(userIsOAuth)
+                .oauthType(userOAuthType)
+                .school(userSchool)
+                .major(userMajor)
+                .grade(userGrade)
+                .savedLectures(userSavedLectures)
+                .schedule(stringSchedule)
+                .usePurpose(userUsePurpose)
+                .build();
+    }
+
     public UserEntity toEntitiy(PasswordEncoder passwordEncoder){
 
         String stringSchedule = null;
