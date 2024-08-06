@@ -5,6 +5,7 @@ import jakarta.security.auth.message.AuthException;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
 
@@ -12,6 +13,7 @@ import static com.hearus.hearusspring.common.exception.AuthException.ILLEGAL_REG
 
 @Builder
 @Getter
+@Slf4j
 public class OAuth2UserInfoMaker {
     private String name;
     private String email;
@@ -38,11 +40,12 @@ public class OAuth2UserInfoMaker {
     private static OAuth2UserInfoMaker ofKakao(Map<String, Object> attributes) {
         Map<String, Object> account = (Map<String, Object>) attributes.get("kakao_account");
         Map<String, Object> profile = (Map<String, Object>) account.get("profile");
+        log.info(attributes.toString());
 
         return OAuth2UserInfoMaker.builder()
                 .name((String) profile.get("nickname"))
                 .email((String) account.get("email"))
-                .id((String) attributes.get("id"))
+                .id(String.valueOf(attributes.get("id")))
                 .build();
     }
 
