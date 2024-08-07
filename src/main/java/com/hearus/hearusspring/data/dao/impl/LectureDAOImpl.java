@@ -3,6 +3,7 @@ package com.hearus.hearusspring.data.dao.impl;
 import com.hearus.hearusspring.common.CommonResponse;
 import com.hearus.hearusspring.data.dao.LectureDAO;
 import com.hearus.hearusspring.data.entitiy.UserEntity;
+import com.hearus.hearusspring.data.entitiy.schedule.ScheduleElementEntity;
 import com.hearus.hearusspring.data.model.LectureModel;
 import com.hearus.hearusspring.data.model.Problem;
 import com.hearus.hearusspring.data.repository.LectureRepository;
@@ -176,6 +177,17 @@ public class LectureDAOImpl implements LectureDAO {
             LectureModel lecture = lectureRepository.findFirstById(lectureId);
             if(lecture == null)
                 return new CommonResponse(false, HttpStatus.NOT_FOUND, "Lecture doesn't exists");
+
+            if(lecture.getScheduleElementId() != null) {
+                ScheduleElementEntity scheduleElement = scheduleElementRepository.findFirstById(Long.valueOf(lecture.getScheduleElementId()));
+                if(scheduleElement != null) {
+                    lecture.setScheduleElementId(scheduleElement.getName());
+                }else{
+                    lecture.setScheduleElementId(null);
+                    lectureRepository.save(lecture);
+                }
+            }
+
             return new CommonResponse(true, HttpStatus.OK, "LectureModel", lecture);
         }catch (Exception e){
             return new CommonResponse(false, HttpStatus.INTERNAL_SERVER_ERROR, "Failed to get Lecture");
