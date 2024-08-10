@@ -269,8 +269,12 @@ public class LectureController {
                         Map<String, List<String>> responseMap = objectMapper.readValue(result.getBody(), new TypeReference<Map<String, List<String>>>() {});
 
                         if (responseMap != null && responseMap.containsKey("processedScript")) {
+                            // ., 패턴을 .로 replace
+                            List<String> responseScript = responseMap.get("processedScript");
+                            responseScript.replaceAll(s -> s.replaceAll("\\.,", "."));
+
                             // processedScript 키에 해당하는 리스트 추출
-                            newProcessedScript.addAll(responseMap.get("processedScript"));
+                            newProcessedScript.addAll(responseScript);
                             log.info("[LectureController]-[restructureScript] processedScript updated successfully");
                             start = end;
                         } else {
