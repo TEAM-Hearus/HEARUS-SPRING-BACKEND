@@ -49,8 +49,8 @@ public class LectureServiceImpl implements LectureService {
     }
 
     @Override
-    public CommonResponse getLecture(String lectureId) {
-        return lectureDAO.getLecture(lectureId);
+    public CommonResponse getLecture(String lectureId, boolean changeScheduleElementID) {
+        return lectureDAO.getLecture(lectureId, changeScheduleElementID);
     }
 
     @Override

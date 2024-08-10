@@ -8,6 +8,7 @@ import com.hearus.hearusspring.data.dto.ProblemReqDTO;
 import com.hearus.hearusspring.data.model.LectureModel;
 import com.hearus.hearusspring.data.model.Problem;
 import com.hearus.hearusspring.service.LectureService;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,8 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -39,6 +42,9 @@ public class LectureController {
     private ConfigUtil configUtil;
 
     private CommonResponse response;
+
+    // Request를 Slice하여 Restructure요청할 때의 SIZE
+    private final int SLICE_SIZE = 4;
 
     private String getUserIdFromContext(){
         // SecurityContext에서 Authentication으로 UserID를 받아온다
@@ -170,7 +176,7 @@ public class LectureController {
             response = new CommonResponse(false, HttpStatus.BAD_REQUEST,"Empty LectureId");
             return ResponseEntity.status(response.getStatus()).body(response);
         }
-        response = lectureService.getLecture(lectureId);
+        response = lectureService.getLecture(lectureId, true);
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 
@@ -192,7 +198,7 @@ public class LectureController {
             response = new CommonResponse(false, HttpStatus.BAD_REQUEST,"Empty LectureId");
             return ResponseEntity.status(response.getStatus()).body(response);
         }
-        response = lectureService.getLecture(lectureId);
+        response = lectureService.getLecture(lectureId, false);
 
         LectureModel lecture = (LectureModel) response.getObject();
         response.setObject(lecture.getProblems());
@@ -207,6 +213,88 @@ public class LectureController {
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 
+    @GetMapping("/restructureScript")
+    public DeferredResult<ResponseEntity<CommonResponse>> restructureScript(@RequestParam("lectureId") String lectureId) {
+        log.info("[LectureController]-[restructureScript] API Call");
+        String fastAPIEndpoint = configUtil.getProperty("FAST_API_ENDPOINT");
+
+        // Timeout 시간을 5분으로 설정
+        long timeoutInMillis = 5 * 60 * 1000;
+        DeferredResult<ResponseEntity<CommonResponse>> deferredResult = new DeferredResult<>(timeoutInMillis);
+
+        CompletableFuture.runAsync(() -> {
+            try{
+                // LectureId로 Model을 가져와 processedScript에 저장
+                LectureModel lectureModel = (LectureModel) lectureService.getLecture(lectureId, false).getObject();
+                List<String> processedScript = lectureModel.getProcessedScript();
+                List<String> newProcessedScript = new ArrayList<>();
+
+                int start = 0, end;
+                int requestLen = processedScript.size() / SLICE_SIZE;
+                if(processedScript.size() % SLICE_SIZE != 0)
+                    requestLen++;
+
+                for(int i = 0;i < requestLen;i++) {
+                    end = start + SLICE_SIZE;
+                    if(end > processedScript.size())
+                        end = processedScript.size();
+
+                    log.info("[LectureController]-[restructureScript] restructuring script {} ~ {}", start, end);
+                    Map<String, List<String>> requestMap = new HashMap<>();
+                    requestMap.put("processedScript", new ArrayList<>(processedScript.subList(start, end)));
+
+                    String jsonBody = new ObjectMapper().writeValueAsString(requestMap);
+
+                    // FastAPI 비동기 요청 보내기
+                    RestTemplate restTemplate = new RestTemplate();
+
+                    // UTF-8 인코딩을 사용하는 StringHttpMessageConverter 설정
+                    StringHttpMessageConverter converter = new StringHttpMessageConverter(StandardCharsets.UTF_8);
+                    converter.setWriteAcceptCharset(false);
+                    restTemplate.getMessageConverters().add(0, converter);
+
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.setContentType(MediaType.APPLICATION_JSON);
+                    HttpEntity<String> entity = new HttpEntity<>(jsonBody, headers);
+
+                    ResponseEntity<String> result = restTemplate.postForEntity(
+                            fastAPIEndpoint + "/restructure_script",
+                            entity,
+                            String.class
+                    );
+
+                    if (result.getStatusCode() == HttpStatus.OK) {
+                        // JSON 문자열을 Map으로 파싱
+                        ObjectMapper objectMapper = new ObjectMapper();
+                        Map<String, List<String>> responseMap = objectMapper.readValue(result.getBody(), new TypeReference<Map<String, List<String>>>() {});
+
+                        if (responseMap != null && responseMap.containsKey("processedScript")) {
+                            // processedScript 키에 해당하는 리스트 추출
+                            newProcessedScript.addAll(responseMap.get("processedScript"));
+                            log.info("[LectureController]-[restructureScript] processedScript updated successfully");
+                            start = end;
+                        } else {
+                            log.error("[LectureController]-[restructureScript] 'processedScript' key not found in the response");
+                            i--;
+                        }
+                    } else
+                        log.error("[LectureController]-[restructureScript] restructure script failed {} ~ {}", start, end);
+                }
+
+                lectureModel.setProcessedScript(newProcessedScript);
+                response = lectureService.updateLecture(lectureModel);
+            } catch (Exception e) {
+                log.error("[LectureController]-[restructureScript] {}", e.getStackTrace());
+                response = new CommonResponse(false, HttpStatus.INTERNAL_SERVER_ERROR, "Restructure Script Failed with Internal Server Error");
+            } finally {
+                log.info("[LectureController]-[restructureScript] {}", response.getMsg());
+                deferredResult.setResult(ResponseEntity.status(response.getStatus()).body(response));
+            }
+        });
+
+        return deferredResult;
+    }
+
     @PostMapping(value="/generateProblems")
     public DeferredResult<ResponseEntity<CommonResponse>> generateProblems(@Valid @RequestBody ProblemReqDTO requestBody){
         log.info("[LectureController]-[generateProblem] API Call");
@@ -219,7 +307,7 @@ public class LectureController {
         CompletableFuture.runAsync(() -> {
             try{
                 // LectureId로 Model을 가져와 내부의 Script를 하나로 합친 후 requestBody에 적용
-                LectureModel lectureModel = (LectureModel) lectureService.getLecture(requestBody.getLectureId()).getObject();
+                LectureModel lectureModel = (LectureModel) lectureService.getLecture(requestBody.getLectureId(), false).getObject();
                 requestBody.setScript(String.join(" ", lectureModel.getProcessedScript()));
 
                 String jsonBody = new ObjectMapper().writeValueAsString(requestBody);

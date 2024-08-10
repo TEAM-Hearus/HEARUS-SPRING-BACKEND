@@ -172,13 +172,13 @@ public class LectureDAOImpl implements LectureDAO {
     }
 
     @Override
-    public CommonResponse getLecture(String lectureId) {
+    public CommonResponse getLecture(String lectureId, boolean changeScheduleElementID) {
         try{
             LectureModel lecture = lectureRepository.findFirstById(lectureId);
             if(lecture == null)
                 return new CommonResponse(false, HttpStatus.NOT_FOUND, "Lecture doesn't exists");
 
-            if(lecture.getScheduleElementId() != null) {
+            if(changeScheduleElementID && lecture.getScheduleElementId() != null) {
                 ScheduleElementEntity scheduleElement = scheduleElementRepository.findFirstById(Long.valueOf(lecture.getScheduleElementId()));
                 if(scheduleElement != null) {
                     lecture.setScheduleElementId(scheduleElement.getName());

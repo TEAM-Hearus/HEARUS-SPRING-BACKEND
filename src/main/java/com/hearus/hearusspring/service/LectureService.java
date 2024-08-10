@@ -14,7 +14,7 @@ public interface LectureService {
     CommonResponse addProblem(String lectureId, Problem problem);
     CommonResponse updateProblem(String lectureId, String problemId, Problem newProblem);
     CommonResponse deleteProblem(String lectureId, String problemId);
-    CommonResponse getLecture(String lectureId);
+    CommonResponse getLecture(String lectureId, boolean changeScheduleElementID);
     CommonResponse getLectureByScheduleElementId(String scheduleElementId);
     CommonResponse getAllLecture(String userId);
 }
