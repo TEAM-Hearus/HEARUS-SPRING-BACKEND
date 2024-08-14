@@ -43,7 +43,7 @@ public class AudioConverter {
         tempOutputFile.deleteOnExit();
 
         // Use FFmpeg to convert the audio data
-        FFmpeg ffmpeg = new FFmpeg(ffmpegConfig.getFFmpegPath());
+        FFmpeg ffmpeg = new FFmpeg("ffmpeg");
         FFmpegBuilder builder = new FFmpegBuilder()
                 .setInput(tempInputFile.getAbsolutePath())
                 .overrideOutputFiles(true)
