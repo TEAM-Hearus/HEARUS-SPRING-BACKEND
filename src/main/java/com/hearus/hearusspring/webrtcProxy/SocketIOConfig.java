@@ -18,6 +18,8 @@ public class SocketIOConfig {
         com.corundumstudio.socketio.Configuration config = new com.corundumstudio.socketio.Configuration();
         config.setHostname(configUtil.getProperty("socketio.host"));
         config.setPort(Integer.parseInt(configUtil.getProperty("socketio.port")));
+        config.setOrigin("*");
+        config.setAllowCustomRequests(true);
         config.setTransports(Transport.WEBSOCKET, Transport.POLLING);
 
         return new SocketIOServer(config);
