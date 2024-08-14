@@ -40,7 +40,7 @@ public class WebRTCProxy {
     @Autowired
     public WebRTCProxy(SocketIOServer server, ConfigUtil configUtil) {
         this.server = server;
-        this.FastAPIEndpoint = configUtil.getProperty("FAST_API_ENDPOINT");
+        this.FastAPIEndpoint = configUtil.getProperty("FAST_API_WS_ENDPOINT");
         this.namespace = server.addNamespace("/webrtc");
         this.namespace.addConnectListener(onConnected());
         this.namespace.addDisconnectListener(onDisconnected());
@@ -68,10 +68,12 @@ public class WebRTCProxy {
                         fastAPIWebSocket.connectBlocking();
                         fastAPIWebSocket.send(String.valueOf(UUID.randomUUID()));
                     }
-                } catch (Exception e) {
-                    // Handle connection exceptions
-                    e.printStackTrace();
-                    log.info("[WebRTCProxy]-[connectFastAPI] WebSocket Connection Failed {}", fastAPIWSURI);
+                } catch (InterruptedException e) {
+                    log.error("[WebRTCProxy]-[connectFastAPI] WebSocket connection interrupted: ", e);
+                }
+                catch (Exception e) {
+                    log.error("[WebRTCProxy]-[connectFastAPI] WebSocket connection failed: ", e);
+                    log.info("[WebRTCProxy]-[connectFastAPI] {}", fastAPIWSURI);
                 }
             }
         }, 0, 60);
