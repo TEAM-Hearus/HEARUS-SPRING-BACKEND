@@ -18,7 +18,7 @@ public class FilterConfig {
     }
     };
 
-    public static boolean isFilteringUri(String uri){
+    public static boolean isFilteringUri(String uri) {
         //필터링할 uri인지 확인
         Optional<String> matchingUri = filteringUris.stream()
                 .filter(uri::startsWith)
