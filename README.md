@@ -4,22 +4,21 @@ Hearus는 대학교 교내 청각장애 학우 대필지원 도우미 활동에�
 인공지능을 활용한 실시간 음성 텍스트 변환과 문제 생성, 하이라이팅 기능을 지닌 서비스입니다.
 
 ## 기술 스택
-- Java OpenJDK 21.0.2
-- Spring Boot
-- MariaDB
-- MongoDB
-- WebSocket & Socket.IO
-- JWT for authentication
-- Lombok
-- Swagger UI for API documentation
-- Thymeleaf template engine
+| Category | Technology |
+|----------|------------|
+| Language | Java OpenJDK 21.0.2 |
+| Framework | Spring Boot |
+| Databases | MariaDB, MongoDB |
+| Real-time Communication | WebSocket, Socket.IO |
+| Authentication | JWT |
+| Development Tools | Lombok |
+| API Documentation | Swagger UI |
+| Template Engine | Thymeleaf |
 
 ## 주요 기능
-1. **실시간 음성-텍스트 변환**: OpenAI Whisper 모델을 활용한 강의 내용의 실시간 자막 제공
-2. **AI 기반 중요 단어 하이라이팅**: Ollama 및 llama3 모델을 이용한 핵심 키워드와 중요 개념 자동 하이라이팅
-3. **AI 맞춤형 문제 생성**: llama3 모델을 활용한 다양한 유형의 학습 문제 자동 생성
-4. **시간표 형식의 스크립트 관리**: 변환된 강의 스크립트의 직관적인 관리 및 검색 기능
-5. **장애 학우 접근성 강화 UI/UX**: 장애인을 위한 UI/UX 가이드라인을 준수한 인터페이스
+1. **실시간 음성-텍스트 변환**: Spring Boot에서 Socketio와 Web Socket을 활용하여 실시간 음성/텍스트 통신을 구현합니다.
+2. **AI 기반 중요 단어 하이라이팅**, **AI 맞춤형 문제 생성** : FE에서의 해당 기능 요청에 대해 DB를 조회하고 적절한 형태로 변경하여 FastAPI에 요청합니다.
+3. **시간표 형식의 스크립트 관리**: 시간표 형태로 데이터를 관리하기 위해 MariaDB, MongoDB간의 관계를 정의하고 제어합니다.
 
 ## MVP Model
 ![image](https://github.com/user-attachments/assets/6b86e0fc-93fa-4fc4-a77f-1750009f4488)
@@ -37,14 +36,13 @@ Hearus는 대학교 교내 청각장애 학우 대필지원 도우미 활동에�
 
 ### 필수 요구사항
 - Java OpenJDK 21.0.2
-- Maven 또는 Gradle
-- MariaDB
-- MongoDB
+- Gradle
+- MariaDB, MongoDB
 
 ### 설치 및 실행
 1. 레포지토리 클론
    ```
-   git clone [https://github.com/your-repo/hearus.git](https://github.com/TEAM-Hearus/HEARUS-SPRING-BACKEND)
+   git clone https://github.com/TEAM-Hearus/HEARUS-SPRING-BACKEND
    ```
 
 2. 프로젝트 디렉토리로 이동
@@ -64,7 +62,7 @@ Hearus는 대학교 교내 청각장애 학우 대필지원 도우미 활동에�
 
 ## API Document
 ![image](https://github.com/user-attachments/assets/420525e2-92cb-4bea-8357-a431928b0115)
-최신 API의 경우 Postman Document=를 통해 API 문서를 확인할 수 있습니다. </br>
+최신 API의 경우 Postman Document를 통해 API 문서를 확인할 수 있습니다. </br>
 각 API에 대한 example 또한 확인할 수 있습니다.
 ```
 https://documenter.getpostman.com/view/27822864/2sA2r82ix2
