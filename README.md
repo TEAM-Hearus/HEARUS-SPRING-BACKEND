@@ -14,10 +14,10 @@ Hearus는 대학교 교내 청각장애 학우 대필지원 도우미 활동에�
 ![image](https://github.com/user-attachments/assets/9f5b7d43-2c31-444d-bd72-578293aa8edc)
 
 ## 주요 기능
-1. **실시간 음성-텍스트 변환**: Spring Boot에서 Socketio와 Web Socket을 활용하여 실시간 음성/텍스트 통신을 구현합니다.
-2. **AI 기반 중요 단어 하이라이팅**, **AI 맞춤형 문제 생성** : FE에서의 해당 기능 요청에 대해 DB를 조회하고 적절한 형태로 변경하여 FastAPI에 요청합니다.
-3. **시간표 형식의 스크립트 관리**: 시간표 형태로 데이터를 관리하기 위해 MariaDB, MongoDB간의 관계를 정의하고 제어합니다.
-
+1. **실시간 음성-텍스트 변환**: Spring Boot에서 Socketio와 Web Socket을 활용하여 실시간 음성/텍스트 통신을 구현
+2. **AI 기반 중요 단어 하이라이팅**, **AI 맞춤형 문제 생성** : 기능 요청에 대해 DB를 조회하고 적절한 형태로 변형하여 FastAPI에 요청
+3. **시간표 형식의 스크립트 관리**: 시간표 형태로 데이터를 관리하기 위해 MariaDB, MongoDB간의 관계를 정의하고 제어
+4. 
 ## 기술 스택
 | Category | Technology |
 |----------|------------|
