@@ -10,7 +10,7 @@ Hearus는 대학교 교내 청각장애 학우 대필지원 도우미 활동에�
 - Spring Security를 활용한 보안 및 인증 시스템 통합
 - WebSocket 및 Socket.IO를 이용한 실시간 음성인식 서버 구축
 
-## Entitiy-Relation-Diagram
+## Entitiy-Relationship-Diagram
 ![image](https://github.com/user-attachments/assets/9f5b7d43-2c31-444d-bd72-578293aa8edc)
 
 ## 주요 기능
