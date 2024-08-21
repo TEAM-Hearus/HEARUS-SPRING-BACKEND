@@ -29,9 +29,7 @@ public class UserDTO {
     String userName;
 
     @Email
-    @NotNull
     String userEmail;
-    @NotNull
     String userPassword;
 
     String userRole = RoleType.USER.getKey();
