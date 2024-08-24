@@ -23,7 +23,7 @@ public class AudioConverter {
         this.ffmpegConfig = ffmpegConfig;
     }
 
-    public byte[] convertAudio(byte[] decodedBytes) throws Exception {
+    public byte[] convertAudio(byte[] decodedBytes) throws IOException {
         // Create an input stream from the decoded bytes
         InputStream inputStream = new ByteArrayInputStream(decodedBytes);
 
@@ -54,9 +54,9 @@ public class AudioConverter {
         // Use FFmpeg to convert the audio data
         FFmpeg ffmpeg = new FFmpeg("ffmpeg");
         FFmpegBuilder builder = new FFmpegBuilder()
-                .setInput(String.valueOf(tempInputFile.getAbsoluteFile()))
+                .setInput(tempInputFile.getAbsolutePath())
                 .overrideOutputFiles(true)
-                .addOutput(tempOutputFile.getAbsoluteFile().toURI())
+                .addOutput(tempOutputFile.getAbsolutePath())
                 .setAudioCodec("pcm_s16le")
                 .setAudioChannels(1)
                 .setAudioSampleRate(16000)
