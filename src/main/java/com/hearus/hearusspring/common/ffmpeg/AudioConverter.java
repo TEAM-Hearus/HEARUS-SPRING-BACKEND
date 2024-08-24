@@ -28,7 +28,7 @@ public class AudioConverter {
         InputStream inputStream = new ByteArrayInputStream(decodedBytes);
 
         // Create a temporary file to store the audio data
-        File tempInputFile = File.createTempFile("temp_audio_input", ".webm");
+        File tempInputFile = File.createTempFile("/tmp/temp_audio_input", ".webm");
         tempInputFile.deleteOnExit();
 
         // Write the audio data from the InputStream to the temporary file
@@ -41,7 +41,7 @@ public class AudioConverter {
         }
 
         // Create a temporary file to store the converted audio data
-        File tempOutputFile = File.createTempFile("temp_audio_output", ".raw");
+        File tempOutputFile = File.createTempFile("/tmp/temp_audio_output", ".raw");
         tempOutputFile.deleteOnExit();
 
         // Set read and write permissions for owner, group, and others
