@@ -18,6 +18,9 @@ import org.springframework.stereotype.Component;
 import java.net.URI;
 import java.nio.ByteBuffer;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Slf4j
 @Component
@@ -109,33 +112,44 @@ public class WebRTCProxy {
         };
     }
 
+    private final ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
     private DataListener<String> audioListener() {
         return (client, audioData, ackSender) -> {
-            try {
-                if (audioData == null) {
-                    log.error("[WebRTCProxy]-[Socketio] Audio data is null");
-                    return;
-                }
-
-                // Decode Base64 string to byte array
-                byte[] decodedBytes = Base64.getDecoder().decode(audioData);
-                // Convert to codec : pcm_s16le, format : s16le
-                byte[] convertedBytes = audioConverter.convertAudio(decodedBytes);
-
-                if (fastAPIWebSocket != null && fastAPIWebSocket.isOpen()) {
-                    // Wrap converted bytes in ByteBuffer
-                    ByteBuffer byteBuffer = ByteBuffer.wrap(convertedBytes);
-
-                    //log.info("[WebRTCProxy]-[Socketio] Forwarding audio data to FastAPI server [{}]", convertedBytes.length);
-
-                    // Send binary data using fastAPISession
-                    fastAPIWebSocket.send(byteBuffer);
-                } else {
-                    log.error("[WebRTCProxy]-[Socketio] FastAPI WebSocket is not connected");
-                }
-            } catch (Exception ex) {
-                log.error("[WebRTCProxy]-[Socketio] Exception", ex);
+            if (audioData == null) {
+                log.error("[WebRTCProxy]-[Socketio] Audio data is null");
+                return;
             }
+
+            CompletableFuture.supplyAsync(() -> {
+                try {
+                    // Decode Base64 string to byte array
+                    byte[] decodedBytes = Base64.getDecoder().decode(audioData);
+                    // Convert to codec : pcm_s16le, format : s16le
+                    return audioConverter.convertAudio(decodedBytes);
+                } catch (Exception ex) {
+                    log.error("[WebRTCProxy]-[Socketio] Exception during audio conversion", ex);
+                    throw new RuntimeException(ex);
+                }
+            }, executorService).thenAccept(convertedBytes -> {
+                try {
+                    if (fastAPIWebSocket != null && fastAPIWebSocket.isOpen()) {
+                        // Wrap converted bytes in ByteBuffer
+                        ByteBuffer byteBuffer = ByteBuffer.wrap(convertedBytes);
+
+                        //log.info("[WebRTCProxy]-[Socketio] Forwarding audio data to FastAPI server [{}]", convertedBytes.length);
+
+                        // Send binary data using fastAPISession
+                        fastAPIWebSocket.send(byteBuffer);
+                    } else {
+                        log.error("[WebRTCProxy]-[Socketio] FastAPI WebSocket is not connected");
+                    }
+                } catch (Exception ex) {
+                    log.error("[WebRTCProxy]-[Socketio] Exception during WebSocket send", ex);
+                }
+            }).exceptionally(ex -> {
+                log.error("[WebRTCProxy]-[Socketio] Unhandled exception in audio processing", ex);
+                return null;
+            });
         };
     }
 }
