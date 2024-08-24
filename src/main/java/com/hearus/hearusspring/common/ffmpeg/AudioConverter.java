@@ -31,6 +31,9 @@ public class AudioConverter {
         File tempInputFile = File.createTempFile("/tmp/temp_audio_input", ".webm");
         tempInputFile.deleteOnExit();
 
+        Files.setPosixFilePermissions(tempInputFile.toPath(),
+                PosixFilePermissions.fromString("rw-rw-rw-"));
+
         // Write the audio data from the InputStream to the temporary file
         try (FileOutputStream fos = new FileOutputStream(tempInputFile)) {
             byte[] buffer = new byte[4096];
@@ -51,9 +54,9 @@ public class AudioConverter {
         // Use FFmpeg to convert the audio data
         FFmpeg ffmpeg = new FFmpeg("ffmpeg");
         FFmpegBuilder builder = new FFmpegBuilder()
-                .setInput(tempInputFile.getAbsolutePath())
+                .setInput(String.valueOf(tempInputFile.getAbsoluteFile()))
                 .overrideOutputFiles(true)
-                .addOutput(tempOutputFile.getAbsolutePath())
+                .addOutput(tempOutputFile.getAbsoluteFile().toURI())
                 .setAudioCodec("pcm_s16le")
                 .setAudioChannels(1)
                 .setAudioSampleRate(16000)
