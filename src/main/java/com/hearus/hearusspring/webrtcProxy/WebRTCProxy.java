@@ -120,36 +120,40 @@ public class WebRTCProxy {
                 return;
             }
 
-            CompletableFuture.supplyAsync(() -> {
-                try {
-                    // Decode Base64 string to byte array
-                    byte[] decodedBytes = Base64.getDecoder().decode(audioData);
-                    // Convert to codec : pcm_s16le, format : s16le
-                    return audioConverter.convertAudio(decodedBytes);
-                } catch (Exception ex) {
-                    log.error("[WebRTCProxy]-[Socketio] Exception during audio conversion", ex);
-                    throw new RuntimeException(ex);
-                }
-            }, executorService).thenAccept(convertedBytes -> {
-                try {
-                    if (fastAPIWebSocket != null && fastAPIWebSocket.isOpen()) {
-                        // Wrap converted bytes in ByteBuffer
-                        ByteBuffer byteBuffer = ByteBuffer.wrap(convertedBytes);
-
-                        //log.info("[WebRTCProxy]-[Socketio] Forwarding audio data to FastAPI server [{}]", convertedBytes.length);
-
-                        // Send binary data using fastAPISession
-                        fastAPIWebSocket.send(byteBuffer);
-                    } else {
-                        log.error("[WebRTCProxy]-[Socketio] FastAPI WebSocket is not connected");
+            if (fastAPIWebSocket != null && fastAPIWebSocket.isOpen()) {
+                CompletableFuture.supplyAsync(() -> {
+                    try {
+                        // Decode Base64 string to byte array
+                        byte[] decodedBytes = Base64.getDecoder().decode(audioData);
+                        // Convert to codec : pcm_s16le, format : s16le
+                        return audioConverter.convertAudio(decodedBytes);
+                    } catch (Exception ex) {
+                        log.error("[WebRTCProxy]-[Socketio] Exception during audio conversion", ex);
+                        throw new RuntimeException(ex);
                     }
-                } catch (Exception ex) {
-                    log.error("[WebRTCProxy]-[Socketio] Exception during WebSocket send", ex);
-                }
-            }).exceptionally(ex -> {
-                log.error("[WebRTCProxy]-[Socketio] Unhandled exception in audio processing", ex);
-                return null;
-            });
+                }, executorService).thenAccept(convertedBytes -> {
+                    try {
+                        if (fastAPIWebSocket != null && fastAPIWebSocket.isOpen()) {
+                            // Wrap converted bytes in ByteBuffer
+                            ByteBuffer byteBuffer = ByteBuffer.wrap(convertedBytes);
+
+                            //log.info("[WebRTCProxy]-[Socketio] Forwarding audio data to FastAPI server [{}]", convertedBytes.length);
+
+                            // Send binary data using fastAPISession
+                            fastAPIWebSocket.send(byteBuffer);
+                        } else {
+                            log.error("[WebRTCProxy]-[Socketio] FastAPI WebSocket is not connected");
+                        }
+                    } catch (Exception ex) {
+                        log.error("[WebRTCProxy]-[Socketio] Exception during WebSocket send", ex);
+                    }
+                }).exceptionally(ex -> {
+                    log.error("[WebRTCProxy]-[Socketio] Unhandled exception in audio processing", ex);
+                    return null;
+                });
+            }else {
+                log.error("[WebRTCProxy]-[Socketio] FastAPI WebSocket is not connected");
+            }
         };
     }
 }
