@@ -38,7 +38,7 @@ public class WebSocketUtil extends WebSocketClient {
             String transcritionResult = jsonObject.get("transcritionResult").getAsString();
 
             socketIOClient.sendEvent("transitionResult", transcritionResult);
-            lectureDAO.putScript(lectureId, transcritionResult);
+            // lectureDAO.putScript(lectureId, transcritionResult);
         } catch (JsonSyntaxException e) {
             log.error("[WebSocketUtil]-[onMessage] Failed to parse JSON message: {}", message, e);
         } catch (Exception e) {
