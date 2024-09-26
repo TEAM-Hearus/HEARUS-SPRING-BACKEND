@@ -1,5 +1,5 @@
 ![image](https://github.com/user-attachments/assets/9be2766a-7aed-4c24-a1db-16652bb706fd)
-[![License](https://img.shields.io/badge/License-Apache-2.0-green.svg)](https://opensource.org/license/apache-2-0)
+[![License](https://img.shields.io/badge/License-Apache%202.0-green)](https://opensource.org/license/apache-2-0)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
 
 ## 프로젝트 소개
