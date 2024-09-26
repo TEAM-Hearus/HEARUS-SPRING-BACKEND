@@ -1,0 +1,53 @@
+This product includes software developed by various open-source projects under different licenses.
+
+The following third-party components are used in this project:
+
+1. **Spring Boot** (version 3.2.3)
+   - License: Apache License 2.0
+   - URL: https://spring.io/projects/spring-boot
+
+2. **Spring Boot Starters (Data REST, Web, Data JPA, Data MongoDB, Validation, WebSocket, OAuth2 Client, Security, Thymeleaf, Test, DevTools)** (version 3.3.4)
+   - License: Apache License 2.0
+   - URL: https://spring.io/projects/spring-boot
+
+3. **MariaDB Java Client** (version 3.4.1)
+   - License: GNU LGPL-2.1
+   - URL: https://mariadb.com/kb/en/mariadb-java-client/
+
+4. **Springfox Swagger UI** (version 3.0.0)
+   - License: Apache License 2.0
+   - URL: https://springfox.github.io/springfox/
+
+5. **Spring Security Crypto** (version 6.3.3)
+   - License: Apache License 2.0
+   - URL: https://spring.io/projects/spring-security
+
+6. **JJWT (API, Impl, Jackson)** (version 0.11.5)
+   - License: Apache License 2.0
+   - URL: https://github.com/jwtk/jjwt
+
+7. **Netty SocketIO** (version 2.0.3)
+   - License: Apache License 2.0
+   - URL: https://github.com/mrniko/netty-socketio
+
+8. **Java-WebSocket** (version 1.5.0)
+   - License: MIT License
+   - URL: https://github.com/TooTallNate/Java-WebSocket
+
+9. **JSON Library** (version 20231013)
+   - License: Public Domain (CC0)
+   - URL: https://github.com/douglascrockford/JSON-java
+
+10. **FFmpeg** (version 0.7.0)
+    - License: GNU LGPL-2.1
+    - URL: https://ffmpeg.org/
+
+11. **H2 Database Engine** (version 2.3.232)
+    - License: EPL 1.0 / MPL 2.0
+    - URL: https://www.h2database.com
+
+12. **Lombok** (version 1.18.34)
+    - License: MIT License
+    - URL: https://projectlombok.org/
+
+For further details about the licenses of each component, please refer to the official documentation of each library.
