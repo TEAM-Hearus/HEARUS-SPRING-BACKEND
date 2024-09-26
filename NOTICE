@@ -13,7 +13,6 @@ The following third-party components are used in this project:
 3. **MariaDB Java Client** (version 3.4.1)
    - License: GNU LGPL-2.1
    - URL: https://mariadb.com/kb/en/mariadb-java-client/
-   - License Text : https://github.com/TEAM-Hearus/HEARUS-SPRING-BACKEND/blob/main/LICENSE.LGPL
 
 4. **Springfox Swagger UI** (version 3.0.0)
    - License: Apache License 2.0
@@ -42,16 +41,14 @@ The following third-party components are used in this project:
 10. **FFmpeg** (version 0.7.0)
     - License: GNU LGPL-2.1
     - URL: https://ffmpeg.org/
-    - License Text : https://github.com/TEAM-Hearus/HEARUS-SPRING-BACKEND/blob/main/licenses/LICENSE.LGPL
 
 11. **H2 Database Engine** (version 2.3.232)
     - License: EPL 1.0 / MPL 2.0
     - URL: https://www.h2database.com
-    - License Text: https://github.com/TEAM-Hearus/HEARUS-SPRING-BACKEND/blob/main/licenses/LICENSE.MPL
-                    https://github.com/TEAM-Hearus/HEARUS-SPRING-BACKEND/blob/main/licenses/LICENSE.EPL
 
 12. **Lombok** (version 1.18.34)
     - License: MIT License
     - URL: https://projectlombok.org/
 
+The full text of each library's license is included in the project's licenses folder.
 For further details about the licenses of each component, please refer to the official documentation of each library.
