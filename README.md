@@ -1,4 +1,6 @@
 ![image](https://github.com/user-attachments/assets/9be2766a-7aed-4c24-a1db-16652bb706fd)
+[![License](https://img.shields.io/badge/License-Apache-2.0-green.svg)](https://opensource.org/license/apache-2-0)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
 
 ## 프로젝트 소개
 Hearus는 대학교 교내 청각장애 학우 대필지원 도우미 활동에서 느낀 문제들을 풀어내기 위해 시작되었습니다. </br>
@@ -67,21 +69,26 @@ Hearus는 대학교 교내 청각장애 학우 대필지원 도우미 활동에�
 https://documenter.getpostman.com/view/27822864/2sA2r82ix2
 ```
 
-## 기여하기
-프로젝트에 기여하고 싶으시다면 다음 절차를 따라주세요:
-1. 레포지토리를 Fork합니다.
-2. 새로운 Branch를 생성합니다 (`git checkout -b feature/NewFeature`).
-3. 변경사항을 Commit합니다 (`git commit -m '[FEAT] : ADDED Some Features'`).
-4. Branch에 Push합니다 (`git push origin feature/NewFeature`).
-5. Pull Request를 생성합니다.
-
-## 라이선스
-이 프로젝트는 [MIT License](https://github.com/TEAM-Hearus/.github/blob/main/LICENSE)에 따라 배포됩니다.
-
-## 문의
-프로젝트에 대한 문의사항이 있으시다면 [ISSUE](https://github.com/TEAM-Hearus/.github/tree/main/ISSUE_TEMPLATE)를 생성해 주세요.
-
 </br>
+
+## 📄 라이선스
+이 프로젝트는 Apache License 2.0 하에 배포됩니다. 
+</br>
+자세한 내용은 [LICENSE](https://github.com/TEAM-Hearus/HEARUS-SPRING-BACKEND/blob/main/LICENSE) 파일을 참조해주세요.
+
+## 🤝 기여하기
+
+Hearus의 발전에 기여해 주셔서 감사합니다!
+</br>
+우리는 모든 형태의 기여를 환영합니다.
+
+1. Issue 생성: 버그 리포트, 기능 제안, 또는 질문
+2. Pull Request: 코드 개선, 문서화, 또는 새로운 기능 구현
+3. Code Review: 다른 기여자의 PR을 리뷰하고 피드백 제공
+4. Documentation: README, 위키, 또는 코드 주석 개선
+
+자세한 기여 가이드라인은 [CONTRIBUTING.md](https://github.com/TEAM-Hearus/.github/blob/main/CONTRIBUTING.md)를 참조해 주세요. </br>
+또한 프로젝트에 대한 문의사항이 있으시다면 [ISSUE](https://github.com/TEAM-Hearus/.github/tree/main/ISSUE_TEMPLATE)를 생성해 주세요.
 
 ---
 
