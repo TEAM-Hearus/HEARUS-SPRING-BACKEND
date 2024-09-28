@@ -11,6 +11,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -28,7 +33,7 @@ public class SecurityConfig{
         http
                 .csrf(AbstractHttpConfigurer::disable) // 403 에러 범인 csrf 비활성화 -> cookie를 사용하지 않으면 꺼도 된다. (cookie를 사용할 경우 httpOnly(XSS 방어), sameSite(CSRF 방어)로 방어해야 한다.)
                 .formLogin(AbstractHttpConfigurer::disable) // 기본 폼 로그인 사용 X
-
+                .cors(Customizer.withDefaults())
                 //.addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class) jwt 필터 두번 적용으로 삭제.
                 .addFilter(corsConfig.corsFilter())
                 .authorizeHttpRequests(authorize -> authorize
@@ -53,5 +58,19 @@ public class SecurityConfig{
                 );
 
         return http.build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost", "http://localhost:5173", "https://www.hearus.site", "https://hearus.site"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+        configuration.setAllowCredentials(true);
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With", "Accept", "Origin", "Set-Cookie"));
+        configuration.setExposedHeaders(Arrays.asList("Authorization", "Content-Type", "Set-Cookie"));
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }

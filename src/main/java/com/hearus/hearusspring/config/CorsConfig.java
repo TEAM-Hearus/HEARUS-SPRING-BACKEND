@@ -25,13 +25,12 @@ public class CorsConfig {
 
         // setAllowCredentials(true)일 경우 "*"로 설정 불가
         //config.addAllowedOrigin("*");
-
         // 동일 출처를 판단하는 기준 중 포트 번호를 명시한 출처는
         // 브라우저의 구현 로직에 따라 동일 출처로 판단하지 않을 수 있기 때문에
         // 포트번호를 생략한 URL을 CORS 설정의 허용 출처에 추가
         config.setAllowedOrigins(Arrays.asList("http://localhost", "http://localhost:5173", "https://www.hearus.site", "https://hearus.site"));
         //config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
+        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         config.setExposedHeaders(Arrays.asList("Authorization", "Content-Type", "Cookie", "Set-Cookie"));
 
         source.registerCorsConfiguration("/**", config);
