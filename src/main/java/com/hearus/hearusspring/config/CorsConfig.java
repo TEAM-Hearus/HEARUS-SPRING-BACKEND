@@ -12,7 +12,7 @@ import java.util.Arrays;
 
 @Configuration
 public class CorsConfig {
-
+/*
     @Bean
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -36,7 +36,7 @@ public class CorsConfig {
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
-
+*/
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
@@ -45,7 +45,7 @@ public class CorsConfig {
                 registry.addMapping("/**")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
-                        .allowedOrigins("http://localhost", "https://hearus.site", "https://www.hearus.site", "http://localhost:5173")
+                        .allowedOrigins("http://localhost:8080", "https://hearus.site", "https://www.hearus.site", "http://localhost:5173")
                         .allowCredentials(true);  // 자격 증명 허용
             }
         };
