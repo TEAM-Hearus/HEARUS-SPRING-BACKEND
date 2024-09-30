@@ -6,7 +6,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
 import org.springframework.util.SerializationUtils;
-
 import java.util.Base64;
 import java.util.Optional;
 
@@ -32,7 +31,9 @@ public class CookieUtils {
         cookie.setMaxAge(maxAge);
         cookie.setDomain("localhost");
         response.addCookie(cookie);
-        response.setHeader("Set-Cookie", name+"="+value+"; "+"Path=/; Secure; HttpOnly; SameSite=None");
+        response.addHeader("Access-Control-Allow-Origin", "https://hearus.site");
+        response.addHeader("Access-Control-Allow-Credentials", "true");
+        response.addHeader("Set-Cookie", name+"="+value+"; "+"Path=/; Secure; HttpOnly; SameSite=None");
     }
 
     public void deleteCookie(HttpServletRequest request, HttpServletResponse response, String name) {
