@@ -45,7 +45,7 @@ public class CorsConfig {
                 registry.addMapping("/**")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
-                        .allowedOrigins("https://hearus.site", "https://www.hearus.site", "http://localhost:5173")
+                        .allowedOrigins("http://localhost", "https://hearus.site", "https://www.hearus.site", "http://localhost:5173")
                         .allowCredentials(true);  // 자격 증명 허용
             }
         };

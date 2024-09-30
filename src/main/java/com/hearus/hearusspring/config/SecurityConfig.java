@@ -33,7 +33,7 @@ public class SecurityConfig{
         http
                 .csrf(AbstractHttpConfigurer::disable) // 403 에러 범인 csrf 비활성화 -> cookie를 사용하지 않으면 꺼도 된다. (cookie를 사용할 경우 httpOnly(XSS 방어), sameSite(CSRF 방어)로 방어해야 한다.)
                 .formLogin(AbstractHttpConfigurer::disable) // 기본 폼 로그인 사용 X
-                .cors(Customizer.withDefaults())
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS 설정 통합
                 //.addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class) jwt 필터 두번 적용으로 삭제.
                 .addFilter(corsConfig.corsFilter())
                 .authorizeHttpRequests(authorize -> authorize
