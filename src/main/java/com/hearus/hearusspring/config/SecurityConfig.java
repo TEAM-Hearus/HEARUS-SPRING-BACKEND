@@ -26,7 +26,6 @@ public class SecurityConfig{
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
     private final OAuth2UserService oAuth2UserService;
     private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
@@ -34,7 +33,7 @@ public class SecurityConfig{
                 .csrf(AbstractHttpConfigurer::disable) // 403 에러 범인 csrf 비활성화 -> cookie를 사용하지 않으면 꺼도 된다. (cookie를 사용할 경우 httpOnly(XSS 방어), sameSite(CSRF 방어)로 방어해야 한다.)
                 .formLogin(AbstractHttpConfigurer::disable) // 기본 폼 로그인 사용 X
                 //.addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class) jwt 필터 두번 적용으로 삭제.
-                //.addFilter(corsConfig.corsFilter())
+                .addFilter(corsConfig.corsFilter())
                 .authorizeHttpRequests(authorize -> authorize
                         //        .requestMatchers("/**").permitAll()
                         .requestMatchers("/**").permitAll() //security 에서는 별도의 필터를 적용하지 않는다. JWT Filter 에서 필터링 적용.

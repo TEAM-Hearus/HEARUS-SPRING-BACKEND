@@ -31,8 +31,6 @@ public class CookieUtils {
         cookie.setMaxAge(maxAge);
         cookie.setDomain("localhost");
         response.addCookie(cookie);
-        response.addHeader("Access-Control-Allow-Origin", "https://hearus.site");
-        response.addHeader("Access-Control-Allow-Credentials", "true");
         response.addHeader("Set-Cookie", name+"="+value+"; "+"Path=/; Secure; HttpOnly; SameSite=None");
     }
 
