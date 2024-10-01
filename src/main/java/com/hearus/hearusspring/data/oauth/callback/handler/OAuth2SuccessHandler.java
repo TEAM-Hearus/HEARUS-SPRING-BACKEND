@@ -66,6 +66,8 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         //HttpResponse Header Mapping
         response.setStatus(loginResultResponse.getStatus().value());
         response.setContentType("application/json");
+        response.addHeader("Access-Control-Allow-Origin","https://hearus.site" );
+        response.addHeader("Access-Control-Allow-Origin","https://www.hearus.site" );  // 요청한 Orig
 
         //Write HttpResponse Body
         response.getWriter().write(convertCommonResponseToJson(loginResultResponse));

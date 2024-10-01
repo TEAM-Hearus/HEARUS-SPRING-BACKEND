@@ -27,9 +27,12 @@ public class CookieUtils {
     public void addCookie(HttpServletResponse response, String name, String value, int maxAge) {
         Cookie cookie = new Cookie(name, value);
         cookie.setPath("/");
-        //cookie.setHttpOnly(true);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        cookie.setAttribute("SameSite","None");
+
         cookie.setMaxAge(maxAge);
-        cookie.setDomain("localhost");
+        cookie.setDomain("hearus.site");
         response.addCookie(cookie);
         response.addHeader("Set-Cookie", name+"="+value+"; "+"Path=/; Secure; HttpOnly; SameSite=None");
     }
