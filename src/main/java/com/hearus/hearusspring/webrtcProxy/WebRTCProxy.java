@@ -145,10 +145,10 @@ public class WebRTCProxy {
                             log.error("[WebRTCProxy]-[Socketio] FastAPI WebSocket is not connected");
                         }
                     } catch (Exception ex) {
-                        log.error("[WebRTCProxy]-[Socketio] Exception during WebSocket send", ex);
+                        log.error("[WebRTCProxy]-[Socketio] Exception during WebSocket send");
                     }
                 }).exceptionally(ex -> {
-                    log.error("[WebRTCProxy]-[Socketio] Unhandled exception in audio processing", ex);
+                    log.error("[WebRTCProxy]-[Socketio] Unhandled exception in audio processing");
                     return null;
                 });
             }else {
