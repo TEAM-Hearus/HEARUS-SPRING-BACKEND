@@ -56,7 +56,7 @@ public class LectureController {
     public ResponseEntity<CommonResponse> addSchedule(@Valid @RequestBody LectureModel lectureModel){
         log.info("[LectureController]-[addLecture] API Call");
 
-        if(lectureModel.getScheduleElementId().isEmpty() || lectureModel.getName().isEmpty()){
+        if(lectureModel.getName().isEmpty()){
             log.warn("[LectureController]-[addLecture] Failed : Empty Variables");
             response = new CommonResponse(false, HttpStatus.BAD_REQUEST,"Empty Name");
             return ResponseEntity.status(response.getStatus()).body(response);
