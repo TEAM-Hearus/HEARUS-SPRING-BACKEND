@@ -1,5 +1,7 @@
 package com.hearus.hearusspring.config.swagger;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.servers.Server;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
@@ -9,11 +11,20 @@ import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+
+//요청 서버 도메인 설정
+@OpenAPIDefinition(
+        servers = {
+                @Server(url = "https://hearus-spring-be.shop:8080", description = "개발 서버"),
+                @Server(url = "http://localhost:8080", description = "로컬 서버")
+        })
 @Configuration
 public class SwaggerConfig {
 
     @Bean
     public OpenAPI customOpenAPI() {
+        
+        //Authorization 설정
         SecurityScheme apiKey = new SecurityScheme()
                 .type(SecurityScheme.Type.HTTP)
                 .in(SecurityScheme.In.HEADER)
@@ -24,11 +35,15 @@ public class SwaggerConfig {
         SecurityRequirement securityRequirement = new SecurityRequirement()
                 .addList("Bearer Token");
 
+        //api 문서 설정
+        Info info = new Info()
+                .title("Hearus Spring Backend API")
+                .version("1.0")
+                .description("API for Hearus")
+
+                
         return new OpenAPI()
-                .info(new Info()
-                        .title("Hearus Spring Backend API")
-                        .version("1.0")
-                        .description("API for Hearus"))
+                .info(info)
                 .components(new Components().addSecuritySchemes("Bearer Token", apiKey))
                 .addSecurityItem(securityRequirement);
     }
