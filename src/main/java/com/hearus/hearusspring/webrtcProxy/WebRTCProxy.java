@@ -128,7 +128,7 @@ public class WebRTCProxy {
                         // Convert to codec : pcm_s16le, format : s16le
                         return audioConverter.convertAudio(decodedBytes);
                     } catch (Exception ex) {
-                        log.error("[WebRTCProxy]-[Socketio] Exception during audio conversion", ex);
+                        log.error("[WebRTCProxy]-[Socketio] Exception during audio conversion");
                         throw new RuntimeException(ex);
                     }
                 }, executorService).thenAccept(convertedBytes -> {
