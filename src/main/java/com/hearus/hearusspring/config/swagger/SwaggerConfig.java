@@ -39,7 +39,7 @@ public class SwaggerConfig {
         Info info = new Info()
                 .title("Hearus Spring Backend API")
                 .version("1.0")
-                .description("API for Hearus")
+                .description("API for Hearus");
 
                 
         return new OpenAPI()
