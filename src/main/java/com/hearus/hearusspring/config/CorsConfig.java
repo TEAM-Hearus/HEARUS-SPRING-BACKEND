@@ -29,7 +29,7 @@ public class CorsConfig {
         // 브라우저의 구현 로직에 따라 동일 출처로 판단하지 않을 수 있기 때문에
         // 포트번호를 생략한 URL을 CORS 설정의 허용 출처에 추가
 
-        config.setAllowedOrigins(Arrays.asList("http://localhost", "http://localhost:5173", "https://www.hearus.site", "https://hearus.site", "https://hearus-spring-be.shop:8080"));
+        config.setAllowedOrigins(Arrays.asList("http://localhost", "http://localhost:5173", "https://www.hearus.site", "https://hearus.site", "https://hearus-spring-be.shop:8080", "https://www.hearus-spring-be.shop:8080"));
         config.setAllowedHeaders(Arrays.asList("*"));
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE","OPTIONS"));
         config.setExposedHeaders(Arrays.asList("Authorization", "Content-Type", "Cookie", "Set-Cookie", "X-Requested-With"));
