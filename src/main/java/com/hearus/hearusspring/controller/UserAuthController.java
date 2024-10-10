@@ -2,6 +2,7 @@ package com.hearus.hearusspring.controller;
 
 import com.hearus.hearusspring.common.CommonResponse;
 import com.hearus.hearusspring.data.dto.user.UserDTO;
+import com.hearus.hearusspring.data.dto.user.UserLoginDTO;
 import com.hearus.hearusspring.data.dto.user.UserSignupDTO;
 import com.hearus.hearusspring.service.UserService;
 import jakarta.validation.Valid;
@@ -30,18 +31,21 @@ public class UserAuthController {
     }
 
     @PostMapping(value="/login")
-    public ResponseEntity<CommonResponse> loginUser(@Valid @RequestBody UserDTO userDTO){
+    public ResponseEntity<CommonResponse> loginUser(@Valid @RequestBody UserLoginDTO userLoginDTO, BindingResult bindingResult){
         LOGGER.info("[UserAuthController]-[loginUser] API Call");
 
-        // 요구되는 데이터 존재 여부 검증
-        if(userDTO.getUserEmail().isEmpty() || userDTO.getUserPassword().isEmpty()){
-            LOGGER.info("[UserAuthController]-[loginUser] Failed : Empty Variables");
-            CommonResponse response = new CommonResponse(false,HttpStatus.BAD_REQUEST,"Empty Variables");
-            return ResponseEntity.status(response.getStatus()).body(response);
+        // Request 데이터 검증
+        if(bindingResult.hasErrors()){
+            List<FieldError> list = bindingResult.getFieldErrors();
+            for(FieldError error : list) {
+                LOGGER.info("[UserAuthController]-[loginUser] Failed : {}", error.getDefaultMessage());
+                CommonResponse response = new CommonResponse(false, HttpStatus.BAD_REQUEST, error.getDefaultMessage());
+                return new ResponseEntity<>(response , HttpStatus.BAD_REQUEST);
+            }
         }
 
         // UserService로 요청받은 UserDTO 로그인 요청
-        CommonResponse response = userService.login(userDTO);
+        CommonResponse response = userService.login(userLoginDTO.toDTO());
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 
