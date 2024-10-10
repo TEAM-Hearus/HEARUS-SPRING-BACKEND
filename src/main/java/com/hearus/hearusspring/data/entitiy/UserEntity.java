@@ -1,6 +1,6 @@
 package com.hearus.hearusspring.data.entitiy;
 
-import com.hearus.hearusspring.data.dto.UserDTO;
+import com.hearus.hearusspring.data.dto.user.UserDTO;
 import jakarta.persistence.*;
 import lombok.*;
 

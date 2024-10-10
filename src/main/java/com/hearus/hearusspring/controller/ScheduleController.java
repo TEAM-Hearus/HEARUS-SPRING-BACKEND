@@ -2,7 +2,6 @@ package com.hearus.hearusspring.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hearus.hearusspring.common.CommonResponse;
-import com.hearus.hearusspring.data.dto.UserDTO;
 import com.hearus.hearusspring.data.dto.schedule.ScheduleDTO;
 import com.hearus.hearusspring.data.dto.schedule.ScheduleElementDTO;
 import com.hearus.hearusspring.service.ScheduleService;

@@ -1,7 +1,7 @@
 package com.hearus.hearusspring.service;
 
 import com.hearus.hearusspring.common.CommonResponse;
-import com.hearus.hearusspring.data.dto.UserDTO;
+import com.hearus.hearusspring.data.dto.user.UserDTO;
 import com.hearus.hearusspring.data.dto.oauth.OAuthAdditionalInfoDTO;
 
 public interface UserService {

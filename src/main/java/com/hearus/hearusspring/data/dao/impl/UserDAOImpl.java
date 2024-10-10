@@ -1,14 +1,12 @@
 package com.hearus.hearusspring.data.dao.impl;
 
-import com.hearus.hearusspring.common.CommonResponse;
 import com.hearus.hearusspring.data.dao.UserDAO;
-import com.hearus.hearusspring.data.dto.UserDTO;
+import com.hearus.hearusspring.data.dto.user.UserDTO;
 import com.hearus.hearusspring.data.entitiy.UserEntity;
 import com.hearus.hearusspring.data.dto.oauth.OAuthAdditionalInfoDTO;
 import com.hearus.hearusspring.data.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

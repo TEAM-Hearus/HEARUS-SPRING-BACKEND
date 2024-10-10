@@ -1,4 +1,4 @@
-package com.hearus.hearusspring.data.dto;
+package com.hearus.hearusspring.data.dto.user;
 
 import com.hearus.hearusspring.common.enumType.RoleType;
 import com.hearus.hearusspring.data.entitiy.UserEntity;

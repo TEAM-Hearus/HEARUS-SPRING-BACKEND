@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hearus.hearusspring.common.CommonResponse;
 import com.hearus.hearusspring.data.dto.TokenDTO;
-import com.hearus.hearusspring.data.dto.UserDTO;
+import com.hearus.hearusspring.data.dto.user.UserDTO;
 import com.hearus.hearusspring.data.oauth.callback.PrincipalDetails;
 import com.hearus.hearusspring.service.UserService;
 import jakarta.servlet.ServletException;
