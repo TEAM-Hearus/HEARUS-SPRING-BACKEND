@@ -2,6 +2,7 @@ package com.hearus.hearusspring.data.dto.user;
 
 import com.hearus.hearusspring.common.enumType.RoleType;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
@@ -13,6 +14,7 @@ public class UserLoginDTO {
     @NotBlank(message = "userEmail not found in request")
     String userEmail;
     @NotBlank(message = "userPassword not found in request")
+    @Min(value = 0, message = "userPassword is too short")
     String userPassword;
     boolean userIsOAuth = false;
 
