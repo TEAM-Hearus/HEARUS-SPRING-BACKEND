@@ -1,9 +1,12 @@
 package com.hearus.hearusspring.data.dto.user;
 
+import com.hearus.hearusspring.common.enumType.RoleType;
 import jakarta.persistence.Entity;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
+
+import java.util.ArrayList;
 
 @Data
 public class UserSignupDTO {
@@ -24,6 +27,10 @@ public class UserSignupDTO {
                 .userPassword(this.userPassword)
                 .userName(this.userName)
                 .userIsOAuth(this.userIsOAuth)
+                .userRole(RoleType.USER.getKey())
+                .userSchedule(new ArrayList<>())
+                .userSavedLectures(new ArrayList<>())
+                .userId("")
                 .build();
 
         return build;
