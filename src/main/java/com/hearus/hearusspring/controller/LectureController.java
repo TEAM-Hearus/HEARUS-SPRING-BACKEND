@@ -6,6 +6,7 @@ import com.hearus.hearusspring.common.CommonResponse;
 import com.hearus.hearusspring.common.environment.ConfigUtil;
 import com.hearus.hearusspring.data.dto.ProblemReqDTO;
 import com.hearus.hearusspring.data.dto.lecture.LectureDeleteDTO;
+import com.hearus.hearusspring.data.dto.lecture.LectureScriptPutDTO;
 import com.hearus.hearusspring.data.dto.lecture.problem.ProblemAddDTO;
 import com.hearus.hearusspring.data.dto.lecture.problem.ProblemDTO;
 import com.hearus.hearusspring.data.dto.lecture.problem.ProblemDeleteDTO;
@@ -84,18 +85,17 @@ public class LectureController {
     }
 
     @PutMapping(value="/putScript")
-    public ResponseEntity<CommonResponse> putScript(@Valid @RequestBody Map<String, Object> requestBody){
-        ObjectMapper objectMapper = new ObjectMapper();
+    public ResponseEntity<CommonResponse> putScript(@Valid @RequestBody LectureScriptPutDTO lectureScriptPutDTO, BindingResult bindingResult){
 
-        String lectureId = objectMapper.convertValue(requestBody.get("lectureId"), String.class);
-        String script = objectMapper.convertValue(requestBody.get("script"), String.class);
+        // Request 데이터 검증
+        if(bindingResult.hasErrors()){
+            return new ResponseEntity<>(validationRequest(bindingResult, "[LectureController]-[putScript]"), HttpStatus.BAD_REQUEST);
+        }
+
+        String lectureId = lectureScriptPutDTO.getLectureId();
+        String script = lectureScriptPutDTO.getScript();
 
         log.info("[LectureController]-[putScript] API Call - LectureId : {}", lectureId);
-
-        if(lectureId.isEmpty() || script.isEmpty()){
-            response = new CommonResponse(false, HttpStatus.BAD_REQUEST,"Empty Variables");
-            return ResponseEntity.status(response.getStatus()).body(response);
-        }
 
         response = lectureService.putScript(lectureId, script);
         return ResponseEntity.status(response.getStatus()).body(response);
