@@ -5,8 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hearus.hearusspring.common.CommonResponse;
 import com.hearus.hearusspring.common.environment.ConfigUtil;
 import com.hearus.hearusspring.data.dto.ProblemReqDTO;
+import com.hearus.hearusspring.data.dto.lecture.LectureDeleteDTO;
 import com.hearus.hearusspring.data.dto.lecture.problem.ProblemAddDTO;
 import com.hearus.hearusspring.data.dto.lecture.problem.ProblemDTO;
+import com.hearus.hearusspring.data.dto.lecture.problem.ProblemDeleteDTO;
 import com.hearus.hearusspring.data.model.LectureModel;
 import com.hearus.hearusspring.data.model.Problem;
 import com.hearus.hearusspring.service.LectureService;
@@ -113,17 +115,17 @@ public class LectureController {
     }
 
     @DeleteMapping(value="/deleteLecture")
-    public ResponseEntity<CommonResponse> deleteLecture(@Valid @RequestBody Map<String, String> requestBody){
+    public ResponseEntity<CommonResponse> deleteLecture(@Valid @RequestBody LectureDeleteDTO lectureDeleteDTO, BindingResult bindingResult){
         log.info("[LectureController]-[deleteLecture] API Call");
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        String lectureId = objectMapper.convertValue(requestBody.get("lectureId"), String.class);
 
-        if(lectureId.isEmpty()){
-            log.warn("[LectureController]-[deleteLecture] Failed : Empty LectureId");
-            response = new CommonResponse(false, HttpStatus.BAD_REQUEST,"Empty LectureId");
-            return ResponseEntity.status(response.getStatus()).body(response);
+        // Request 데이터 검증
+        if(bindingResult.hasErrors()){
+            return new ResponseEntity<>(validationRequest(bindingResult, "[LectureController]-[deleteLecture]"), HttpStatus.BAD_REQUEST);
         }
+
+        String lectureId = lectureDeleteDTO.getLectureId();
+
         response = lectureService.deleteLecture(getUserIdFromContext(), lectureId);
         return ResponseEntity.status(response.getStatus()).body(response);
     }
@@ -132,13 +134,14 @@ public class LectureController {
     public ResponseEntity<CommonResponse> addProblem(@Valid @RequestBody ProblemAddDTO problemAddDTO, BindingResult bindingResult){
         log.info("[LectureController]-[addProblem] API Call");
 
-        String lectureId = problemAddDTO.getLectureId();
-        ProblemDTO problem = problemAddDTO.getProblem();
 
         // Request 데이터 검증
         if(bindingResult.hasErrors()){
             return new ResponseEntity<>(validationRequest(bindingResult, "[LectureController]-[addProblem]"), HttpStatus.BAD_REQUEST);
         }
+
+        String lectureId = problemAddDTO.getLectureId();
+        ProblemDTO problem = problemAddDTO.getProblem();
 
         response = lectureService.addProblem(lectureId, problem.toEntity());
         return ResponseEntity.status(response.getStatus()).body(response);
@@ -163,18 +166,16 @@ public class LectureController {
     }
 
     @DeleteMapping(value="/deleteProblem")
-    public ResponseEntity<CommonResponse> deleteProblem(@Valid @RequestBody Map<String, String> requestBody){
-        log.info("[LectureController]-[addProblem] API Call");
+    public ResponseEntity<CommonResponse> deleteProblem(@Valid @RequestBody ProblemDeleteDTO problemDeleteDTO, BindingResult bindingResult){
+        log.info("[LectureController]-[deleteProblem] API Call");
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        String lectureId = objectMapper.convertValue(requestBody.get("lectureId"), String.class);
-        String problemId = objectMapper.convertValue(requestBody.get("problemId"), String.class);
-
-        if(lectureId.isEmpty() || problemId.isEmpty()){
-            log.warn("[LectureController]-[addLecture] Failed : Empty Variables");
-            response = new CommonResponse(false, HttpStatus.BAD_REQUEST,"Empty Variables");
-            return ResponseEntity.status(response.getStatus()).body(response);
+        // Request 데이터 검증
+        if(bindingResult.hasErrors()){
+            return new ResponseEntity<>(validationRequest(bindingResult, "[LectureController]-[deleteProblem]"), HttpStatus.BAD_REQUEST);
         }
+
+        String lectureId = problemDeleteDTO.getLectureId();
+        String problemId = problemDeleteDTO.getProblemId();
 
         response = lectureService.deleteProblem(lectureId, problemId);
         return ResponseEntity.status(response.getStatus()).body(response);
