@@ -3,6 +3,7 @@ package com.hearus.hearusspring.data.dto.lecture.problem;
 import com.hearus.hearusspring.data.model.Problem;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -14,8 +15,7 @@ public class ProblemAddDTO {
     String lectureId;
 
     @Valid
-    @NotEmpty(message = "Problem details cannot be empty")
+    @NotNull(message = "Problem cannot be null")
     ProblemDTO problem;
-
 
 }
