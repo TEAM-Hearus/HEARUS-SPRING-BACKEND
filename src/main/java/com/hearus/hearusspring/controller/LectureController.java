@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hearus.hearusspring.common.CommonResponse;
 import com.hearus.hearusspring.common.environment.ConfigUtil;
 import com.hearus.hearusspring.data.dto.ProblemReqDTO;
+import com.hearus.hearusspring.data.dto.lecture.problem.ProblemAddDTO;
+import com.hearus.hearusspring.data.dto.lecture.problem.ProblemDTO;
 import com.hearus.hearusspring.data.model.LectureModel;
 import com.hearus.hearusspring.data.model.Problem;
 import com.hearus.hearusspring.service.LectureService;
@@ -17,6 +19,8 @@ import org.springframework.http.*;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.request.async.DeferredResult;
@@ -49,6 +53,16 @@ public class LectureController {
         // SecurityContext에서 Authentication으로 UserID를 받아온다
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return (String) authentication.getPrincipal();
+    }
+
+    public CommonResponse validationRequest(BindingResult bindingResult, String logContent){
+        List<FieldError> list = bindingResult.getFieldErrors();
+        for(FieldError error : list) {
+            log.info("{} Failed : {}",logContent, error.getDefaultMessage());
+            CommonResponse response = new CommonResponse(false, HttpStatus.BAD_REQUEST, error.getDefaultMessage());
+            return response;
+        }
+        return null;
     }
 
     @PostMapping(value="/addLecture")
@@ -115,20 +129,18 @@ public class LectureController {
     }
 
     @PostMapping(value="/addProblem")
-    public ResponseEntity<CommonResponse> addProblem(@Valid @RequestBody Map<String, Object> requestBody){
+    public ResponseEntity<CommonResponse> addProblem(@Valid @RequestBody ProblemAddDTO problemAddDTO, BindingResult bindingResult){
         log.info("[LectureController]-[addProblem] API Call");
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        String lectureId = objectMapper.convertValue(requestBody.get("lectureId"), String.class);
-        Problem problem = objectMapper.convertValue(requestBody.get("problem"), Problem.class);
+        String lectureId = problemAddDTO.getLectureId();
+        ProblemDTO problem = problemAddDTO.getProblem();
 
-        if(lectureId.isEmpty()){
-            log.warn("[LectureController]-[addLecture] Failed : Empty LectureId");
-            response = new CommonResponse(false, HttpStatus.BAD_REQUEST,"Empty LectureId");
-            return ResponseEntity.status(response.getStatus()).body(response);
+        // Request 데이터 검증
+        if(bindingResult.hasErrors()){
+            return new ResponseEntity<>(validationRequest(bindingResult, "[LectureController]-[addProblem]"), HttpStatus.BAD_REQUEST);
         }
 
-        response = lectureService.addProblem(lectureId, problem);
+        response = lectureService.addProblem(lectureId, problem.toEntity());
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 
