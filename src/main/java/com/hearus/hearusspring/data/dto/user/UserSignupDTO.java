@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class UserSignupDTO {
     String userEmail;
 
     @NotBlank(message = "userPassword not found in request")
-    @Min(value = 0, message = "userPassword is too short")
+    @Size(min = 8, message = "userPassword is too short")
     String userPassword;
 
     boolean userIsOAuth = false;
