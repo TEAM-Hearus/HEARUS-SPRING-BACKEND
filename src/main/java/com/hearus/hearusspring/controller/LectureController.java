@@ -10,6 +10,7 @@ import com.hearus.hearusspring.data.model.Problem;
 import com.hearus.hearusspring.service.LectureService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -33,14 +34,12 @@ import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/v1/lecture")
 public class LectureController {
-    @Autowired
-    private LectureService lectureService;
 
-    @Autowired
-    private ConfigUtil configUtil;
-
+    private final LectureService lectureService;
+    private final ConfigUtil configUtil;
     private CommonResponse response;
 
     // Request를 Slice하여 Restructure요청할 때의 SIZE
