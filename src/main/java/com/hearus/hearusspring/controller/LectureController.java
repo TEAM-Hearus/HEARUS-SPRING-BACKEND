@@ -10,6 +10,7 @@ import com.hearus.hearusspring.data.dto.lecture.LectureScriptPutDTO;
 import com.hearus.hearusspring.data.dto.lecture.problem.ProblemAddDTO;
 import com.hearus.hearusspring.data.dto.lecture.problem.ProblemDTO;
 import com.hearus.hearusspring.data.dto.lecture.problem.ProblemDeleteDTO;
+import com.hearus.hearusspring.data.dto.lecture.problem.ProblemUpdateDTO;
 import com.hearus.hearusspring.data.model.LectureModel;
 import com.hearus.hearusspring.data.model.Problem;
 import com.hearus.hearusspring.service.LectureService;
@@ -148,18 +149,17 @@ public class LectureController {
     }
 
     @PutMapping(value="/updateProblem")
-    public ResponseEntity<CommonResponse> updateProblem(@Valid @RequestBody Map<String, Object> requestBody){
+    public ResponseEntity<CommonResponse> updateProblem(@Valid @RequestBody ProblemUpdateDTO problemUpdateDTO, BindingResult bindingResult){
         log.info("[LectureController]-[addProblem] API Call");
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        String lectureId = objectMapper.convertValue(requestBody.get("lectureId"), String.class);
-        Problem newProblem = objectMapper.convertValue(requestBody.get("problem"), Problem.class);
 
-        if(lectureId.isEmpty()){
-            log.warn("[LectureController]-[addLecture] Failed : Empty LectureId");
-            response = new CommonResponse(false, HttpStatus.BAD_REQUEST,"Empty LectureId");
-            return ResponseEntity.status(response.getStatus()).body(response);
+        // Request 데이터 검증
+        if(bindingResult.hasErrors()){
+            return new ResponseEntity<>(validationRequest(bindingResult, "\"[LectureController]-[addProblem]"), HttpStatus.BAD_REQUEST);
         }
+
+        String lectureId = problemUpdateDTO.getLectureId();
+        Problem newProblem = problemUpdateDTO.getProblem().toEntity();
 
         response = lectureService.updateProblem(lectureId, newProblem.getId(), newProblem);
         return ResponseEntity.status(response.getStatus()).body(response);
