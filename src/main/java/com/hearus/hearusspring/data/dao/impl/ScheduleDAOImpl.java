@@ -19,7 +19,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -118,17 +120,48 @@ public class ScheduleDAOImpl implements ScheduleDAO {
     @Transactional
     public CommonResponse addElement(ScheduleEntity scheduleEntity, ScheduleElementEntity scheduleElementEntity) {
         userId = scheduleEntity.getUser().getId();
-        scheduleName = scheduleEntity.getName();
+        String scheduleName = scheduleEntity.getName();
 
-        // ScheduleEntity가 존재하지 않을 경우
-        if(!scheduleRepository.existsByUserIdAndName(userId, scheduleName)){
-            log.info("[ScheduleDAO]-[addSchedule] ({}) User's ScheduleEntity ({}) doesnt exists", userId, scheduleName);
-            return new CommonResponse(false, HttpStatus.INTERNAL_SERVER_ERROR,"ScheduleName Doesn't Exists");
+        // ScheduleName이 누락되었는지 여부 검사
+        if (!scheduleRepository.existsByUserIdAndName(userId, scheduleName)) {
+            log.info("[ScheduleDAO]-[addSchedule] ({}) User's ScheduleEntity ({}) doesn't exist", userId, scheduleName);
+            return new CommonResponse(false, HttpStatus.INTERNAL_SERVER_ERROR, "ScheduleName Doesn't Exist");
         }
 
         log.info("[ScheduleDAO]-[addElement] Save ElementEntity ({})-({})", userId, scheduleElementEntity.getName());
 
         scheduleEntity = scheduleRepository.findByUserIdAndName(userId, scheduleName);
+
+        // 시간이 겹치는 ScheduleElement 예외처리
+        List<ScheduleElementEntity> existingElements = scheduleElementRepository.findByScheduleAndDayOfWeek(
+                scheduleEntity,
+                scheduleElementEntity.getDayOfWeek()
+        );
+
+        boolean isOverlapping = existingElements.stream().anyMatch(element -> {
+            Date newStart = scheduleElementEntity.getStartTime();
+            Date newEnd = scheduleElementEntity.getEndTime();
+            Date existingStart = element.getStartTime();
+            Date existingEnd = element.getEndTime();
+
+            return newStart.before(existingEnd) && existingStart.before(newEnd);
+        });
+
+        if (isOverlapping) {
+            log.info("[ScheduleDAO]-[addElement] Overlapping ScheduleElement ({})-({})", userId, scheduleElementEntity.getName());
+            return new CommonResponse(false, HttpStatus.CONFLICT, "Overlapping ScheduleElement");
+        }
+
+        // 같은 schedule내 이름이 겹치는 ScheduleElement 예외처리
+        Optional<ScheduleElementEntity> existingElement = scheduleElementRepository.findByScheduleAndName(
+                scheduleEntity,
+                scheduleElementEntity.getName()
+        );
+
+        if (existingElement.isPresent()) {
+            log.info("[ScheduleDAO]-[addElement] Duplicate ScheduleElement ({})-({})", userId, scheduleElementEntity.getName());
+            return new CommonResponse(false, HttpStatus.CONFLICT, "Duplicate ScheduleElement Name");
+        }
 
         scheduleElementEntity.setSchedule(scheduleEntity);
         ScheduleElementEntity savedElement = scheduleElementRepository.save(scheduleElementEntity);
@@ -138,8 +171,9 @@ public class ScheduleDAOImpl implements ScheduleDAO {
 
         System.out.println(scheduleEntity.getScheduleElements().size());
 
-        return new CommonResponse(true, HttpStatus.OK,"ScheduleElement Added", savedElement.toDTO());
+        return new CommonResponse(true, HttpStatus.OK, "ScheduleElement Added", savedElement.toDTO());
     }
+
 
     @Override
     @Transactional
