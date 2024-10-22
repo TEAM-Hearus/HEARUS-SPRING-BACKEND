@@ -119,4 +119,19 @@ public class UserDAOImpl implements UserDAO {
         return false;
 
     }
+
+    @Override
+    @Transactional
+    public boolean deleteUser(String userEmail) {
+
+        Optional<UserEntity> firstByEmail = userRepository.findByEmail(userEmail);
+        if(firstByEmail.isPresent()) {
+            userRepository.delete(firstByEmail.get());
+            return true;
+        }
+        else{
+            return false;
+        }
+
+    }
 }

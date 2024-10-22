@@ -130,4 +130,15 @@ public class UserServiceImpl  implements UserService {
             return new CommonResponse(false, HttpStatus.INTERNAL_SERVER_ERROR, "Failed to Update User");
         }
     }
+
+    @Override
+    public CommonResponse deleteUser(String userEmail) {
+        if(userDAO.deleteUser(userEmail)){
+            return new CommonResponse(true, HttpStatus.OK, "User deleted successfully");
+        }
+        else{
+            return new CommonResponse(false, HttpStatus.NOT_FOUND, "User Not found");
+        }
+
+    }
 }

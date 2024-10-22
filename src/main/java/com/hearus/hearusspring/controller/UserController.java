@@ -48,6 +48,16 @@ public class UserController {
         return ResponseEntity.status(response.getStatus()).body(response);
     }
 
+    @DeleteMapping(value="/deleteUser/{userEmail}")
+    public ResponseEntity<CommonResponse> deleteUser(@Valid @PathVariable String userEmail){
+        log.info("[UserAuthController]-[deleteUser] API Call");
+
+        // UserService로 요청받은 UserDTO 수정 요청
+        CommonResponse response = userService.deleteUser(userEmail);
+
+        log.info("[UserAuthController]-[deleteUser] {} : {}", response.getStatus(), response.getMsg());
+        return ResponseEntity.status(response.getStatus()).body(response);
+    }
 
     // SecurityContext에서 Authentication으로 UserID를 받아온다
     private String getUserIdFromContext(){

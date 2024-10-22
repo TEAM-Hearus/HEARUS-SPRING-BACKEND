@@ -10,4 +10,6 @@ public interface UserService {
     CommonResponse getUserById(String targetUserId);
     CommonResponse addInformation(OAuthAdditionalInfoDTO oAuthAdditionalInfoDTO);
     CommonResponse updateUser(String userId, UserDTO user);
+
+    CommonResponse deleteUser(String userEmail);
 }
