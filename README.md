@@ -34,61 +34,11 @@ Hearus는 대학교 교내 청각장애 학우 대필지원 도우미 활동에�
 | API Documentation | Swagger UI |
 | Template Engine | Thymeleaf |
 
-## 시작하기
-### 필수 요구사항
-- Java OpenJDK 21.0.2
-- Gradle
-- MariaDB, MongoDB
-
-### 설치 및 실행
-1. 레포지토리 clone
-   ```
-   git clone https://github.com/TEAM-Hearus/HEARUS-SPRING-BACKEND
-   ```
-
-2. 프로젝트 디렉토리로 이동
-   ```
-   cd HEARUS-SPRING-BACKEND
-   ```
-
-3. Gradle을 사용하여 프로젝트 빌드
-   ```
-   ./gradlew build
-   ```
-
-4. 애플리케이션 실행
-   ```
-   java -jar build/libs/hearus-0.0.1-SNAPSHOT.jar
-   ```
-
-## API Document
-![image](https://github.com/user-attachments/assets/420525e2-92cb-4bea-8357-a431928b0115)
-최신 API의 경우 Postman Document를 통해 API 문서를 확인할 수 있습니다. </br>
-각 API에 대한 example 또한 확인할 수 있습니다.
-```
-https://documenter.getpostman.com/view/27822864/2sA2r82ix2
-```
-
-</br>
 
 ## 📄 라이선스
 이 프로젝트는 Apache License 2.0 하에 배포됩니다. 
 </br>
 자세한 내용은 [LICENSE](https://github.com/TEAM-Hearus/HEARUS-SPRING-BACKEND/blob/main/LICENSE) 파일을 참조해주세요.
-
-## 🤝 기여하기
-
-Hearus의 발전에 기여해 주셔서 감사합니다!
-</br>
-우리는 모든 형태의 기여를 환영합니다.
-
-1. Issue 생성: 버그 리포트, 기능 제안, 또는 질문
-2. Pull Request: 코드 개선, 문서화, 또는 새로운 기능 구현
-3. Code Review: 다른 기여자의 PR을 리뷰하고 피드백 제공
-4. Documentation: README, 위키, 또는 코드 주석 개선
-
-자세한 기여 가이드라인은 [CONTRIBUTING.md](https://github.com/TEAM-Hearus/.github/blob/main/CONTRIBUTING.md)를 참조해 주세요. </br>
-또한 프로젝트에 대한 문의사항이 있으시다면 [ISSUE](https://github.com/TEAM-Hearus/.github/tree/main/ISSUE_TEMPLATE)를 생성해 주세요.
 
 ---
 
