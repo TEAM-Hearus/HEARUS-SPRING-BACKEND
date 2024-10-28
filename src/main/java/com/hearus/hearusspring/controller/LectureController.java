@@ -325,6 +325,7 @@ public class LectureController {
                 // LectureId로 Model을 가져와 내부의 Script를 하나로 합친 후 requestBody에 적용
                 LectureModel lectureModel = (LectureModel) lectureService.getLecture(requestBody.getLectureId(), false).getObject();
                 requestBody.setScript(String.join(" ", lectureModel.getProcessedScript()));
+                log.info("[LectureController]-[generateProblem] LectureModel {}", lectureModel);
 
                 String jsonBody = new ObjectMapper().writeValueAsString(requestBody);
 
