@@ -11,4 +11,6 @@ public interface UserDAO {
     boolean updateUser(UserDTO userDTO, boolean changePassword);
     Optional<UserDTO> getUserById(String userId);
     boolean addUserData(OAuthAdditionalInfoDTO oAuthAdditionalInfoDTO);
+
+    boolean deleteUser(String userEmail);
 }
