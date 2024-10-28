@@ -327,6 +327,9 @@ public class LectureController {
                 requestBody.setScript(String.join(" ", lectureModel.getProcessedScript()));
                 log.info("[LectureController]-[generateProblem] LectureModel {}", lectureModel);
 
+                // 만약 req body의 subject값이 null이라면 기본 더미 데이터로 변경
+                if(requestBody.getSubject() == null)
+                    requestBody.setSubject("Lecture");
                 String jsonBody = new ObjectMapper().writeValueAsString(requestBody);
 
                 // FastAPI 비동기 요청 보내기
