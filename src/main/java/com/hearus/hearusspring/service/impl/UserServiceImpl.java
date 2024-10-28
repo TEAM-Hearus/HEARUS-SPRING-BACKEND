@@ -110,20 +110,26 @@ public class UserServiceImpl  implements UserService {
     public CommonResponse updateUser(String userId, UserDTO userDTO) {
         try{
             UserDTO findUserDTO = userDAO.getUserById(userId).get();
+            boolean changePassword = false;
 
             // Set Updated Data
             if(userDTO.getUserName() != null)
                 findUserDTO.setUserName(userDTO.getUserName());
+            // 새로 입력받은 비밀번호가 null이 아니면 비밀번호 변경
+            if(userDTO.getUserPassword() != null) {
+                findUserDTO.setUserPassword(userDTO.getUserPassword());
+                changePassword = true;
+            }
             findUserDTO.setUserSchool(userDTO.getUserSchool());
             findUserDTO.setUserMajor(userDTO.getUserMajor());
             findUserDTO.setUserGrade(userDTO.getUserGrade());
             findUserDTO.setUserUsePurpose(userDTO.getUserUsePurpose());
 
             // Save findUserDTO
-            userDAO.updateUser(findUserDTO);
+            userDAO.updateUser(findUserDTO, changePassword);
 
             log.info("[UserService]-[updateUser] User updated successfully : {}", userDTO.getUserEmail());
-            return new CommonResponse(true, HttpStatus.OK, "User updated successfully");
+            return new CommonResponse(true, HttpStatus.OK, "User updated successfully : passwordChanged " + changePassword);
 
         }catch (Exception e){
             log.error("Failed to Update User", e);

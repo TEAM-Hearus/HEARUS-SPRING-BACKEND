@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface UserDAO {
     Optional<UserDTO> getUserByEmail(String email);
     boolean saveUser(UserDTO userDTO);
-    boolean updateUser(UserDTO userDTO);
+    boolean updateUser(UserDTO userDTO, boolean changePassword);
     Optional<UserDTO> getUserById(String userId);
     boolean addUserData(OAuthAdditionalInfoDTO oAuthAdditionalInfoDTO);
 }

@@ -62,13 +62,21 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public boolean updateUser(UserDTO userDTO) {
-        // 비밀번호 인코딩 없이 그대로 저장하기 위해
-        // passwordEncoder 없이 Entitiy로 변환
-        UserEntity user = userDTO.toEntitiy();
+    public boolean updateUser(UserDTO userDTO, boolean changePassword) {
+        UserEntity user;
+
+        if(changePassword) {
+            // 비밀번호가 변경되었으면 passwordEncoder를 통해 비밀번호 인코딩
+            user = userDTO.toEntitiy(passwordEncoder);
+        } else {
+            // 비밀번호가 변경되지 않았으면
+            // 비밀번호 인코딩 없이 그대로 저장하기 위해
+            // passwordEncoder 없이 Entitiy로 변환
+            user = userDTO.toEntitiy();
+        }
 
         userRepository.save(user);
-        log.info("[UserDAO]-[userSignup] UserEntitiy 수정 성공 : {}", user.getEmail());
+        log.info("[UserDAO]-[userSignup] UserEntitiy 수정 성공 : {}, changedPassword {}", user.getEmail(), changePassword);
 
         return true;
     }
