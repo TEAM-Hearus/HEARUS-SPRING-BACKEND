@@ -34,6 +34,7 @@ Hearus는 대학교 교내 청각장애 학우 대필지원 도우미 활동에�
 
 ## 📂 API Document
 프로젝트의 API 명세는 아래 링크에서 확인하실 수 있습니다.
+</br>
 [HEARUS-SPRING-BACKEND/wiki](https://github.com/TEAM-Hearus/HEARUS-SPRING-BACKEND/wiki)
 
 ## 📄 라이선스
