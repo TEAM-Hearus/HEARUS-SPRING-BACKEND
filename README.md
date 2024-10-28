@@ -14,14 +14,12 @@ Hearus는 대학교 교내 청각장애 학우 대필지원 도우미 활동에�
 - Spring Security를 활용한 보안 및 인증 시스템 통합
 - WebSocket 및 Socket.IO를 이용한 실시간 음성인식 서버 구축
 
-## Entitiy-Relationship-Diagram
-![image](https://github.com/user-attachments/assets/9f5b7d43-2c31-444d-bd72-578293aa8edc)
-
 ## 주요 기능
 1. **실시간 음성-텍스트 변환**: Spring Boot에서 Socketio와 Web Socket을 활용하여 실시간 음성/텍스트 통신을 구현
 2. **AI 기반 중요 단어 하이라이팅**, **AI 맞춤형 문제 생성**: 기능 요청에 대해 DB를 조회하고 적절한 형태로 변형하여 FastAPI에 요청
 3. **시간표 형식의 스크립트 관리**: 시간표 형태로 데이터를 관리하기 위해 MariaDB, MongoDB간의 관계를 정의하고 제어
 4. **소셜 로그인 기능**: Spring Security와 OAuth 2.0을 활용하여 Google, Naver, Kakao 의 로그인 API를 통한 사용자 인증 기능 구현
+
 ## 기술 스택
 | Category | Technology |
 |----------|------------|
@@ -34,6 +32,9 @@ Hearus는 대학교 교내 청각장애 학우 대필지원 도우미 활동에�
 | API Documentation | Swagger UI |
 | Template Engine | Thymeleaf |
 
+## 📂 API Document
+프로젝트의 API 명세는 아래 링크에서 확인하실 수 있습니다.
+[HEARUS-SPRING-BACKEND/wiki](https://github.com/TEAM-Hearus/HEARUS-SPRING-BACKEND/wiki)
 
 ## 📄 라이선스
 이 프로젝트는 Apache License 2.0 하에 배포됩니다. 
